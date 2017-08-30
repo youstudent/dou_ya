@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2099dd55ad0ea56853b9f025aa8e2928",
+    "content-hash": "1c50ab8c0f78e97fc3c86044ae705dad",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -313,6 +313,97 @@
                 "html"
             ],
             "time": "2017-06-03T02:28:16+00:00"
+        },
+        {
+            "name": "pokerdragon/yii2-admin",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pokerdragon/yii2-admin.git",
+                "reference": "09b7ff8cd5ad10ddd6c2d36f6c9ab7ace1568eea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/pokerdragon/yii2-admin/09b7ff8cd5ad10ddd6c2d36f6c9ab7ace1568eea.zip",
+                "reference": "09b7ff8cd5ad10ddd6c2d36f6c9ab7ace1568eea",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0.7"
+            },
+            "require-dev": {
+                "yiisoft/yii2-codeception": "~2.0"
+            },
+            "suggest": {
+                "yiisoft/yii2-bootstrap": "Used when using layout 'left-menu', 'right-menu' or 'top-menu'"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.master": "1.0.x-dev",
+                    "dev-master": "2.x-dev"
+                },
+                "asset-installer-paths": {
+                    "npm-asset-library": "vendor/npm",
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "pokerDragon\\admin\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Misbahul Munir",
+                    "email": "misbahuldmunir@gmail.com"
+                }
+            ],
+            "description": "RBAC Auth manager for Yii2 ",
+            "keywords": [
+                "admin",
+                "auth",
+                "rbac",
+                "yii"
+            ],
+            "time": "2017-08-27T10:01:20+00:00"
+        },
+        {
+            "name": "pokerdragon/yii2-color-admin-asset",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pokerdragon/yii2-color-admin-asset.git",
+                "reference": "06a4d31c9d997ccfee7c98c969c3c26bebac2c13"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/pokerdragon/yii2-color-admin-asset/06a4d31c9d997ccfee7c98c969c3c26bebac2c13.zip",
+                "reference": "06a4d31c9d997ccfee7c98c969c3c26bebac2c13",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "pokerDragon\\colorAdmin\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Poker Dragon",
+                    "email": "377304925@qq.com"
+                }
+            ],
+            "description": "This a backend theme base on color admin",
+            "time": "2017-08-29 07:12:33"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3245,7 +3336,10 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "pokerdragon/yii2-color-admin-asset": 20,
+        "pokerdragon/yii2-admin": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

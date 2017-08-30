@@ -17,7 +17,9 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "pokerdragon/yii2-color-admin-asset": "dev-master",
+        "pokerdragon/yii2-admin": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

@@ -1,80 +1,74 @@
 <?php
+use yii\helpers\Html;
+use yii\web\View;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use backend\assets\AppAsset;
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-use common\widgets\Alert;
 
-AppAsset::register($this);
-?>
-<?php $this->beginPage() ?>
-<!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body>
-<?php $this->beginBody() ?>
+if (Yii::$app->controller->action->id === 'login') {
+    /**
+     * Do not use this code in your template. Remove it.
+     * Instead, use the code  $this->layout = '//main-login'; in your controller.
+     */
+    echo $this->render(
+        'main-login',
+        ['content' => $content]
+    );
+} else {
+    $this->registerJs('
+App.init();
+', View::POS_END);
+    \pokerDragon\colorAdmin\web\ColorAdminAsset::register($this);
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => 'My Company',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
+    $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/pokerdragon/color-admin/assets');
     ?>
+    <?php $this->beginPage() ?>
+    <!DOCTYPE html>
+    <html lang="<?= Yii::$app->language ?>">
+    <head>
+        <meta charset="<?= Yii::$app->charset ?>"/>
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+        <?= Html::csrfMetaTags() ?>
+        <title>豆芽集市后台管理 - <?= Html::encode($this->title) ?></title>
+        <?php $this->head() ?>
+    </head>
+    <body>
+    <?php $this->beginBody() ?>
+    <!-- begin #page-loader -->
+    <div id="page-loader" class="fade in"><span class="spinner"></span></div>
+    <!-- end #page-loader -->
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+    <!-- begin #page-container -->
+    <div id="page-container" class="page-container fade page-sidebar-fixed page-header-fixed">
+        <?= $this->render(
+            'header.php',
+            ['directoryAsset' => $directoryAsset]
+        ) ?>
+
+        <?= $this->render(
+            'left.php',
+            ['directoryAsset' => $directoryAsset]
+        )
+        ?>
+
+        <?= $this->render(
+            'content.php',
+            ['content' => $content, 'directoryAsset' => $directoryAsset]
+        ) ?>
+
     </div>
-</div>
-
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+    <!-- #form_modal_common -->
+    <div class="modal fade" id="_pd_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
     </div>
-</footer>
+    <?php $this->endBody() ?>
+    </body>
+    </html>
+    <?php $this->endPage() ?>
+<?php } ?>
 
-<?php $this->endBody() ?>
-</body>
-</html>
-<?php $this->endPage() ?>
+
