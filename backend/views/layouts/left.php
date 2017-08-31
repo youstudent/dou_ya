@@ -1,116 +1,77 @@
-<?php
+<aside class="main-sidebar">
 
-?>
-<!-- begin #sidebar -->
-<div id="sidebar" class="sidebar">
-    <!-- begin sidebar scrollbar -->
-    <div data-scrollbar="true" data-height="100%">
-        <!-- begin sidebar user -->
-        <ul class="nav">
-            <li class="nav-profile">
-                <div class="image">
-                    <a href="javascript:;"><img src="<?= $directoryAsset ?>/img/user-13.jpg" alt="" /></a>
-                </div>
-                <div class="info">
-                    Sean Ngu
-                    <small>Front end developer</small>
-                </div>
-            </li>
-        </ul>
-        <!-- end sidebar user -->
-        <!-- begin sidebar nav -->
-        <ul class="nav">
-            <li class="nav-header">Navigation</li>
-            <li class="has-sub active">
-                <a href="javascript:;">
-                    <b class="caret pull-right"></b>
-                    <i class="fa fa-laptop"></i>
-                    <span>Dashboard</span>
-                </a>
-                <ul class="sub-menu">
-                    <li class="active"><a href="#ajax/index.html" >Dashboard v1</a></li>
-                    <li><a href="#ajax/index_v2.html" >Dashboard v2</a></li>
-                </ul>
-            </li>
-            <li><a href="javascript:;">
-                    <span class="badge pull-right">10</span>
-                    <i class="fa fa-inbox"></i>
-                    <span>用户管理</span>
-                </a>
-            </li>
-            <li><a href="javascript:;">
-                    <span class="badge pull-right">10</span>
-                    <i class="fa fa-inbox"></i>
-                    <span>商家管理</span>
-                </a>
-            </li>
-            <li><a href="javascript:;">
-                    <span class="badge pull-right">10</span>
-                    <i class="fa fa-inbox"></i>
-                    <span>业务员管理</span>
-                </a>
-            </li>
-            <li><a href="javascript:;">
-                    <span class="badge pull-right">10</span>
-                    <i class="fa fa-inbox"></i>
-                    <span>banner管理</span>
-                </a>
-            </li>
-            <li><a href="javascript:;">
-                    <span class="badge pull-right">10</span>
-                    <i class="fa fa-inbox"></i>
-                    <span>活动管理</span>
-                </a>
-            </li>
-            <li><a href="javascript:;">
-                    <span class="badge pull-right">10</span>
-                    <i class="fa fa-inbox"></i>
-                    <span>订单管理</span>
-                </a>
-            </li>
-            <li><a href="javascript:;">
-                    <span class="badge pull-right">10</span>
-                    <i class="fa fa-inbox"></i>
-                    <span>退款管理</span>
-                </a>
-            </li>
-            <li><a href="javascript:;">
-                    <span class="badge pull-right">10</span>
-                    <i class="fa fa-inbox"></i>
-                    <span>运营统计</span>
-                </a>
-            </li>
-            <li class="has-sub">
-                <a href="javascript:;">
-                    <span class="badge pull-right">10</span>
-                    <i class="fa fa-inbox"></i>
-                    <span>系统设置</span>
-                </a>
-                <ul class="sub-menu">
-                    <li><a href="#ajax/email_inbox.html" >系统配置</a></li>
-                    <li><a href="#ajax/email_inbox_v2.html" >角色管理</a></li>
-                    <li><a href="#ajax/email_compose.html" >权限管理</a></li>
-                </ul>
-            </li>
-            <li class="has-sub">
-                <a href="javascript:;">
-                    <b class="caret pull-right"></b>
-                    <i class="fa fa-suitcase"></i>
-                    <span>系统设置 <span class="label label-theme m-l-5">NEW</span></span>
-                </a>
-                <ul class="sub-menu">
-                    <li><a href="#ajax/ui_general.html" >站点设置</a></li>
-                    <li><a href="#ajax/ui_typography.html" >角色管理</a></li>
-                    <li><a href="#ajax/ui_tabs_accordions.html" >权限管理</a></li>
-                </ul>
-            </li>
-            <!-- begin sidebar minify button -->
-            <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
-            <!-- end sidebar minify button -->
-        </ul>
-        <!-- end sidebar nav -->
-    </div>
-    <!-- end sidebar scrollbar -->
-</div>
-<div class="sidebar-bg"></div>
-<!-- end #sidebar -->
+    <section class="sidebar">
+
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+            </div>
+            <div class="pull-left info">
+                <p>Alexander Pierce</p>
+
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search..."/>
+              <span class="input-group-btn">
+                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+
+        <?= dmstr\widgets\Menu::widget(
+            [
+                'options' => ['class' => 'sidebar-menu'],
+                'items' => [
+                    ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
+                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
+                    ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
+                    ['label' => 'admin', 'icon' => 'dashboard', 'url' => ['/admin']],
+                    ['label' => 'route', 'icon' => 'dashboard', 'url' => ['/admin/route']],
+                    ['label' => 'permission', 'icon' => 'dashboard', 'url' => ['/admin/permission']],
+                    ['label' => 'role', 'icon' => 'dashboard', 'url' => ['/admin/role']],
+                    ['label' => 'assignment', 'icon' => 'dashboard', 'url' => ['/admin/assignment']],
+                    ['label' => 'user', 'icon' => 'dashboard', 'url' => ['/admin/user']],
+                    ['label' => 'user', 'icon' => 'dashboard', 'url' => ['/debug']],
+                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
+                    [
+                        'label' => 'Same tools',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
+                            ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
+                            [
+                                'label' => 'Level One',
+                                'icon' => 'circle-o',
+                                'url' => '#',
+                                'items' => [
+                                    ['label' => 'Level Two', 'icon' => 'circle-o', 'url' => '#',],
+                                    [
+                                        'label' => 'Level Two',
+                                        'icon' => 'circle-o',
+                                        'url' => '#',
+                                        'items' => [
+                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
+                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    
+                ],
+            ]
+        ) ?>
+
+    </section>
+
+</aside>

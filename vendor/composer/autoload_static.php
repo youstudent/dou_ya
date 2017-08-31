@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
 {
     public static $files = array (
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '180092cfc969a12e06f2132a203a3184' => __DIR__ . '/..' . '/codeception/verify/src/Codeception/function.php',
@@ -25,11 +25,21 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
         ),
+        'r' => 
+        array (
+            'rmrevin\\yii\\fontawesome\\' => 24,
+        ),
         'p' => 
         array (
-            'pokerDragon\\colorAdmin\\' => 23,
-            'pokerDragon\\admin\\' => 18,
             'phpDocumentor\\Reflection\\' => 25,
+        ),
+        'm' => 
+        array (
+            'mdm\\admin\\' => 10,
+        ),
+        'd' => 
+        array (
+            'dmstr\\' => 6,
         ),
         'c' => 
         array (
@@ -106,19 +116,23 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
         ),
-        'pokerDragon\\colorAdmin\\' => 
+        'rmrevin\\yii\\fontawesome\\' => 
         array (
-            0 => __DIR__ . '/..' . '/pokerdragon/yii2-color-admin-asset',
-        ),
-        'pokerDragon\\admin\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/pokerdragon/yii2-admin',
+            0 => __DIR__ . '/..' . '/rmrevin/yii2-fontawesome',
         ),
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+        ),
+        'mdm\\admin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mdmsoft/yii2-admin',
+        ),
+        'dmstr\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dmstr/yii2-adminlte-asset',
         ),
         'cebe\\markdown\\' => 
         array (
@@ -203,6 +217,13 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
     );
 
     public static $prefixesPsr0 = array (
+        'c' => 
+        array (
+            'cebe\\gravatar\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/cebe/yii2-gravatar',
+            ),
+        ),
         'P' => 
         array (
             'Prophecy\\' => 
