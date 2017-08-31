@@ -1,46 +1,45 @@
 <?php
 use yii\helpers\Html;
-use yii\web\View;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
 
-if (Yii::$app->controller->action->id === 'login') {
-    /**
-     * Do not use this code in your template. Remove it.
-     * Instead, use the code  $this->layout = '//main-login'; in your controller.
-     */
+if (Yii::$app->controller->action->id === 'login') { 
+/**
+ * Do not use this code in your template. Remove it. 
+ * Instead, use the code  $this->layout = '//main-login'; in your controller.
+ */
     echo $this->render(
         'main-login',
         ['content' => $content]
     );
 } else {
-    $this->registerJs('
-App.init();
-', View::POS_END);
-    \pokerDragon\colorAdmin\web\ColorAdminAsset::register($this);
 
-    $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/pokerdragon/color-admin/assets');
+    if (class_exists('backend\assets\AppAsset')) {
+        backend\assets\AppAsset::register($this);
+    } else {
+        app\assets\AppAsset::register($this);
+    }
+
+    dmstr\web\AdminLteAsset::register($this);
+
+    $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
     ?>
     <?php $this->beginPage() ?>
     <!DOCTYPE html>
     <html lang="<?= Yii::$app->language ?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
-        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
-        <title>豆芽集市后台管理 - <?= Html::encode($this->title) ?></title>
+        <title><?= Yii::$app->id ?><?= $this->title ? '-' . Html::encode($this->title) : '' ?></title>
         <?php $this->head() ?>
     </head>
-    <body>
+    <body class="hold-transition skin-blue sidebar-mini">
     <?php $this->beginBody() ?>
-    <!-- begin #page-loader -->
-    <div id="page-loader" class="fade in"><span class="spinner"></span></div>
-    <!-- end #page-loader -->
+    <div class="wrapper">
 
-    <!-- begin #page-container -->
-    <div id="page-container" class="page-container fade page-sidebar-fixed page-header-fixed">
         <?= $this->render(
             'header.php',
             ['directoryAsset' => $directoryAsset]
@@ -58,17 +57,9 @@ App.init();
         ) ?>
 
     </div>
-    <!-- #form_modal_common -->
-    <div class="modal fade" id="_pd_modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            </div>
-        </div>
-    </div>
+
     <?php $this->endBody() ?>
     </body>
     </html>
     <?php $this->endPage() ?>
 <?php } ?>
-
-

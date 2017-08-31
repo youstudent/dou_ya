@@ -7,17 +7,40 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-backend',
+    'id' => '豆芽集市',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
+    //'defaultRoute' => 'site/login',
+    'homeUrl' => 'panel/index',
+    'language' => 'zh-CN',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'admin' => [
+                'class' => 'mdm\admin\Module',
+               // 'layout' => 'main',
+                'controllerMap' => [
+                'assignment' => [
+                    'class' => 'mdm\admin\controllers\AssignmentController',
+                    'userClassName' => 'backend\models\Admin',
+                    'idField' => 'id'
+                ],
+        ],
+        ]
+    ],
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'dmstr\web\AdminLteAsset' => [
+                    'skin' => 'skin-black',
+                ],
+            ],
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\models\Admin',
+            'loginUrl' => ['site/login'],
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
@@ -45,6 +68,14 @@ return [
             ],
         ],
         */
+    ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+//            'site/*',
+//            'admin/*',
+            '*',
+        ]
     ],
     'params' => $params,
 ];
