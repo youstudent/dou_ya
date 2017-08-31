@@ -31,6 +31,9 @@
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
                     ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
+                    ['label' => '用户管理', 'icon' => 'dashboard', 'url' => ['/member/index']],
+                    ['label' => '业务员管理', 'icon' => 'dashboard', 'url' => ['/salesman/index']],
+                    ['label' => '商家管理', 'icon' => 'dashboard', 'url' => ['/merchant/index']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'admin', 'icon' => 'dashboard', 'url' => ['/admin']],

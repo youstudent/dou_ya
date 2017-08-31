@@ -10,10 +10,11 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=192.168.2.115;dbname=douya',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=dou_ya',
             'username' => 'root',
             'password' => '123456',
             'charset' => 'utf8',
+            'tablePrefix' => 'ya_',
         ],
     ],
 ];
