@@ -56,4 +56,6 @@ class Member extends \yii\db\ActiveRecord
             'order_money' => '下单总金额',
         ];
     }
+    
+   
 }

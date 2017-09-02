@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use SebastianBergmann\CodeCoverage\Report\Xml\Facade;
 use Yii;
 use common\models\Member;
 use backend\models\Search\Member as MemberSearch;
@@ -66,7 +67,7 @@ class MemberController extends Controller
         $model = new Member();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['/member/index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -83,9 +84,8 @@ class MemberController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+            return $this->redirect(['/member/index']);
         } else {
             return $this->render('update', [
                 'model' => $model,

@@ -55,7 +55,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'identification',
             'order_num',
             'order_money',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                //动作列yii\grid\ActionColumn
+                //用于显示一些动作按钮，如每一行的更新、删除操作。
+                'class' => 'yii\grid\ActionColumn',
+                'header' => '操作',
+                'template' => '{update}',//只需要展示删除和更新
+                'headerOptions' => ['width' => '240'],
+                'buttons' => [
+                    'update' => function ($url, $model, $key) {
+                        return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['member/update', 'id'=>$model->id]);
+                    },
+                ],
+            ],
         ],
-    ]); ?>
+    ]);
+    ?>
 </div>
+

@@ -78,10 +78,46 @@ return array (
   'dmstr/yii2-adminlte-asset' => 
   array (
     'name' => 'dmstr/yii2-adminlte-asset',
-    'version' => '2.4.2.0',
+    'version' => '2.4.3.0',
     'alias' => 
     array (
       '@dmstr' => $vendorDir . '/dmstr/yii2-adminlte-asset',
+    ),
+  ),
+  'kartik-v/yii2-krajee-base' => 
+  array (
+    'name' => 'kartik-v/yii2-krajee-base',
+    'version' => '1.8.8.0',
+    'alias' => 
+    array (
+      '@kartik/base' => $vendorDir . '/kartik-v/yii2-krajee-base',
+    ),
+  ),
+  'kartik-v/yii2-widget-datetimepicker' => 
+  array (
+    'name' => 'kartik-v/yii2-widget-datetimepicker',
+    'version' => '1.4.2.0',
+    'alias' => 
+    array (
+      '@kartik/datetime' => $vendorDir . '/kartik-v/yii2-widget-datetimepicker',
+    ),
+  ),
+  'kak/datetimepicker' => 
+  array (
+    'name' => 'kak/datetimepicker',
+    'version' => '1.0.0.0',
+    'alias' => 
+    array (
+      '@kak/widgets/datetimepicker' => $vendorDir . '/kak/datetimepicker',
+    ),
+  ),
+  'nkovacs/yii2-datetimepicker' => 
+  array (
+    'name' => 'nkovacs/yii2-datetimepicker',
+    'version' => '3.1.0.0',
+    'alias' => 
+    array (
+      '@nkovacs/datetimepicker' => $vendorDir . '/nkovacs/yii2-datetimepicker',
     ),
   ),
 );

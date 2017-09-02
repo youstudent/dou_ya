@@ -3,12 +3,14 @@
 namespace backend\controllers;
 
 use backend\models\Salesman;
+use common\models\MerchantImg;
 use Yii;
 use common\models\Merchant;
 use backend\models\Search\Merchant as MerchantSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * MerchantController implements the CRUD actions for Merchant model.
@@ -67,11 +69,17 @@ class MerchantController extends Controller
         $model = new Merchant();
         $model->created_at=time();
         if ($model->load(Yii::$app->request->post())) {
-            $model->save();
-            $data = Salesman::findOne(['name'=>$model->seleaman]);
-            $data->bound_merchant=$data->bound_merchant+1;
-            $data->save(false);
-            return $this->redirect(['view', 'id' => $model->id]);
+            $model->file = UploadedFile::getInstance($model, 'file');
+            $model->imgs = UploadedFile::getInstances($model, 'imgs');
+            if ($model->upload()) {
+                $data = Salesman::findOne(['name'=>$model->seleaman]);
+                $data->bound_merchant=$data->bound_merchant+1;
+                $data->save(false);
+                // 文件上传成功
+                Yii::$app->getSession()->setFlash('success', '创建成功');
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            return false;
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -90,7 +98,14 @@ class MerchantController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $model->file = UploadedFile::getInstance($model, 'file');
+            $model->imgs = UploadedFile::getInstances($model, 'imgs');
+            if ($model->upload()) {
+                // 文件上传成功
+                Yii::$app->getSession()->setFlash('success', '创建成功');
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            return false;
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -125,5 +140,17 @@ class MerchantController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     * 删除图片
+     * @param $id
+     * @param $v
+     * @return \yii\web\Response
+     */
+    public function actionDel($id,$v){
+        MerchantImg::deleteAll(['id'=>$id]);
+        Yii::$app->getSession()->setFlash('danger', '删除成功');
+        return $this->redirect(['view', 'id' => $v]);
     }
 }

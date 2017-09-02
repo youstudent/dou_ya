@@ -34,6 +34,8 @@
                     ['label' => '用户管理', 'icon' => 'dashboard', 'url' => ['/member/index']],
                     ['label' => '业务员管理', 'icon' => 'dashboard', 'url' => ['/salesman/index']],
                     ['label' => '商家管理', 'icon' => 'dashboard', 'url' => ['/merchant/index']],
+                    ['label' => 'banner管理', 'icon' => 'dashboard', 'url' => ['/banner/index']],
+                    ['label' => '活动管理', 'icon' => 'dashboard', 'url' => ['/activity/index']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'admin', 'icon' => 'dashboard', 'url' => ['/admin']],

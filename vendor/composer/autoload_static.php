@@ -33,9 +33,20 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'n' => 
+        array (
+            'nkovacs\\datetimepicker\\' => 23,
+        ),
         'm' => 
         array (
             'mdm\\admin\\' => 10,
+        ),
+        'k' => 
+        array (
+            'kucha\\ueditor\\' => 14,
+            'kartik\\datetime\\' => 16,
+            'kartik\\base\\' => 12,
+            'kak\\widgets\\datetimepicker\\' => 27,
         ),
         'd' => 
         array (
@@ -126,9 +137,29 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
             1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
         ),
+        'nkovacs\\datetimepicker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nkovacs/yii2-datetimepicker',
+        ),
         'mdm\\admin\\' => 
         array (
             0 => __DIR__ . '/..' . '/mdmsoft/yii2-admin',
+        ),
+        'kucha\\ueditor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kucha/ueditor',
+        ),
+        'kartik\\datetime\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-datetimepicker',
+        ),
+        'kartik\\base\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-krajee-base',
+        ),
+        'kak\\widgets\\datetimepicker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kak/datetimepicker',
         ),
         'dmstr\\' => 
         array (
