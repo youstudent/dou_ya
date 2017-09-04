@@ -23,7 +23,8 @@
         "kartik-v/yii2-widget-datetimepicker": "v1.4.2",
         "kucha/ueditor": "*",
         "kak/datetimepicker": "*",
-        "nkovacs/yii2-datetimepicker": "*"
+        "nkovacs/yii2-datetimepicker": "*",
+        "moonlandsoft/yii2-phpexcel": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

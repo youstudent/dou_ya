@@ -39,6 +39,7 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
         ),
         'm' => 
         array (
+            'moonland\\phpexcel\\' => 18,
             'mdm\\admin\\' => 10,
         ),
         'k' => 
@@ -140,6 +141,10 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
         'nkovacs\\datetimepicker\\' => 
         array (
             0 => __DIR__ . '/..' . '/nkovacs/yii2-datetimepicker',
+        ),
+        'moonland\\phpexcel\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/moonlandsoft/yii2-phpexcel',
         ),
         'mdm\\admin\\' => 
         array (
@@ -260,6 +265,10 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
             'Prophecy\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
+            ),
+            'PHPExcel' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
             ),
         ),
         'H' => 

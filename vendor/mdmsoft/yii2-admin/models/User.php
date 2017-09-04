@@ -28,7 +28,9 @@ use mdm\admin\components\Configs;
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 10;
+    const STATUS_ACTIVE = 1;
+    
+    public $re_password;
 
     /**
      * @inheritdoc
@@ -54,8 +56,13 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            [['job_number'],'number'],
+            [['password_hash'],'required','on'=>'add'],
+            [['username','account'],'required'],
+            [['phone'],'match','pattern'=>'/^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$/'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE]],
+            [['re_password'],'safe']
         ];
     }
 
@@ -188,5 +195,24 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => '姓名',
+            'job_number' => '员工号',
+            'phone' => '电话',
+            'created_at' => '创建时间',
+            'email' => '邮箱',
+            'status' => '状态',
+            'password_hash' => '密码',
+            'account' => '账号',
+            're_password' => '新密码',
+        ];
     }
 }

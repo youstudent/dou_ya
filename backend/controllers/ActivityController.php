@@ -67,9 +67,10 @@ class ActivityController extends Controller
     {
         $model = new Activity();
         $models = new ActivityTicket();
-        if ($model->load(Yii::$app->request->post()) && $models->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
-            if ($id = $model->add()){
+            $models->add(Yii::$app->request->post('ActivityTicket'));
+            if ($id = $model->add() && $models->add(Yii::$app->request->post())){
                 Yii::$app->getSession()->setFlash('success', '添加活动成功');
                 return $this->redirect(['view', 'id' => $model->id]);
             }

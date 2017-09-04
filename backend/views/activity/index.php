@@ -58,7 +58,7 @@ use yii\grid\GridView;
         
                 'filter' => Html::activeDropDownList($searchModel,
                     'status',['1'=>'正常','0'=>'停封'],
-                    ['prompt'=>'全部']
+                    ['prompt'=>'全部','style'=>'height:34px;']
                 )
             ],
            // 'phone',
@@ -74,10 +74,10 @@ use yii\grid\GridView;
                 'headerOptions' => ['width' => '240'],
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span', '查看详情', ['class' => "btn btn-xs btn-primary"]), ['view', 'id'=>$model->id]);
+                        return Html::a(Html::tag('span', '查看详情', ['class' => "btn btn-xs btn-primary"]), ['view', 'id'=>$model->id]).'&nbsp';
                     },
                     'update' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['update', 'id'=>$model->id]);
+                        return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['update', 'id'=>$model->id]).'&nbsp';
                     },
                     'delete' => function($url, $model, $key){
                         return Html::a('删除',

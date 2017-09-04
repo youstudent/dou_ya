@@ -19,8 +19,8 @@ class Salesman extends SalesmanModel
     public function rules()
     {
         return [
-            [['id', 'phone'], 'integer'],
-            [['name', 'job_number'], 'safe'],
+            [['phone','bound_merchant'], 'integer'],
+            [['name', 'job_number','created_at'], 'safe'],
         ];
     }
 
@@ -51,7 +51,7 @@ class Salesman extends SalesmanModel
         ]);
 
         $this->load($params);
-
+        var_dump($this->created_at);
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -60,12 +60,13 @@ class Salesman extends SalesmanModel
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'phone' => $this->phone,
+            'bound_merchant' => $this->bound_merchant,
+            'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'job_number', $this->job_number]);
+            ->andFilterWhere(['like', 'job_number', $this->job_number])
+            ->andFilterWhere(['like', 'phone', $this->phone]);
 
         return $dataProvider;
     }

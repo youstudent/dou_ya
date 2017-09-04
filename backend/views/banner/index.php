@@ -23,7 +23,7 @@ use yii\grid\GridView;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'title',
-            [
+           /* [
                 'format' => 'raw',
                 'label'=>'图片',
                 'value'=>function($m){
@@ -32,7 +32,7 @@ use yii\grid\GridView;
                         );
                     }
                 }
-            ],
+            ],*/
             [
                 'attribute' => 'created_at',
                 'label'=>'创建时间',
@@ -51,10 +51,10 @@ use yii\grid\GridView;
                 'headerOptions' => ['width' => '240'],
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span', '查看详情', ['class' => "btn btn-xs btn-primary"]), ['view', 'id'=>$model->id]);
+                        return Html::a(Html::tag('span', '查看详情', ['class' => "btn btn-xs btn-primary"]), ['view', 'id'=>$model->id]).'&nbsp';
                     },
                     'update' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['update', 'id'=>$model->id]);
+                        return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['update', 'id'=>$model->id]).'&nbsp';
                     },
                     'delete' => function($url, $model, $key){
                         return Html::a('删除',
@@ -64,7 +64,7 @@ use yii\grid\GridView;
                                 'data' => ['confirm' => '你确定要删除文章吗？', 'method' => 'post'],
                                 
                             ]
-                        );
+                        ).'&nbsp';
                     },
         
                 ],

@@ -44,6 +44,14 @@ use yii\grid\GridView;
                     function($model){
                         return  date('Y-m-d H:i:s',$model->created_at);   //主要通过此种方式实现
                     },
+                /*'filter'    => \kartik\datetime\DateTimePicker::widget([
+                    'model'         => $searchModel,
+                    'attribute'     => 'created_at',
+                    //'convertFormat' => true,
+                    'pluginOptions' => [
+                        'locale' => ['format' => 'Y-m-d H:i:s'],
+                    ],
+                ]),*/
             ],
             [
                 //动作列yii\grid\ActionColumn
@@ -54,10 +62,10 @@ use yii\grid\GridView;
                 'headerOptions' => ['width' => '240'],
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span', '查看详情', ['class' => "btn btn-xs btn-primary"]), ['/salesman/view', 'id'=>$model->id]);
+                        return Html::a(Html::tag('span', '查看详情', ['class' => "btn btn-xs btn-primary"]), ['/salesman/view', 'id'=>$model->id]).'&nbsp';
                     },
                     'update' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['/salesman/update', 'id'=>$model->id]);
+                        return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['/salesman/update', 'id'=>$model->id]).'&nbsp';
                     },
                     'delete' => function($url, $model, $key){
                         return Html::a('删除',
@@ -66,7 +74,7 @@ use yii\grid\GridView;
                                 'class' => 'btn btn-danger btn-xs',
                                 'data' => ['confirm' => '你确定要删除文章吗？','method' => 'post']
                             ]
-                        );
+                        ).'&nbsp';
                     },
                     
                 ],

@@ -20,17 +20,17 @@ $fileuploadedJs = <<<JS
   $('#add').click(function() {
       var html1 = '<div ><div class="form-group field-activityticket-title required">'+
         '<label class="control-label" for="activityticket-title">标题[票种'+i+']</label>'+
-        '<input type="text" id="activityticket-title" class="form-control" name="ActivityTicket[title]" aria-required="true">'+
+        '<input type="text" id="activityticket-title" class="form-control" name="ActivityTicket[title'+i+']" aria-required="true">'+
         '<div class="help-block"></div>'+
         '</div>'+
         '<div class="form-group field-activityticket-title required">'+
         '<label class="control-label" for="activityticket-title">售价</label>'+
-        '<input type="text" id="activityticket-title" class="form-control" name="ActivityTicket[title]" aria-required="true">'+
+        '<input type="text" id="activityticket-title" class="form-control" name="ActivityTicket[price'+i+']" aria-required="true">'+
         '<div class="help-block"></div>'+
         '</div>'+
         '<div class="form-group field-activityticket-title required">'+
         '<label class="control-label" for="activityticket-title">结算价</label>'+
-        '<input type="text" id="activityticket-title" class="form-control" name="ActivityTicket[title]" aria-required="true">'+
+        '<input type="text" id="activityticket-title" class="form-control" name="ActivityTicket[settlement'+i+']" aria-required="true">'+
         '<div class="help-block"></div>'+
         '</div></div>';
       i += 1;
@@ -97,9 +97,9 @@ $this->registerJs($fileuploadedJs);
     ]) ?>
     <?= Html::button('添加票种',['id'=>'add'])?>
     <?= Html::button('删除票种',['id'=>'add'])?>
-    <?= $form->field($models, 'title')->textInput()->label('标题[票种1]') ?>
-    <?= $form->field($models, 'price')->textInput() ?>
-    <?= $form->field($models, 'settlement')->textInput() ?>
+    <?= $form->field($models, 'title1')->textInput()->label('标题[票种1]') ?>
+    <?= $form->field($models, 'price1')->textInput() ?>
+    <?= $form->field($models, 'settlement1')->textInput() ?>
     <div id="DDD">
     
     </div>

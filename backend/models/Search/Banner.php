@@ -18,8 +18,7 @@ class Banner extends BannerModel
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['title'], 'safe'],
+            [['title','created_at'], 'safe'],
         ];
     }
 
@@ -59,7 +58,7 @@ class Banner extends BannerModel
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'created_at' => $this->created_at,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);

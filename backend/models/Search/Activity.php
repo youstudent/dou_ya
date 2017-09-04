@@ -18,7 +18,7 @@ class Activity extends ActivityModel
     public function rules()
     {
         return [
-            [['id', 'apply_end_time', 'start_time', 'end_time', 'phone', 'purchase_limitation', 'on_line', 'created_at','status'], 'integer'],
+            [['id', 'apply_end_time', 'start_time', 'end_time', 'phone', 'purchase_limitation', 'on_line', 'created_at','status','total_clearing','total_price'], 'integer'],
             [['merchant_name', 'activity_name', 'activity_img', 'activity_address', 'linkman', 'content'], 'safe'],
         ];
     }
@@ -59,7 +59,6 @@ class Activity extends ActivityModel
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'apply_end_time' => $this->apply_end_time,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
@@ -75,6 +74,8 @@ class Activity extends ActivityModel
             ->andFilterWhere(['like', 'activity_img', $this->activity_img])
             ->andFilterWhere(['like', 'activity_address', $this->activity_address])
             ->andFilterWhere(['like', 'linkman', $this->linkman])
+            ->andFilterWhere(['like', 'total_clearing', $this->total_clearing])
+            ->andFilterWhere(['total_price', 'linkman', $this->total_price])
             ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;

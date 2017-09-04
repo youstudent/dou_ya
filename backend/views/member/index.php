@@ -41,27 +41,27 @@ $this->params['breadcrumbs'][] = $this->title;
                         return  date('Y-m-d H:i:s',$model->last_time);   //主要通过此种方式实现
                     },
             ],
+            'identification',
+            'order_num',
+            'order_money',
             [
                 'attribute' => 'status',
                 'value'=>function ($model,$key,$index,$column){
                     return $model->status==1?'正常':'停封';
                 },
-                
+        
                 'filter' => Html::activeDropDownList($searchModel,
                     'status',['1'=>'正常','0'=>'停封'],
-                    ['prompt'=>'全部']
+                    ['prompt'=>'全部','style'=>'height:34px;']
                 )
             ],
-            'identification',
-            'order_num',
-            'order_money',
             [
                 //动作列yii\grid\ActionColumn
                 //用于显示一些动作按钮，如每一行的更新、删除操作。
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
                 'template' => '{update}',//只需要展示删除和更新
-                'headerOptions' => ['width' => '240'],
+                'headerOptions' => ['width' => '100'],
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
                         return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['member/update', 'id'=>$model->id]);

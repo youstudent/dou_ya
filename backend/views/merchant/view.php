@@ -43,6 +43,13 @@ use yii\widgets\DetailView;
             ],
             'seleaman',
             [
+                'format' => 'raw',
+                'label'=>'封面',
+                'value'=>function($m){
+                  return Html::img('@web/'.$m->logo,['width'=> '300px', 'height'=> '200px']);
+                }
+            ],
+            [
                 'label'=>'',
                 'value'=>function($m){
                     foreach ($m->img as $value){
