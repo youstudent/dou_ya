@@ -9,7 +9,7 @@ use yii\grid\GridView;
 
 //$this->title = 'Orders';
 //$this->params['breadcrumbs'][] = $this->title;
-$js =<<<js
+$js = <<<js
     function openAgency(_this, title) {
         swal({
                 title: title,
@@ -67,6 +67,13 @@ $this->registerJs($js);
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager'=>[
+            //'options'=>['class'=>'hidden']//关闭分页
+            'firstPageLabel'=>"首页",
+            'prevPageLabel'=>'上一页',
+            'nextPageLabel'=>'下一页',
+            'lastPageLabel'=>'尾页',
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'order_number',
@@ -74,18 +81,25 @@ $this->registerJs($js);
             'merchant_name',
             'order_name',
             'order_num',
-           // 'order_checking',
+            // 'order_checking',
             'phone',
             'sell_all',
             //'clearing_all',
             //'sell_all_checking',
-           // 'clearing_all_checking',
+            // 'clearing_all_checking',
             [
                 'attribute' => 'order_time',
-                'label'=>'下单时间',
-                'value'=>
-                    function($model){
-                        return  date('Y-m-d H:i:s',$model->order_time);   //主要通过此种方式实现
+                'label' => '下单时间',
+                'value' =>
+                    function ($model) {
+                        return date('Y-m-d H:i:s', $model->order_time);   //主要通过此种方式实现
+                    },
+            ],
+            [
+                'label' => '申请时间',
+                'value' =>
+                    function ($model) {
+                        return \common\models\OrderRefund::getCreated_at($model->id);
                     },
             ],
             [
@@ -97,24 +111,24 @@ $this->registerJs($js);
                 'headerOptions' => ['width' => '240'],
                 'buttons' => [
                     'get-details' => function ($url, $model, $key) {
-                        return Html::a('退款详情',$url,
-                            [
-                                'class' => 'btn btn-info btn-xs',
-                                'data' => ['method' => 'post'],
-                            ]
-                        
-                        ).'&nbsp';
+                        return Html::a('退款详情', ['get-details', 'id' => $model->id, 'status' => $model->status],
+                                [
+                                    'class' => 'btn btn-info btn-xs',
+                                    'data' => ['method' => 'post'],
+                                ]
+                            
+                            ) . '&nbsp';
                     },
-                    'get-pass' => function($url, $model, $key){
+                    'get-pass' => function ($url, $model, $key) {
                         return Html::a('通过',
-                            ['get-pass', 'id' => $model->id],
-                            [
-                                'class' => 'btn btn-success btn-xs',
-                                'data' => ['confirm' => '你确定要通过该退款吗？', 'method' => 'post'],
-                            ]
-                        ).'&nbsp';
+                                ['get-pass', 'id' => $model->id],
+                                [
+                                    'class' => 'btn btn-success btn-xs',
+                                    'data' => ['confirm' => '你确定要通过该退款吗？', 'method' => 'post'],
+                                ]
+                            ) . '&nbsp';
                     },
-                    'un-pass' => function($url, $model, $key){
+                    'un-pass' => function ($url, $model, $key) {
                         return Html::a('拒绝',
                             ['un-pass', 'id' => $model->id],
                             [
@@ -123,10 +137,10 @@ $this->registerJs($js);
                             ]
                         );
                     },
-        
+                
                 ],
             ],
-            
+        
         ],
     ]); ?>
 </div>

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\OrderRefund;
 use Yii;
 use common\models\Order;
 use backend\models\Search\Order as OrderSearch;
@@ -93,16 +94,57 @@ class RefundOrderController extends Controller
         }
     }
     
-   
+    /**
+     * 退款通过
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionGetPass($id){
        $data =  Order::findOne(['id'=>$id]);
        if ($data){
          $data->status=3;
-         if ($data->save(false)){
+         $row = OrderRefund::findOne(['order_id'=>$id]);
+         $row->updated_at=time();
+         if ($data->save(false) && $row->save(false)){
+             Yii::$app->getSession()->setFlash('info','通过成功');
              return $this->redirect(['paid-index','Order'=>['status'=>[2]]]);
          }
        }else{
           throw new NotFoundHttpException('没找到该订单');
        }
+    }
+    
+    /**
+     * 退款拒绝
+     * @param $id
+     * @return string|\yii\web\Response
+     */
+    public function actionUnPass($id){
+        $model = OrderRefund::findOne(['order_id'=>$id]);
+        if ($model->UnPass(Yii::$app->request->post())) {
+            Yii::$app->getSession()->setFlash('danger','拒绝成功');
+            return $this->redirect(['paid-index','Order'=>['status'=>[2]]]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+    
+    /** 获取订单详情
+     * @param $id
+     * @param $status
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionGetDetails($id,$status){
+        $model  = OrderRefund::findOne(['order_id'=>$id]);
+        if ($model){
+            return $this->render('dateils',['model'=>$model,'status'=>$status]);
+        }else{
+            throw  new NotFoundHttpException('该订单退款详情未找到');
+        }
+        
     }
 }

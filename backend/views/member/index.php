@@ -60,11 +60,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 //用于显示一些动作按钮，如每一行的更新、删除操作。
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{update}',//只需要展示删除和更新
+                'template' => '{update}{stop}{open}',//只需要展示删除和更新
                 'headerOptions' => ['width' => '100'],
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['member/update', 'id'=>$model->id]);
+                        return Html::a(Html::tag('span', '修改电话', ['class' => "btn btn-xs btn-success"]), ['member/update', 'id'=>$model->id]). '&nbsp';
+                    },
+                    'stop' => function ($url, $model, $key) {
+                        if ($model->status==1){
+                            return Html::a('停封',
+                                    ['stop', 'id' => $model->id],
+                                    [
+                                        'class' => 'btn btn-success btn-xs',
+                                        'data' => ['confirm' => '你确定要停封该用户吗？', 'method' => 'post'],
+                                    ]
+                                ) . '&nbsp';
+                        }
+                       
+                    },
+                    'open' => function ($url, $model, $key) {
+                        if ($model->status==0){
+                            return Html::a('解封',
+                                ['open', 'id' => $model->id],
+                                [
+                                    'class' => 'btn btn-danger btn-xs',
+                                    'data' => ['confirm' => '你确定要解封该用户吗？', 'method' => 'post'],
+                                ]
+                            );
+                        }
+                        
                     },
                 ],
             ],

@@ -34,6 +34,7 @@ class Member extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['phone'], 'required','on'=>'update'],
             [['phone', 'last_time', 'status', 'order_num', 'order_money'], 'integer'],
             [['name', 'identification'], 'string', 'max' => 20],
             [['sex'], 'string', 'max' => 10],

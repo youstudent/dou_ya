@@ -85,6 +85,7 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
         ),
         'F' => 
         array (
+            'Flc\\Alidayu\\' => 12,
             'Faker\\' => 6,
         ),
         'D' => 
@@ -229,6 +230,10 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'Flc\\Alidayu\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/flc/alidayu/src/Alidayu',
         ),
         'Faker\\' => 
         array (

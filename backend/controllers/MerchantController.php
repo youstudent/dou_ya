@@ -7,6 +7,7 @@ use common\models\MerchantImg;
 use Yii;
 use common\models\Merchant;
 use backend\models\Search\Merchant as MerchantSearch;
+use yii\db\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -72,9 +73,6 @@ class MerchantController extends Controller
             $model->file = UploadedFile::getInstance($model, 'file');
             $model->imgs = UploadedFile::getInstances($model, 'imgs');
             if ($model->upload()) {
-                $data = Salesman::findOne(['name'=>$model->seleaman]);
-                $data->bound_merchant=$data->bound_merchant+1;
-                $data->save(false);
                 // 文件上传成功
                 Yii::$app->getSession()->setFlash('success', '创建成功');
                 return $this->redirect(['view', 'id' => $model->id]);

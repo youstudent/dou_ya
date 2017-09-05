@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "{{%order_refund}}".
@@ -34,7 +35,7 @@ class OrderRefund extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id','money','pass_reason','bank_card','opening_bank','opening_man'],'required'],
+            [['order_id','money','pass_reason','bank_card','opening_bank','opening_man','no_reason'],'required'],
             [['order_id', 'money', 'created_at', 'updated_at'], 'integer'],
             [['pass_reason', 'no_reason'], 'string', 'max' => 255],
             [['bank_card', 'opening_bank', 'opening_man'], 'string', 'max' => 20],
@@ -58,5 +59,46 @@ class OrderRefund extends \yii\db\ActiveRecord
             'created_at' => '申请时间',
             'updated_at' => '处理时间',
         ];
+    }
+    
+    /**
+     *  拒绝账号通过
+     * @param $data
+     * @return bool
+     * @throws \Exception
+     */
+    public function UnPass($data){
+        if ($this->load($data) && $this->validate()){
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $this->updated_at=time();
+                if ($this->save()==false) throw new Exception('拒绝原因保存失败');
+                $order = Order::findOne(['id'=>$this->order_id]);
+                $order->status = 4;
+                if ($order->save(false)== false) throw new Exception('订单状态变更失败');
+                $transaction->commit();
+                return true;
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            }
+            
+        }
+        
+    }
+    
+    /**
+     * 获取订单的退款时间
+     * @param $id
+     * @return false|string
+     */
+    public static function getCreated_at($id){
+        $data = OrderRefund::findOne(['order_id'=>$id]);
+        if ($data){
+            return date('Y-m-d H:i:s',$data->created_at);
+        }
+            return '数据异常';
+        
+        
     }
 }

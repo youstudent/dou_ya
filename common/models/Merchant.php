@@ -4,6 +4,7 @@ namespace common\models;
 
 use backend\models\Salesman;
 use Yii;
+use yii\db\Exception;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -89,8 +90,8 @@ class Merchant extends \yii\db\ActiveRecord
     public function upload()
     {
         if ($this->validate()) {
-            $this->created_at = time();
             
+            $this->created_at = time();
             //上传封面
             if ($this->file){
                 $pre = 'uploads/merchant/'.rand(999,9999).time().'.'.$this->file->extension;
@@ -111,6 +112,11 @@ class Merchant extends \yii\db\ActiveRecord
                     }
                 }
             }
+    
+            $data = Salesman::findOne(['name'=>$this->seleaman]);
+            $data->bound_merchant=$data->bound_merchant+1;
+            $data->save(false);
+            if(\common\components\Count::create(1,7)==false) throw new Exception('统计活动数据失败');
             return true;
         } else {
             return false;

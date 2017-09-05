@@ -42,7 +42,7 @@
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => '已支付', 'icon' => 'file-code-o', 'url' => ['order/paid-index','Order'=>['status'=>1]],],
+                            ['label' => '已支付', 'icon' => 'file-code-o', 'url' => ['order/paid-index','Order'=>['status'=>[1,4]]],],
                             ['label' => '待支付', 'icon' => 'dashboard', 'url' => ['order/unpaid-index','Order'=>['status'=>0]],],
                         ],
                     ],
@@ -55,8 +55,8 @@
                             ['label' => '已处理', 'icon' => 'dashboard', 'url' => ['refund-order/unpaid-index','Order'=>['status'=>[3,4]]],],
                         ],
                     ],
-                    ['label' => '运营统计', 'icon' => 'dashboard', 'url' => ['/banner/index']],
-                    ['label' => '系统设置', 'icon' => 'dashboard', 'url' => ['/banner/index']],
+                    ['label' => '运营统计', 'icon' => 'dashboard', 'url' => ['/count/index']],
+                  //  ['label' => '系统设置', 'icon' => 'dashboard', 'url' => ['/banner/index']],
                     ['label' => '管理员列表', 'icon' => 'dashboard', 'url' => ['/admin/user']],
                     [
                         'label' => '权限管理',

@@ -24,7 +24,8 @@
         "kucha/ueditor": "*",
         "kak/datetimepicker": "*",
         "nkovacs/yii2-datetimepicker": "*",
-        "moonlandsoft/yii2-phpexcel": "*"
+        "moonlandsoft/yii2-phpexcel": "*",
+        "flc/alidayu": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

@@ -17,6 +17,13 @@ use yii\grid\GridView;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager'=>[
+            //'options'=>['class'=>'hidden']//关闭分页
+            'firstPageLabel'=>"首页",
+            'prevPageLabel'=>'上一页',
+            'nextPageLabel'=>'下一页',
+            'lastPageLabel'=>'尾页',
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'order_number',
@@ -29,24 +36,31 @@ use yii\grid\GridView;
             'sell_all',
             'clearing_all',
             //'sell_all_checking',
-           // 'clearing_all_checking',
+            // 'clearing_all_checking',
             [
                 'attribute' => 'order_time',
-                'label'=>'下单时间',
-                'value'=>
-                    function($model){
-                        return  date('Y-m-d H:i:s',$model->order_time);   //主要通过此种方式实现
+                'label' => '下单时间',
+                'value' =>
+                    function ($model) {
+                        return date('Y-m-d H:i:s', $model->order_time);   //主要通过此种方式实现
+                    },
+            ],
+            [
+                'label' => '申请时间',
+                'value' =>
+                    function ($model) {
+                        return \common\models\OrderRefund::getCreated_at($model->id);
                     },
             ],
             [
                 'attribute' => 'status',
-                'value'=>function ($model,$key,$index,$column){
-                    return $model->status==3?'通过':'拒绝';
+                'value' => function ($model, $key, $index, $column) {
+                    return $model->status == 3 ? '通过' : '拒绝';
                 },
-        
+                
                 'filter' => Html::activeDropDownList($searchModel,
-                    'status',['3'=>'通过','4'=>'拒绝'],
-                    ['prompt'=>'全部','style'=>'height:34px;']
+                    'status', ['3' => '通过', '4' => '拒绝'],
+                    ['prompt' => '全部', 'style' => 'height:34px;']
                 )
             ],
             [
@@ -58,17 +72,17 @@ use yii\grid\GridView;
                 'headerOptions' => ['width' => '100'],
                 'buttons' => [
                     'get-details' => function ($url, $model, $key) {
-                        return Html::a('退款详情',$url,
-                                [
-                                    'class' => 'btn btn-info btn-xs',
-                                    'data' => ['method' => 'post'],
-                                ]
-                    
-                            );
+                        return Html::a('退款详情', ['get-details', 'id' => $model->id, 'status' => $model->status],
+                            [
+                                'class' => 'btn btn-info btn-xs',
+                                'data' => ['method' => 'post'],
+                            ]
+                        
+                        );
                     },
                 ],
             ],
-            
+        
         ],
     ]); ?>
 </div>

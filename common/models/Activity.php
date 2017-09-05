@@ -4,6 +4,7 @@ namespace common\models;
 
 use PHPUnit\Framework\Constraint\IsFalse;
 use Yii;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "{{%activity}}".
@@ -47,7 +48,7 @@ class Activity extends \yii\db\ActiveRecord
             [['phone', 'purchase_limitation','on_line',], 'integer'],
             [['content'], 'string'],
             [['merchant_name'], 'string', 'max' => 30],
-            [['activity_name', 'linkman'], 'string', 'max' => 20],
+            [['activity_name', 'linkman'], 'string', 'max' => 50],
             [['activity_address','activity_img'], 'string', 'max' => 100],
             [['file'], 'file','extensions' => 'png,jpg'],
         ];
@@ -88,27 +89,51 @@ class Activity extends \yii\db\ActiveRecord
     }
     
     /**
-     * 添加活动
+     * 添加活动和票种
      * @return bool
      */
-    public function add(){
-       if ($this->validate()){
-           if ($this->file){
-               $pre = 'uploads/activity/'.rand(999,9999).time().'.'.$this->file->extension;
-               if ($this->file->saveAs($pre)){
-                   $this->activity_img= $pre;
-               }
-           }
-           /**
-            * 格式化时间保存
-            */
-           $this->apply_end_time=strtotime($this->apply_end_time);
-           $this->start_time=strtotime($this->start_time);
-           $this->end_time=strtotime($this->end_time);
-           $this->created_at=time();
-           $this->status=1;
-           return  $this->save(false)?$this->id:false;
-       }
+    public function add($data)
+    {
+        if ($this->validate()) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($this->file) {
+                    $pre = 'uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
+                    if ($this->file->saveAs($pre) == false) throw new Exception('上传图片失败');
+                    $this->activity_img = $pre;
+                }
+                $this->apply_end_time = strtotime($this->apply_end_time);
+                $this->start_time = strtotime($this->start_time);
+                $this->end_time = strtotime($this->end_time);
+                $this->created_at = time();
+                $this->status = 1;
+                if ($this->save(false) == false) throw new Exception('保存活动失败');
+                $row = [];
+                foreach ($data['title'] as $k => $v) {
+                    $row[] = [
+                        'title' => $v,
+                        'price' => $data['price'][$k],
+                        'settlement' => $data['settlement'][$k],
+                    ];
+                }
+                foreach ($row as $value) {
+                    $model = new  ActivityTicket();
+                    $model->title = $value['title'];
+                    $model->activity_id = $this->id;
+                    $model->price = $value['price'];
+                    $model->return = (int)round(($value['price']-$value['settlement'])/$value['price']*100, 1);
+                    $model->settlement = $value['settlement'];
+                    if ($model->save(false) == false) throw new Exception('添加票种失败');
+                }
+                if(\common\components\Count::create(1,2)==false) throw new Exception('统计活动数据失败');
+                $transaction->commit();
+                return true;
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            }
+            
+        }
         
     }
     
@@ -117,19 +142,44 @@ class Activity extends \yii\db\ActiveRecord
      * 修改活动
      * @return bool
      */
-    public function edit(){
+    public function edit($data){
         if ($this->validate()){
-            if ($this->file){
-                $pre = 'uploads/activity/'.rand(999,9999).time().'.'.$this->file->extension;
-                if ($this->file->saveAs($pre)){
-                    $this->activity_img= $pre;
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($this->file) {
+                    $pre = 'uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
+                    if ($this->file->saveAs($pre) == false) throw new Exception('上传图片失败');
+                    $this->activity_img = $pre;
                 }
+                $this->apply_end_time = strtotime($this->apply_end_time);
+                $this->end_time = strtotime($this->end_time);
+                $this->start_time=strtotime($this->start_time);
+                $this->status = 1;
+                if ($this->save(false) == false) throw new Exception('保存活动失败');
+                $row = [];
+                foreach ($data['title'] as $k => $v) {
+                    $row[] = [
+                        'title' => $v,
+                        'price' => $data['price'][$k],
+                        'settlement' => $data['settlement'][$k],
+                    ];
+                }
+                ActivityTicket::deleteAll(['activity_id'=>$this->id]);
+                foreach ($row as $value) {
+                    $model = new  ActivityTicket();
+                    $model->title = $value['title'];
+                    $model->activity_id = $this->id;
+                    $model->price = $value['price'];
+                    $model->return = (int)round(($value['price']-$value['settlement'])/$value['price']*100, 1);
+                    $model->settlement = $value['settlement'];
+                    if ($model->save(false) == false) throw new Exception('添加票种失败');
+                }
+                $transaction->commit();
+                return true;
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
             }
-            //格式化时间
-            $this->apply_end_time=strtotime($this->apply_end_time);
-            $this->start_time=strtotime($this->start_time);
-            $this->end_time=strtotime($this->end_time);
-            return  $this->save(false);
         }
     }
     

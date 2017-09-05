@@ -84,6 +84,7 @@ class MemberController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario='update';
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['/member/index']);
         } else {
@@ -120,5 +121,36 @@ class MemberController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+        
+    }
+    
+    /**
+     * 停封账号
+     * @param $id
+     */
+    public function actionStop($id){
+       $data =  Member::findOne(['id'=>$id]);
+       $data->status=0;
+       if ($data->save(false)){
+           Yii::$app->getSession()->setFlash('info','停封账号成功');
+           return $this->redirect('index');
+       }
+        Yii::$app->getSession()->setFlash('danger','停封账号失败');
+        return $this->redirect('index');
+    }
+    
+    /**
+     * 解封账号
+     * @param $id
+     */
+    public function actionOpen($id){
+        $data =  Member::findOne(['id'=>$id]);
+        $data->status=1;
+        if ($data->save(false)){
+            Yii::$app->getSession()->setFlash('info','解封账号成功');
+            return $this->redirect('index');
+        }
+        Yii::$app->getSession()->setFlash('danger','解封账号失败');
+        return $this->redirect('index');
     }
 }

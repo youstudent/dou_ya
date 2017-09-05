@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%activity_ticket}}".
@@ -15,12 +16,6 @@ use Yii;
  */
 class ActivityTicket extends \yii\db\ActiveRecord
 {
-    /*'title' => string '票品' (length=6)
-'price' => string '100' (length=3)
-'settlement*/
-    public $title1;
-    public $price1;
-    public $settlement1;
     /**
      * @inheritdoc
      */
@@ -48,20 +43,14 @@ class ActivityTicket extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => '标题',
-            'title1' => '标题',
             'activity_id' => 'Activity ID',
             'price' => '售价',
-            'price1' => '售价',
-            'settlement1' => '结算价',
             'settlement' => '结算价',
             'return' => '毛利润',
         ];
     }
     
-    public function add($data){
-        foreach ($data as $key=>$value){
-            
-            var_dump($key);exit;
-        }
+    public function add($data,$activity_id){
+    
     }
 }

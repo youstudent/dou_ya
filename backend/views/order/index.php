@@ -20,6 +20,13 @@ use yii\grid\GridView;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager'=>[
+            //'options'=>['class'=>'hidden']//关闭分页
+            'firstPageLabel'=>"首页",
+            'prevPageLabel'=>'上一页',
+            'nextPageLabel'=>'下一页',
+            'lastPageLabel'=>'尾页',
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'order_number',
@@ -49,7 +56,7 @@ use yii\grid\GridView;
                 'template' => '{get-details}',//只需要展示删除和更新
                 'headerOptions' => ['width' => '100'],
                 'buttons' => [
-                    'get-details' => function ($url, $model, $key) {
+                   'get-details' => function ($url, $model, $key) {
                         return Html::a('详情',$url,
                                 [
                                     'class' => 'btn btn-info btn-xs',
@@ -57,6 +64,14 @@ use yii\grid\GridView;
                                 ]
                             );
                     },
+                    /*'get-details' => function ($url, $model, $key) {
+                        return Html::a('更新', '/order/get-details', [
+                            'data-toggle' => 'modal',
+                            'data-target' => '#update-modal',
+                            'class' => 'data-update',
+                            'data-id' => $key,
+                        ]);
+                    },*/
                 ],
             ],
             

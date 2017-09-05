@@ -14,8 +14,9 @@ use yii\helpers\Html;
 
     <h3>修改活动</h3>
 
-    <?= $this->render('_form', [
+    <?= $this->render('_update_form', [
         'model' => $model,
+        'models' => $models,
     ]) ?>
 
 </div>

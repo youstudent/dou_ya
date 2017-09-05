@@ -147,9 +147,21 @@ class OrderController extends Controller
             $value['order_time']=date('Y-m-d H:i:s',$value['order_time']);
             $value['status']=$value['status']==1?'已支付':'待支付';
         }
-        Excel::export([
-            'models'=>$row,
-            'fileName'=>date('Ymd').'_'.'Export',
+        if ($row){
+            Excel::export([
+                'models'=>$row,
+                'fileName'=>date('Ymd').'_'.'Export',
+            ]);
+        }
+        
+    }
+    
+    
+    public function actionGetDetails($id){
+        $model= Order::findOne(['id'=>$id]);
+        return $this->renderAjax('updates', [
+            'model' => $model,
         ]);
     }
+    
 }
