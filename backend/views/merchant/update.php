@@ -12,7 +12,7 @@ use yii\helpers\Html;
 ?>
 <div class="merchant-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3>用户电话修改</h3>
 
     <?= $this->render('_form', [
         'model' => $model,

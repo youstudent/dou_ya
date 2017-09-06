@@ -18,11 +18,10 @@ class Activity extends ActivityModel
     public function rules()
     {
         return [
-            [['id', 'apply_end_time', 'start_time', 'end_time', 'phone', 'purchase_limitation', 'on_line', 'created_at','status','total_clearing','total_price'], 'integer'],
+            [['merchant_id','id', 'apply_end_time', 'start_time', 'end_time', 'phone', 'purchase_limitation', 'on_line', 'created_at','status','total_clearing','total_price'], 'integer'],
             [['merchant_name', 'activity_name', 'activity_img', 'activity_address', 'linkman', 'content'], 'safe'],
         ];
     }
-
     /**
      * @inheritdoc
      */
@@ -60,6 +59,7 @@ class Activity extends ActivityModel
         // grid filtering conditions
         $query->andFilterWhere([
             'apply_end_time' => $this->apply_end_time,
+            'merchant_id' => $this->merchant_id,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'phone' => $this->phone,

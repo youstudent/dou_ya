@@ -39,7 +39,7 @@ class Merchant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','phone','address','merchant_label','linkman','contract_number'], 'required'],
+            [['name','phone','address','merchant_label','linkman','contract_number'],'required'],
             [['phone'],'match','pattern'=>'/^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$/'],
             [['created_at'], 'integer'],
             [['name'], 'string', 'max' => 30],
@@ -90,7 +90,6 @@ class Merchant extends \yii\db\ActiveRecord
     public function upload()
     {
         if ($this->validate()) {
-            
             $this->created_at = time();
             //上传封面
             if ($this->file){
@@ -129,5 +128,24 @@ class Merchant extends \yii\db\ActiveRecord
      */
     public function getImg(){
         return $this->hasMany(MerchantImg::className(),['merchant_id'=>'id']);
+    }
+    
+    /**
+     * 查询商家正在进行的活动
+     * @param $id
+     * @return int|string
+     */
+    public static function  getInActivity($id){
+       return Activity::find()->where(['merchant_id'=>$id,'status'=>1])->andWhere(['and',['<','start_time',time()],['>','end_time',time()]])->count();
+    }
+    
+    
+    /**
+     * 获取商家历史活动
+     * @param $id
+     * @return int|string
+     */
+    public static function  getHistoryActivity($id){
+        return Activity::find()->where(['merchant_id'=>$id])->andWhere(['<','end_time',time()])->count();
     }
 }

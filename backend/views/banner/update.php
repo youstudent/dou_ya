@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Banners', 'url' => ['index']];
 ?>
 <div class="banner-update">
 
-    <h1>banner图片修改</h1>
+    <h3>banner图片修改</h3>
 
     <?= $this->render('_form', [
         'model' => $model,

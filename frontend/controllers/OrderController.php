@@ -9,13 +9,16 @@
 namespace frontend\controllers;
 
 
+use common\models\Order;
 use common\models\OrderRefund;
+use rmrevin\yii\fontawesome\FA;
+use yii\db\Exception;
 
 class OrderController extends ObjectController
 {
     
     /**
-     * 退款详情
+     * 申请退款
      * @return mixed
      */
     public function actionRefund()
@@ -33,14 +36,22 @@ class OrderController extends ObjectController
         
         //验证该订单号所属的票号有没有验证过
         
-        
-        //没有验证
-        $model->created_at = time(); //申请时间
-        $model->updated_at = time();//处理时间
-        if ($model->save()) {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            //添加退款信息
+            $model->created_at = time(); //申请时间
+            if ($model->save() == false) throw new Exception('申请信息保存失败');
+            //改变订单状态
+            $order = Order::findOne(['id' => $model->order_id]);
+            $order->status = 2;
+            if ($order->save(false) == false) throw new Exception('订单状态变更失败');
+            $transaction->commit();
             return $this->returnAjax(1, '退款申请成功!等待平台审核');
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return $this->returnAjax(0, current($model->getFirstErrors()));
         }
-        return $this->returnAjax(0, $model->getFirstErrors());
     }
+    
     
 }

@@ -1,8 +1,8 @@
 <?php
 
 namespace backend\controllers;
-
 use common\models\ActivityTicket;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Yii;
 use common\models\Activity;
 use backend\models\Search\Activity as ActivitySearch;
@@ -169,5 +169,40 @@ class ActivityController extends Controller
         $model = new Activity();   //这里要替换成自己的模型类
         $model->load(Yii::$app->request->post());
         return \yii\widgets\ActiveForm::validate($model);
+    }
+    
+    
+    /**
+     * 停封活动
+     * @param $id
+     */
+    public function actionStop($id){
+        $Activity = Yii::$app->request->get('Activity');
+        $merchant_id =$Activity['Activity']['merchant_id'];
+        $data =  Activity::findOne(['id'=>$id]);
+        $data->status=0;
+        if ($data->save(false)){
+            Yii::$app->getSession()->setFlash('danger','停封活动成功');
+            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+        }
+        Yii::$app->getSession()->setFlash('danger','停封活动失败');
+        return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+    }
+    
+    /**
+     * 启用活动
+     * @param $id
+     */
+    public function actionOpen($id){
+        $Activity = Yii::$app->request->get('Activity');
+        $merchant_id =$Activity['Activity']['merchant_id'];
+        $data =  Activity::findOne(['id'=>$id]);
+        $data->status=1;
+        if ($data->save(false)){
+            Yii::$app->getSession()->setFlash('info','启用活动成功');
+            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+        }
+        Yii::$app->getSession()->setFlash('danger','启用活动失败');
+        return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
     }
 }

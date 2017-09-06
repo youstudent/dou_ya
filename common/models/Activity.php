@@ -44,8 +44,9 @@ class Activity extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['merchant_name'],'validateName','skipOnEmpty' => false,'skipOnError' => false],
             [['activity_address','activity_name','merchant_name','apply_end_time','start_time','end_time','purchase_limitation','phone','on_line','linkman','content'], 'required'],
-            [['phone', 'purchase_limitation','on_line',], 'integer'],
+            [['phone', 'purchase_limitation','on_line','merchant_id'], 'integer'],
             [['content'], 'string'],
             [['merchant_name'], 'string', 'max' => 30],
             [['activity_name', 'linkman'], 'string', 'max' => 50],
@@ -78,8 +79,21 @@ class Activity extends \yii\db\ActiveRecord
             'total_clearing' => '总结算',
             'total_price' => '总售价',
             'status' => '状态',
+            'merchant_id' => '商家ID',
         ];
     }
+    
+    //验证商家名字
+    public function validateName($attribute,$params){
+        $row = Merchant::findOne(['name'=>$this->merchant_name]);
+        if ($row){
+            $this->merchant_id=$row->id;
+        }else{
+            $this->addError('merchant_name','商家名字不存在');
+        }
+        
+    }
+    
     
     public function validateAfterNow($attribute, $params)
     {
@@ -220,5 +234,11 @@ class Activity extends \yii\db\ActiveRecord
         }
         return $data;
         
+    }
+    
+    public function getMyactivity(){
+    
+      return $this->hasMany(CollectActivity::className(),['activity_id'=>'id']);
+    
     }
 }

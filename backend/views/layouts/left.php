@@ -35,15 +35,15 @@
                     ['label' => '业务员管理', 'icon' => 'dashboard', 'url' => ['/salesman/index']],
                     ['label' => '商家管理', 'icon' => 'dashboard', 'url' => ['/merchant/index']],
                     ['label' => 'banner管理', 'icon' => 'dashboard', 'url' => ['/banner/index']],
-                    ['label' => '活动管理', 'icon' => 'dashboard', 'url' => ['/activity/index']],
+                    ['label' => '活动管理', 'icon' => 'dashboard', 'url' => ['/activity/index','Activity'=>['merchant_id'=>'']]],
     
                     [
                         'label' => '订单管理',
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => '已支付', 'icon' => 'file-code-o', 'url' => ['order/paid-index','Order'=>['status'=>[1,4]]],],
-                            ['label' => '待支付', 'icon' => 'dashboard', 'url' => ['order/unpaid-index','Order'=>['status'=>0]],],
+                            ['label' => '已支付', 'icon' => 'file-code-o', 'url' => ['/order/paid-index','Order'=>['status'=>[1,4]]],],
+                            ['label' => '待支付', 'icon' => 'dashboard', 'url' => ['/order/unpaid-index','Order'=>['status'=>0]],],
                         ],
                     ],
                     [
@@ -51,8 +51,8 @@
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => '待处理', 'icon' => 'file-code-o', 'url' => ['refund-order/paid-index','Order'=>['status'=>2]],],
-                            ['label' => '已处理', 'icon' => 'dashboard', 'url' => ['refund-order/unpaid-index','Order'=>['status'=>[3,4]]],],
+                            ['label' => '待处理', 'icon' => 'file-code-o', 'url' => ['/refund-order/paid-index','Order'=>['status'=>2]],],
+                            ['label' => '已处理', 'icon' => 'dashboard', 'url' => ['/refund-order/unpaid-index','Order'=>['status'=>[3,4]]],],
                         ],
                     ],
                     ['label' => '运营统计', 'icon' => 'dashboard', 'url' => ['/count/index']],

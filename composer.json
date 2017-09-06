@@ -25,6 +25,7 @@
         "kak/datetimepicker": "*",
         "nkovacs/yii2-datetimepicker": "*",
         "moonlandsoft/yii2-phpexcel": "*",
+        "overtrue/wechat": "~3.1",
         "flc/alidayu": "^2.0"
     },
     "require-dev": {

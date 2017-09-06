@@ -111,15 +111,6 @@ return array (
       '@nkovacs/datetimepicker' => $vendorDir . '/nkovacs/yii2-datetimepicker',
     ),
   ),
-  'yiisoft/yii2-debug' => 
-  array (
-    'name' => 'yiisoft/yii2-debug',
-    'version' => '2.0.10.0',
-    'alias' => 
-    array (
-      '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug',
-    ),
-  ),
   'moonlandsoft/yii2-phpexcel' => 
   array (
     'name' => 'moonlandsoft/yii2-phpexcel',
@@ -127,6 +118,15 @@ return array (
     'alias' => 
     array (
       '@moonland/phpexcel' => $vendorDir . '/moonlandsoft/yii2-phpexcel',
+    ),
+  ),
+  'yiisoft/yii2-debug' => 
+  array (
+    'name' => 'yiisoft/yii2-debug',
+    'version' => '2.0.11.0',
+    'alias' => 
+    array (
+      '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug',
     ),
   ),
 );

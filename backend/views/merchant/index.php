@@ -35,6 +35,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'seleaman',
             'phone',
             'address',
+            [
+                'label'=>'正在进行活动',
+                'value'=>
+                    function($model){
+                        return  \common\models\Merchant::getInActivity($model->id);   //主要通过此种方式实现
+                    },
+            ],
+            [
+                'label'=>'结束活动',
+                'value'=>
+                    function($model){
+                        return  \common\models\Merchant::getHistoryActivity($model->id);   //主要通过此种方式实现
+                    },
+            ],
             /*[
                 'format' => 'raw',
                 'label'=>'封面',
@@ -55,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //用于显示一些动作按钮，如每一行的更新、删除操作。
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{view}{update}{delete}',//只需要展示删除和更新
+                'template' => '{view}{update}{delete}{activity}',//只需要展示删除和更新
                 'headerOptions' => ['width' => '240'],
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
@@ -72,6 +86,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'data' => ['confirm' => '你确定要删除文章吗？', 'method' => 'post']
                             ]
                         ).'&nbsp';
+                    },
+                    'activity' => function ($url, $model, $key) {
+                        return Html::a('活动管理',['/activity/index','Activity'=>['merchant_id'=>$model->id]],['class' => "btn btn-xs btn-success"]).'&nbsp';
                     },
         
                 ],
