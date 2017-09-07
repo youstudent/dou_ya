@@ -198,7 +198,7 @@ class Activity extends \yii\db\ActiveRecord
     }
     
     /**
-     * 处理
+     * 处理活动
      * @param $data
      * @return mixed
      */
@@ -206,7 +206,10 @@ class Activity extends \yii\db\ActiveRecord
         foreach ($data as $key => &$value) {
             $value['start_time'] = date('m月d日', $value['start_time']);
             $value['end_time'] = date('m月d日', $value['end_time']);
-            $value['activity_img'] = \Yii::$app->params['img_domain'] . $value['activity_img'];
+            if ($value['activity_img']){
+                $value['activity_img'] = \Yii::$app->params['img_domain'] . $value['activity_img'];
+            }
+            //$value['activity_img'] = \Yii::$app->params['img_domain'] . $value['activity_img'];
             //查询票种
             $value['price'] = '未票价';
             if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $value['id']])->orderBy('price ASC')->one()) {
@@ -222,16 +225,14 @@ class Activity extends \yii\db\ActiveRecord
      * @return mixed
      */
     public static function details($data){
-        foreach ($data as $key => &$value) {
-            $value['start_time'] = date('Y年m月d日 H', $value['start_time']);
-            $value['end_time'] = date('Y年m月d日 H', $value['end_time']);
-            $value['activity_img'] = \Yii::$app->params['img_domain'] . $value['activity_img'];
+            $data['start_time'] = date('Y年m月d日 H', $data['start_time']);
+            $data['end_time'] = date('Y年m月d日 H', $data['end_time']);
+            $data['activity_img'] = \Yii::$app->params['img_domain'] . $data['activity_img'];
             //查询票种
-            $value['price'] = '未票价';
-            if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $value['id']])->orderBy('price ASC')->one()) {
+            $data['price'] = '未票价';
+            if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $data['id']])->orderBy('price ASC')->one()) {
                 $value['price'] = $row->price;
             }
-        }
         return $data;
         
     }

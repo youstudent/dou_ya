@@ -65,8 +65,8 @@ class RefundOrderController extends ObjectController
             return $this->returnAjax(0, '请使用POST方式');
         }
         $order_id = \Yii::$app->request->post('order_id');
-        if (!$order_id) {
-            return $this->returnAjax(0, '请传order_id参数');
+        if (!$order_id ) {
+            return $this->returnAjax(0, '请传order_id参数或者user_id');
         }
         //查询用户退款订单
         $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id'])->where(['id' => $order_id])->asArray()->one();

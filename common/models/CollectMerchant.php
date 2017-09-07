@@ -28,7 +28,7 @@ class CollectMerchant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'user_id', 'merchant_id'], 'required'],
+            [['user_id', 'merchant_id'], 'required'],
             [['id', 'user_id', 'merchant_id', 'created_at'], 'integer'],
         ];
     }

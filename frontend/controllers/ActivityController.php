@@ -74,16 +74,16 @@ class ActivityController extends ObjectController
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
-        $id = \Yii::$app->request->post('id');
-        if (!$id) {
-            return $this->returnAjax(0, '请传ID参数');
+        $activity_id = \Yii::$app->request->post('activity_id');
+        if (!$activity_id) {
+            return $this->returnAjax(0, '请传活动ID参数');
         }
-        $data = Activity::find()->where(['id' => $id])->asArray()->one();
+        $data = Activity::find()->where(['id' => $activity_id])->asArray()->one();
         if ($data) {
             $result = Activity::details($data);
             return $this->returnAjax(1, '成功', $result);
         }
-        return $this->returnAjax(0, '未找到活动详情ID为' . $id);
+        return $this->returnAjax(0, '未找到活动详情ID为' . $activity_id);
     }
     
     
@@ -96,16 +96,15 @@ class ActivityController extends ObjectController
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
-        $id = \Yii::$app->request->post('id');
-        if (!$id) {
-            return $this->returnAjax(0, '请传ID参数');
+        $activity_id = \Yii::$app->request->post('activity_id');
+        if (!$activity_id) {
+            return $this->returnAjax(0, '请传活动ID参数');
         }
-        if ($result = Activity::findOne(['id' => $id])) {
+        if ($result = Activity::findOne(['id' => $activity_id])) {
             $result->allpage_view = $result->allpage_view + 1;
-            return $result->save(false) ? $this->returnAjax(1, '成功') : $this->returnAjax(0, '增加浏览量失败ID为' . $id);
+            return $result->save(false) ? $this->returnAjax(1, '成功') : $this->returnAjax(0, '增加浏览量失败ID为' . $activity_id);
         }
-        
-        return $this->returnAjax(0, '未查询活动数据ID'.$id);
+        return $this->returnAjax(0, '未查询活动数据ID'.$activity_id);
     }
     
     
@@ -203,7 +202,7 @@ class ActivityController extends ObjectController
      */
     public function actionCollectMerchant()
     {
-        if (!\Yii::$app->request->post()) {
+        if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
         $model = new CollectMerchant();
