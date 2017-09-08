@@ -51,6 +51,7 @@ class Activity extends \yii\db\ActiveRecord
             [['merchant_name'], 'string', 'max' => 30],
             [['activity_name', 'linkman'], 'string', 'max' => 50],
             [['activity_address','activity_img'], 'string', 'max' => 100],
+            [['allpage_view'],'safe'],
             [['file'], 'file','extensions' => 'png,jpg'],
         ];
     }

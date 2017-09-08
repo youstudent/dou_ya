@@ -33,7 +33,8 @@ class ActivityController extends ObjectController
         $select = ['id', 'merchant_name', 'activity_name',
                   'activity_img', 'start_time', 'end_time',
                   'collect_number', 'allpage_view'];
-        $data = Activity::find()->select($select)->orderBy("$orderBy DESC")->asArray()->all();
+        //查询正在进行的活动
+        $data = Activity::find()->select($select)->where(['status'=>1])->orderBy("$orderBy DESC")->asArray()->all();
         if ($data) {
             $result = Activity::formatting($data);
             return $this->returnAjax(1, '成功', $result);
@@ -57,7 +58,7 @@ class ActivityController extends ObjectController
         $select = ['id', 'merchant_name', 'activity_name',
                   'activity_img', 'start_time', 'end_time',
                   'collect_number', 'allpage_view'];
-        $data = Activity::find()->select($select)->where(['or', ['like', 'merchant_name', $keyword], ['like', 'activity_name', $keyword]])->asArray()->all();
+        $data = Activity::find()->select($select)->where(['or', ['like', 'merchant_name', $keyword], ['like', 'activity_name', $keyword]]) ->andWhere(['status'=>1])->asArray()->all();
         if ($data) {
             $result = Activity::formatting($data);
             return $this->returnAjax(1, '成功', $result);
@@ -66,7 +67,7 @@ class ActivityController extends ObjectController
     }
     
     /**
-     * 活动详情
+     * 活动详情 并且增加浏览量
      * @return string
      */
     public function actionDetails()
@@ -76,14 +77,21 @@ class ActivityController extends ObjectController
         }
         $activity_id = \Yii::$app->request->post('activity_id');
         if (!$activity_id) {
-            return $this->returnAjax(0, '请传活动ID参数');
+            return $this->returnAjax(0, '请传活动activity_id参数');
         }
         $data = Activity::find()->where(['id' => $activity_id])->asArray()->one();
         if ($data) {
+            $row = Merchant::findOne(['id'=>$data['merchant_id']]);
+            // 返回查询的活动详情的结果
             $result = Activity::details($data);
+            $result['logo']=\Yii::$app->params['img_domain'].$row->logo;
+            // 增加活动的点击率
+            $results = Activity::findOne(['id'=>$activity_id]);
+            $results->allpage_view=$results->allpage_view  +1;
+            $results->save(false);
             return $this->returnAjax(1, '成功', $result);
         }
-        return $this->returnAjax(0, '未找到活动详情ID为' . $activity_id);
+        return $this->returnAjax(0, '未找到活动详情activity_id为' . $activity_id);
     }
     
     
@@ -91,7 +99,7 @@ class ActivityController extends ObjectController
      *  更新活动浏览量
      * @return mixed
      */
-    public function actionAllpageView()
+   /* public function actionAllpageView()
     {
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
@@ -105,7 +113,7 @@ class ActivityController extends ObjectController
             return $result->save(false) ? $this->returnAjax(1, '成功') : $this->returnAjax(0, '增加浏览量失败ID为' . $activity_id);
         }
         return $this->returnAjax(0, '未查询活动数据ID'.$activity_id);
-    }
+    }*/
     
     
     /**
@@ -164,7 +172,7 @@ class ActivityController extends ObjectController
     }
     
     /**
-     * 收藏活动
+     * 收藏活动(如果存在就删除,如果不存在就添加)
      * @return mixed
      */
     public function actionCollectActivity()
@@ -180,12 +188,18 @@ class ActivityController extends ObjectController
         }
         $transaction = \Yii::$app->db->beginTransaction();
         try {
-            //收藏活动
-            $model->created_at = time();
-            if ($model->save() == false) throw new Exception('收藏活动失败');
-            //更新活动收藏人数
+            $row = CollectActivity::findOne(['user_id' => $model->user_id, 'activity_id' => $model->activity_id]);
             $Activity = Activity::findOne(['id' => $model->activity_id]);
-            $Activity->collect_number = $Activity->collect_number + 1;
+            if ($row) {
+                $row->delete();
+                $Activity->collect_number = $Activity->collect_number - 1;
+            } else {
+                //收藏活动
+                $model->created_at = time();
+                if ($model->save() == false) throw new Exception('收藏活动失败');
+                
+                $Activity->collect_number = $Activity->collect_number + 1;
+            }
             if ($Activity->save(false) == false) throw new Exception('更新活动收藏数失败');
             $transaction->commit();
             return $this->returnAjax(1, '收藏成功');
@@ -197,7 +211,7 @@ class ActivityController extends ObjectController
     }
     
     /**
-     * 收藏商家
+     * 收藏商家(如果收藏就删除,如果没有收藏就添加)
      * @return mixed
      */
     public function actionCollectMerchant()
@@ -214,9 +228,14 @@ class ActivityController extends ObjectController
         }
         $transaction = \Yii::$app->db->beginTransaction();
         try {
-            //收藏商家
-            $model->created_at = time();
-            if ($model->save() == false) throw new Exception('收藏商家失败');
+            //查询用户是否收藏该商家
+            $row = CollectMerchant::findOne(['user_id' => $model->user_id, 'merchant_id' => $model->merchant_id]);
+            if ($row) {
+                $row->delete();
+            } else {
+                $model->created_at = time();
+                if ($model->save() == false) throw new Exception('收藏商家失败');
+            }
             $transaction->commit();
             return $this->returnAjax(1, '收藏成功');
         } catch (Exception $e) {

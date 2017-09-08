@@ -18,6 +18,7 @@ return array(
     'nkovacs\\datetimepicker\\' => array($vendorDir . '/nkovacs/yii2-datetimepicker'),
     'moonland\\phpexcel\\' => array($vendorDir . '/moonlandsoft/yii2-phpexcel'),
     'mdm\\admin\\' => array($vendorDir . '/mdmsoft/yii2-admin'),
+    'maxwen\\easywechat\\' => array($vendorDir . '/maxwen/yii2-easy-wechat/src'),
     'kucha\\ueditor\\' => array($vendorDir . '/kucha/ueditor'),
     'kartik\\datetime\\' => array($vendorDir . '/kartik-v/yii2-widget-datetimepicker'),
     'kartik\\base\\' => array($vendorDir . '/kartik-v/yii2-krajee-base'),
