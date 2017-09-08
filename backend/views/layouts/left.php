@@ -31,17 +31,51 @@
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
                     ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
-                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
-                    ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
-                    ['label' => 'admin', 'icon' => 'dashboard', 'url' => ['/admin']],
-                    ['label' => 'route', 'icon' => 'dashboard', 'url' => ['/admin/route']],
-                    ['label' => 'permission', 'icon' => 'dashboard', 'url' => ['/admin/permission']],
-                    ['label' => 'role', 'icon' => 'dashboard', 'url' => ['/admin/role']],
-                    ['label' => 'assignment', 'icon' => 'dashboard', 'url' => ['/admin/assignment']],
-                    ['label' => 'user', 'icon' => 'dashboard', 'url' => ['/admin/user']],
-                    ['label' => 'user', 'icon' => 'dashboard', 'url' => ['/debug']],
-                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
+                    ['label' => '用户管理', 'icon' => 'dashboard', 'url' => ['/member/index']],
+                    ['label' => '业务员管理', 'icon' => 'dashboard', 'url' => ['/salesman/index']],
+                    ['label' => '商家管理', 'icon' => 'dashboard', 'url' => ['/merchant/index']],
+                    ['label' => 'banner管理', 'icon' => 'dashboard', 'url' => ['/banner/index']],
+                    ['label' => '活动管理', 'icon' => 'dashboard', 'url' => ['/activity/index','Activity'=>['merchant_id'=>'']]],
+    
                     [
+                        'label' => '订单管理',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '已支付', 'icon' => 'file-code-o', 'url' => ['/order/paid-index','Order'=>['status'=>[1,4]]],],
+                            ['label' => '待支付', 'icon' => 'dashboard', 'url' => ['/order/unpaid-index','Order'=>['status'=>0]],],
+                        ],
+                    ],
+                    [
+                        'label' => '退款管理',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '待处理', 'icon' => 'file-code-o', 'url' => ['/refund-order/paid-index','Order'=>['status'=>2]],],
+                            ['label' => '已处理', 'icon' => 'dashboard', 'url' => ['/refund-order/unpaid-index','Order'=>['status'=>[3,4]]],],
+                        ],
+                    ],
+                    ['label' => '运营统计', 'icon' => 'dashboard', 'url' => ['/count/index']],
+                  //  ['label' => '系统设置', 'icon' => 'dashboard', 'url' => ['/banner/index']],
+                    ['label' => '管理员列表', 'icon' => 'dashboard', 'url' => ['/admin/user']],
+                    [
+                        'label' => '权限管理',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '分配', 'icon' => 'dashboard', 'url' => ['/admin']],
+                            ['label' => '路由', 'icon' => 'dashboard', 'url' => ['/admin/route']],
+                            ['label' => '菜单', 'icon' => 'dashboard', 'url' => ['/admin/menu']],
+                            ['label' => '权限', 'icon' => 'dashboard', 'url' => ['/admin/permission']],
+                            ['label' => '角色', 'icon' => 'dashboard', 'url' => ['/admin/role']],
+                        ],
+                    ],
+                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
+                    ['label' => '日志', 'icon' => 'dashboard', 'url' => ['/debug']],
+                    
+                   // ['label' => 'assignment', 'icon' => 'dashboard', 'url' => ['/admin/assignment']],
+                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
+                    /*[
                         'label' => 'Same tools',
                         'icon' => 'share',
                         'url' => '#',
@@ -66,7 +100,7 @@
                                 ],
                             ],
                         ],
-                    ],
+                    ],*/
                     
                 ],
             ]

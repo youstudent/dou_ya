@@ -273,4 +273,47 @@ class UserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
+    /**
+     * 添加管理员
+     * Creates a new Salesman model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new User();
+        $model->scenario='add';
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->password_hash=Yii::$app->getSecurity()->generatePasswordHash($model->password_hash);
+            return $model->save()?$this->redirect(['index']):$this->render('create', ['model' => $model,]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+    
+    /**
+     * 修改管理员
+     * @param $id
+     * @return string|\yii\web\Response
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->re_password){
+                $model->password_hash=Yii::$app->getSecurity()->generatePasswordHash($model->re_password);
+            }
+            return $model->save()?$this->redirect(['index']):$this->render('create', ['model' => $model,]);
+        }else {
+            $model->password_hash='';
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
 }

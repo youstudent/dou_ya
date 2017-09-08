@@ -19,7 +19,14 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "mdmsoft/yii2-admin": "~2.0",
-        "dmstr/yii2-adminlte-asset": "2.*"
+        "dmstr/yii2-adminlte-asset": "2.*",
+        "kartik-v/yii2-widget-datetimepicker": "v1.4.2",
+        "kucha/ueditor": "*",
+        "kak/datetimepicker": "*",
+        "nkovacs/yii2-datetimepicker": "*",
+        "moonlandsoft/yii2-phpexcel": "*",
+        "overtrue/wechat": "~3.1",
+        "flc/alidayu": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
