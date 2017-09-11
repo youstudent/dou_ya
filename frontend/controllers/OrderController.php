@@ -53,5 +53,14 @@ class OrderController extends ObjectController
         }
     }
     
+    /**
+     * 用户下单
+     */
+    public function actionOrder()
+    {
+    
+    
+    }
+    
     
 }

@@ -37,10 +37,17 @@ class WechatLoginController extends Controller
     
     }
     
-    /*public function actionPay(){
+    
+    
+    /**
+     * 微信支付
+     * @return string
+     * @throws Exception
+     */
+    public function actionPay(){
         // 微信支付(JsApi):
         $orderData = [
-            'openid' => '.. '
+            'openid' => ''
             // ... etc.
         ];
         $order = new Wechat($orderData);
@@ -58,7 +65,7 @@ class WechatLoginController extends Controller
             'jsApiConfig' => $jsApiConfig,
             'orderData'   => $orderData
         ]);
-    }*/
+    }
     
     /**
      *  微信授权
@@ -68,12 +75,19 @@ class WechatLoginController extends Controller
         $response = $app->oauth->scopes(['snsapi_userinfo'])
         ->redirect();
         
-        return $response;
+     return $response;
     }
     
     public function actionGetopid(){
         $OP = new Wechat();
-        var_dump($OP->get);
+        var_dump($OP->getUser());
+    }
+    
+    
+    public function actionTest(){
+        $app = new Application(\Yii::$app->params['WECHAT']);
+        $user = $app->oauth->user();
+        var_dump($user);EXIT;
     }
     
 }

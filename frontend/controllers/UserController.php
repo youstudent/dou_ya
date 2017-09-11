@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 
+use common\components\GetUserInfo;
 use common\models\Activity;
 use common\models\CollectActivity;
 use common\models\CollectMerchant;
@@ -24,16 +25,9 @@ class UserController extends ObjectController
      */
     public function actionGetUser()
     {
-        if (!\Yii::$app->request->isPost) {
-            return $this->returnAjax(0, '请用POST请求方式');
-        }
-        $keyword = \Yii::$app->request->post('user_id');
-        if (!$keyword) {
-            return $this->returnAjax(0, '请传参数!!user_id');
-        }
-        $data = User::findOne(['user_id' => $keyword]);
+        $data = User::findOne(['user_id' => GetUserInfo::actionGetUserId()]);
         if ($data) {
-            return $this->returnAjax(1, '成功', $keyword);
+            return $this->returnAjax(1, '成功', $data);
         }
         return $this->returnAjax(0, '未查询到用户资料');
         
@@ -43,16 +37,14 @@ class UserController extends ObjectController
      * 获取我收藏的活动
      * @return mixed
      */
-    public function actionMyActivity(){
+    public function actionMyActivity()
+    {
+        
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
-        $user_id = \Yii::$app->request->post('user_id');
-        if (!$user_id) {
-            return $this->returnAjax(0, '请传参数!!user_id');
-        }
         //获取当前用户收藏活动的ID
-        $Activity_id = CollectActivity::find()->orderBy('created_at ASC')->select('Activity_id')->where(['user_id'=>$user_id])->asArray()->all();
+        $Activity_id = CollectActivity::find()->orderBy('created_at ASC')->select('Activity_id')->where(['user_id'=>GetUserInfo::actionGetUserId()])->asArray()->all();
         if (!$Activity_id){
             return $this->returnAjax(0,'没有收藏活动');
         }
@@ -74,12 +66,9 @@ class UserController extends ObjectController
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
-        $user_id = \Yii::$app->request->post('user_id');
-        if (!$user_id) {
-            return $this->returnAjax(0, '请传参数!!user_id');
-        }
+        
         //获取当前用户收藏商家的ID
-        $merchant_id = CollectMerchant::find()->select('merchant_id')->where(['user_id' => $user_id])->asArray()->all();
+        $merchant_id = CollectMerchant::find()->select('merchant_id')->where(['user_id' => GetUserInfo::actionGetUserId()])->asArray()->all();
         if (!$merchant_id) {
             return $this->returnAjax(0, '没有收藏商家');
         }
@@ -90,7 +79,6 @@ class UserController extends ObjectController
             $value['in_activity'] = Merchant::getInActivity($value['id']);
             $value['history_activity'] = Merchant::getHistoryActivity($value['id']);
         }
-        
         return $this->returnAjax(1, '成功', $data);
         
     }

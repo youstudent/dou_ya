@@ -183,7 +183,7 @@ class ActivityController extends Controller
         $data->status=0;
         if ($data->save(false)){
             Yii::$app->getSession()->setFlash('danger','停封活动成功');
-            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id,'id'=>1]]);
         }
         Yii::$app->getSession()->setFlash('danger','停封活动失败');
         return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
@@ -200,7 +200,7 @@ class ActivityController extends Controller
         $data->status=1;
         if ($data->save(false)){
             Yii::$app->getSession()->setFlash('info','启用活动成功');
-            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id,'id'=>1]]);
         }
         Yii::$app->getSession()->setFlash('danger','启用活动失败');
         return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);

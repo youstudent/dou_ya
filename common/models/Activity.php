@@ -73,6 +73,7 @@ class Activity extends \yii\db\ActiveRecord
             'phone' => '电话',
             'linkman' => '联系人',
             'purchase_limitation' => '单人限购量',
+            'limitation_num' => '单人限购量',
             'on_line' => '总参与上限',
             'content' => '内容',
             'created_at' => '创建时间',
@@ -120,9 +121,17 @@ class Activity extends \yii\db\ActiveRecord
                 $this->apply_end_time = strtotime($this->apply_end_time);
                 $this->start_time = strtotime($this->start_time);
                 $this->end_time = strtotime($this->end_time);
+                $this->total_price = 0;  //总售价
+                $this->total_clearing = 0; //总结算价
                 $this->created_at = time();
                 $this->status = 1;
                 if ($this->save(false) == false) throw new Exception('保存活动失败');
+                //添加活动数据
+                $ActivityData = new ActivityData();
+                $ActivityData->merchant_name = $this->merchant_name;
+                $ActivityData->activity_name = $this->activity_name;
+                $ActivityData->activity_id = $this->id;
+                if ($ActivityData->save() ==false) throw new Exception('保存活动数据失败');
                 $row = [];
                 foreach ($data['title'] as $k => $v) {
                     $row[] = [
@@ -172,6 +181,10 @@ class Activity extends \yii\db\ActiveRecord
                 $this->status = 1;
                 if ($this->save(false) == false) throw new Exception('保存活动失败');
                 $row = [];
+                $activity = ActivityData::findOne(['activity_id'=>$this->id]);
+                $activity->activity_name =$this->activity_name;
+                $activity->merchant_name = $this->merchant_name;
+                if ($this->save(false) ==false) throw new Exception('修改活动数据失败');
                 foreach ($data['title'] as $k => $v) {
                     $row[] = [
                         'title' => $v,
@@ -205,6 +218,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public static function formatting($data){
         foreach ($data as $key => &$value) {
+            $value['apply_end_time'] = date('m月d日', $value['apply_end_time']);
             $value['start_time'] = date('m月d日', $value['start_time']);
             $value['end_time'] = date('m月d日', $value['end_time']);
             if ($value['activity_img']){
@@ -226,8 +240,9 @@ class Activity extends \yii\db\ActiveRecord
      * @return mixed
      */
     public static function details($data){
-            $data['start_time'] = date('Y年m月d日 H', $data['start_time']);
-            $data['end_time'] = date('Y年m月d日 H', $data['end_time']);
+            $data['start_time'] = date('Y年m月d日 H:i:s', $data['start_time']);
+            $data['apply_end_time'] = date('Y年m月d日 H:i:s', $data['apply_end_time']);
+            $data['end_time'] = date('Y年m月d日 H:i:s', $data['end_time']);
             $data['activity_img'] = \Yii::$app->params['img_domain'] . $data['activity_img'];
             //查询票种
             $data['price'] = '未票价';

@@ -33,6 +33,7 @@ use yii\widgets\DetailView;
             'name',
             'phone',
             'address',
+            'merchant_label',
             [
                 'attribute' => 'created_at',
                 'label'=>'创建时间',

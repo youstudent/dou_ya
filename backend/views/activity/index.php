@@ -84,41 +84,52 @@ use yii\grid\GridView;
                         return Html::a(Html::tag('span', '查看详情', ['class' => "btn btn-xs btn-primary"]), ['view', 'id'=>$model->id]).'&nbsp';
                     },
                     'update' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['update', 'id'=>$model->id]).'&nbsp';
+                        if ($model->end_time>time()){
+                            return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['update', 'id'=>$model->id]).'&nbsp';
+                        }
+                        
                     },
                     'delete' => function($url, $model, $key){
-                        return Html::a('删除',
-                            ['delete', 'id' => $model->id],
-                            [
-                                'class' => 'btn btn-danger btn-xs',
-                                'data' => ['confirm' => '确认删除该活动吗？', 'method' => 'post'],
-                    
-                            ]
-                        ) . '&nbsp';
-                    },
-                    'stop' => function ($url, $model, $key) {
-                        if ($model->status==1){
-                            return Html::a('停封',
-                                    ['stop', 'id' => $model->id,'Activity'=>Yii::$app->request->get()],
+                        if ($model->end_time<time()){
+                            return Html::a('删除',
+                                    ['delete', 'id' => $model->id],
                                     [
-                                        'class' => 'btn btn-success btn-xs',
-                                        'data' => ['confirm' => '你确定要停封该活动吗？', 'method' => 'post'],
+                                        'class' => 'btn btn-danger btn-xs',
+                                        'data' => ['confirm' => '确认删除该活动吗？', 'method' => 'post'],
+            
                                     ]
                                 ) . '&nbsp';
                         }
+                      
+                    },
+                    'stop' => function ($url, $model, $key) {
+                        if ($model->end_time>time()){
+                            if ($model->status==1){
+                                return Html::a('停封',
+                                        ['stop', 'id' => $model->id,'Activity'=>Yii::$app->request->get()],
+                                        [
+                                            'class' => 'btn btn-success btn-xs',
+                                            'data' => ['confirm' => '你确定要停封该活动吗？', 'method' => 'post'],
+                                        ]
+                                    ) . '&nbsp';
+                            }
+                        }
+                       
         
                     },
                     'open' => function ($url, $model, $key) {
-                        if ($model->status==0){
-                            return Html::a('启用',
-                                ['open', 'id' => $model->id,'Activity'=>Yii::$app->request->get()],
-                                [
-                                    'class' => 'btn btn-danger btn-xs',
-                                    'data' => ['confirm' => '你确定要启用该活动吗？', 'method' => 'post'],
-                                ]
-                            );
+                        if ($model->end_time>time()){
+                            if ($model->status==0){
+                                return Html::a('启用',
+                                    ['open', 'id' => $model->id,'Activity'=>Yii::$app->request->get()],
+                                    [
+                                        'class' => 'btn btn-danger btn-xs',
+                                        'data' => ['confirm' => '你确定要启用该活动吗？', 'method' => 'post'],
+                                    ]
+                                );
+                            }
                         }
-        
+                        
                     },
         
                 ],

@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 
 use Behat\Gherkin\Loader\YamlFileLoader;
+use common\components\GetUserInfo;
 use common\models\Order;
 use common\models\OrderRefund;
 use PHPUnit\Framework\Constraint\IsFalse;
@@ -25,10 +26,7 @@ class RefundOrderController extends ObjectController
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请使用POST方式');
         }
-        $user_id = \Yii::$app->request->post('user_id');
-        if (!$user_id) {
-            return $this->returnAjax(0, '请传user_id参数');
-        }
+        $user_id = GetUserInfo::actionGetUserId();
         //查询用户退款订单
         $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id'])->where(['user_id' => $user_id, 'status' => [2, 3, 4]])->asArray()->all();
         if (!$data) {

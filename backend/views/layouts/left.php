@@ -35,7 +35,17 @@
                     ['label' => '业务员管理', 'icon' => 'dashboard', 'url' => ['/salesman/index']],
                     ['label' => '商家管理', 'icon' => 'dashboard', 'url' => ['/merchant/index']],
                     ['label' => 'banner管理', 'icon' => 'dashboard', 'url' => ['/banner/index']],
-                    ['label' => '活动管理', 'icon' => 'dashboard', 'url' => ['/activity/index','Activity'=>['merchant_id'=>'']]],
+                   // ['label' => '活动管理', 'icon' => 'dashboard', 'url' => ['/activity/index','Activity'=>['merchant_id'=>'']]],
+                    [
+                        'label' => '活动管理',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => '正在进行', 'icon' => 'file-code-o', 'url' => ['/activity/index','Activity'=>['id'=>1,'merchant_id'=>'']]],
+                            ['label' => '历史', 'icon' => 'dashboard', 'url' => ['/activity/index'],],
+                            ['label' => '数据', 'icon' => 'dashboard', 'url' => ['/activity-data/index'],],
+                        ],
+                    ],
     
                     [
                         'label' => '订单管理',

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\components\GetUserInfo;
 use common\models\Activity;
 use common\models\ActivityTicket;
 use common\models\CollectActivity;
@@ -32,7 +33,7 @@ class ActivityController extends ObjectController
         }
         $select = ['id', 'merchant_name', 'activity_name',
                   'activity_img', 'start_time', 'end_time',
-                  'collect_number', 'allpage_view'];
+                  'collect_number', 'allpage_view','apply_end_time'];
         //查询正在进行的活动
         $data = Activity::find()->select($select)->where(['status'=>1])->orderBy("$orderBy DESC")->asArray()->all();
         if ($data) {
@@ -57,7 +58,7 @@ class ActivityController extends ObjectController
         }
         $select = ['id', 'merchant_name', 'activity_name',
                   'activity_img', 'start_time', 'end_time',
-                  'collect_number', 'allpage_view'];
+                  'collect_number', 'allpage_view','apply_end_time'];
         $data = Activity::find()->select($select)->where(['or', ['like', 'merchant_name', $keyword], ['like', 'activity_name', $keyword]]) ->andWhere(['status'=>1])->asArray()->all();
         if ($data) {
             $result = Activity::formatting($data);
@@ -85,6 +86,9 @@ class ActivityController extends ObjectController
             // 返回查询的活动详情的结果
             $result = Activity::details($data);
             $result['logo']=\Yii::$app->params['img_domain'].$row->logo;
+            $result['merchant_label']=$row->merchant_label;
+            $result['collect_merchant']=CollectMerchant::find()->where(['user_id'=>GetUserInfo::actionGetUserId(),'merchant_id'=>$data['merchant_id']])->exists();
+            $result['collect_activity']=CollectActivity::find()->where(['user_id'=>GetUserInfo::actionGetUserId(),'activity_id'=>$data['id']])->exists();
             // 增加活动的点击率
             $results = Activity::findOne(['id'=>$activity_id]);
             $results->allpage_view=$results->allpage_view  +1;
@@ -125,12 +129,12 @@ class ActivityController extends ObjectController
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
-        $user_id = \Yii::$app->request->post('user_id');
+        //$user_id = \Yii::$app->request->post('user_id');
         $type = \Yii::$app->request->post('type');
-        if (empty($user_id || $type)) {
+        if (empty($type)) {
             return $this->returnAjax(0, '用户user_id不能为空 type:0待支付1已支付');
         }
-        $data = Order::find()->where(['user_id' => $user_id, 'status' => $type])->orderBy('order_time DESC')->asArray()->all();
+        $data = Order::find()->where(['user_id' => GetUserInfo::actionGetUserId(), 'status' => $type])->orderBy('order_time DESC')->asArray()->all();
         if (!$data) {
             return $this->returnAjax(0, '没有活动订单');
         }
@@ -177,12 +181,13 @@ class ActivityController extends ObjectController
      */
     public function actionCollectActivity()
     {
-        if (!\Yii::$app->request->post()) {
+        if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
         $model = new CollectActivity();
         //接收参数
         $model->load(\Yii::$app->request->post(), '');
+        $model->user_id=GetUserInfo::actionGetUserId();
         if (!Activity::find()->where(['id' => $model->activity_id])->exists()) {
             return $this->returnAjax(0, '该活动不存在ID' . $model->activity_id);
         }
@@ -222,6 +227,7 @@ class ActivityController extends ObjectController
         $model = new CollectMerchant();
         //接收参数
         $model->load(\Yii::$app->request->post(), '');
+        $model->user_id=GetUserInfo::actionGetUserId();
         //查询商家是否存在
         if (!Merchant::find()->where(['id' => $model->merchant_id])->exists()) {
             return $this->returnAjax(0, '该商家不存在ID' . $model->merchant_id);

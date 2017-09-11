@@ -49,7 +49,11 @@ class Activity extends ActivityModel
         ]);
 
         $this->load($params);
-
+        if ($this->id==1){
+            $query->andWhere(['>','end_time',time()]);
+        }else{
+            $query->andWhere(['<','end_time',time()]);
+        }
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

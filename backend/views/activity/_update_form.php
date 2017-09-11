@@ -95,7 +95,9 @@ use yii\widgets\ActiveForm;
     
     </div>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '添加' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php if ($model->end_time>date('Y-m-d H:i:s')):?>
+            <?= Html::submitButton($model->isNewRecord ? '添加' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php endif;?>
     </div>
 
     <?php ActiveForm::end(); ?>
