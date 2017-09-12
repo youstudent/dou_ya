@@ -47,6 +47,8 @@ class WechatUser extends Component
 	 */
 	public $token;
 
+	public $provider;
+
 	/**
 	 * @return string
 	 */

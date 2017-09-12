@@ -52,7 +52,7 @@ return [
          */
         'oauth' => [
             'scopes'   => ['snsapi_userinfo'],
-            'callback' => '/wechat-login/test',
+            'callback' => '/site/login',
         ],
     ]
 ];

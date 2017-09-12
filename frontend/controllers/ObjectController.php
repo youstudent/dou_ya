@@ -16,6 +16,7 @@ class ObjectController extends Controller
 {
     public $layout = false;
 
+    public $login_member = [];
     /**
      * 检查是否有权限执行代码
      * @param \yii\base\Action $action
@@ -23,6 +24,13 @@ class ObjectController extends Controller
      */
     public function beforeAction($action)
     {
+        phpinfo();die;
+        $this->login_member = \Yii::$app->session->get('member');
+        if(empty($this->login_member) && !\Yii::$app->wechat->isAuthorized()) {
+            return \Yii::$app->wechat->authorizeRequired()->send();
+        }
+
+
         \Yii::$app->response->format = Response::FORMAT_JSON;
         return true;
     }
