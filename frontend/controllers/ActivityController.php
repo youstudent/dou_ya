@@ -167,11 +167,15 @@ class ActivityController extends ObjectController
         //处理图片
         $data['activity_img'] = \Yii::$app->params['img_domain'] . $data['activity_img'];
         //查询票种
-        $ticket = ActivityTicket::find()->select('price,title')->orderBy('price ASC')->where(['activity_id' => $activity_id])->asArray()->all();
+        $ticket = ActivityTicket::find()->select('id,price,title')->orderBy('price ASC')->where(['activity_id' => $activity_id])->asArray()->all();
         //合并活动和票种
-        $new_data = ArrayHelper::merge($ticket, $data);
+        foreach ($ticket as &$value){
+            $value['num']=0;
+        }
+        $data['ticket']=$ticket;
+        //$new_data = ArrayHelper::merge($ticket, $data);
     
-        return $this->returnAjax(1, '成功', $new_data);
+        return $this->returnAjax(1, '成功', $data);
     
     }
     
@@ -191,23 +195,27 @@ class ActivityController extends ObjectController
         if (!Activity::find()->where(['id' => $model->activity_id])->exists()) {
             return $this->returnAjax(0, '该活动不存在ID' . $model->activity_id);
         }
+        
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             $row = CollectActivity::findOne(['user_id' => $model->user_id, 'activity_id' => $model->activity_id]);
             $Activity = Activity::findOne(['id' => $model->activity_id]);
+            $re =true;
             if ($row) {
                 $row->delete();
                 $Activity->collect_number = $Activity->collect_number - 1;
+                $re=false;
             } else {
                 //收藏活动
                 $model->created_at = time();
+                $re=true;
                 if ($model->save() == false) throw new Exception('收藏活动失败');
                 
                 $Activity->collect_number = $Activity->collect_number + 1;
             }
             if ($Activity->save(false) == false) throw new Exception('更新活动收藏数失败');
             $transaction->commit();
-            return $this->returnAjax(1, '收藏成功');
+            return $this->returnAjax(1, $re?'收藏成功':'取消成功',$re);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->returnAjax(0, current($model->getFirstErrors()));
@@ -235,15 +243,18 @@ class ActivityController extends ObjectController
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             //查询用户是否收藏该商家
+            $re =true;
             $row = CollectMerchant::findOne(['user_id' => $model->user_id, 'merchant_id' => $model->merchant_id]);
             if ($row) {
                 $row->delete();
+                $re=false;
             } else {
                 $model->created_at = time();
                 if ($model->save() == false) throw new Exception('收藏商家失败');
+                $re=true;
             }
             $transaction->commit();
-            return $this->returnAjax(1, '收藏成功');
+            return $this->returnAjax(1, $re?'收藏成功':'取消成功',$re);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->returnAjax(0, current($model->getFirstErrors()));
