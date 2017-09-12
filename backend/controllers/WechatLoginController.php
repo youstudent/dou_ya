@@ -85,9 +85,10 @@ class WechatLoginController extends Controller
     
     
     public function actionTest(){
-        $app = new Application(\Yii::$app->params['WECHAT']);
-        $user = $app->oauth->user();
-        var_dump($user);EXIT;
+        // 微信网页授权:
+        $user = \Yii::$app->wechat->user;
+        echo '<pre>';
+        print_r($user);die;
     }
     
 }
