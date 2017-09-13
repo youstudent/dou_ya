@@ -54,5 +54,19 @@ return [
             'scopes'   => ['snsapi_userinfo'],
             'callback' => '/site/login',
         ],
+
+        /**
+         * 微信支付
+         */
+        'payment' => [
+            'merchant_id'        => '1482588432',
+            'key'                => '230deca834ba519daa86dad7e5117c12',
+            'cert_path'          => 'path/to/your/cert.pem', // XXX: 绝对路径！！！！
+            'key_path'           => 'path/to/your/key',      // XXX: 绝对路径！！！！
+            // 'device_info'     => '013467007045764',
+            // 'sub_app_id'      => '',
+            // 'sub_merchant_id' => '',
+            // ...
+        ],
     ]
 ];

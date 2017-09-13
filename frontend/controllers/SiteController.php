@@ -51,7 +51,7 @@ class SiteController extends ObjectController
     public function actionPay()
     {
         $orderData = [
-            'openid'       => $this->login_member[0]['openid'],
+            'openid'       => $this->login_member['openid'],
             'trade_type'   => 'JSAPI', // JSAPI，NATIVE，APP...
             'body'         => 'iPad mini 16G 白色',
             'detail'       => 'iPad mini 16G 白色',
@@ -59,9 +59,11 @@ class SiteController extends ObjectController
             'total_fee'    => 5388, // 单位：分
             'notify_url'   => 'http://xxx.com/order-notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
         ];
-        //$order = new WechatOrder($orderData);
+        $order = new \EasyWeChat\Payment\Order($orderData);
         $payment = Yii::$app->wechat->payment;
         $prepayRequest = $payment->prepare($order);
+        echo '<pre>';
+        print_r($prepayRequest);die;
         if ($prepayRequest->return_code = 'SUCCESS' && $prepayRequest->result_code == 'SUCCESS') {
             $prepayId = $prepayRequest->prepay_id;
         } else {

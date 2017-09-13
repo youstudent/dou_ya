@@ -24,9 +24,9 @@ class ObjectController extends Controller
      */
     public function beforeAction($action)
     {
-        phpinfo();die;
         $this->login_member = \Yii::$app->session->get('member');
         if(empty($this->login_member) && !\Yii::$app->wechat->isAuthorized()) {
+        //if(!\Yii::$app->wechat->isAuthorized()) {
             return \Yii::$app->wechat->authorizeRequired()->send();
         }
 

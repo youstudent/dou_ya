@@ -15,6 +15,7 @@ use Yii;
  * @property integer $status
  * @property string $identification
  * @property string $openid
+ * @property string $headimgurl
  * @property integer $order_num
  * @property integer $order_money
  */
@@ -37,7 +38,7 @@ class Member extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['phone'], 'required','on'=>'update'],
             [['phone', 'last_time', 'status', 'order_num', 'order_money','sex'], 'integer'],
-            [['name'], 'string', 'max' => 255],
+            [['name', 'headimgurl'], 'string', 'max' => 255],
             [['identification'], 'string', 'max' => 20],
         ];
     }
@@ -112,6 +113,7 @@ class Member extends \yii\db\ActiveRecord
         $model->sex = $wechat_user->original['sex'];
         $model->phone = '';
         $model->status = 1;
+        $model->headimgurl = $wechat_user->avatar;
         $model->openid = $wechat_user->id;
         if(!$model->save()){
             return false;
@@ -129,6 +131,8 @@ class Member extends \yii\db\ActiveRecord
         $user = self::findOne(['openid'=>$wechat_user->id]);
         $user->name = $wechat_user->name;
         $user->sex = $wechat_user->original['sex'];
+        $user->headimgurl = $wechat_user->avatar;
+
 
         if(!$user->save()){
             return false;
