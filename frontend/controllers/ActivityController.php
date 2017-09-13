@@ -131,9 +131,9 @@ class ActivityController extends ObjectController
         }
         //$user_id = \Yii::$app->request->post('user_id');
         $type = \Yii::$app->request->post('type');
-        if (empty($type)) {
+       /* if (empty($type)) {
             return $this->returnAjax(0, '用户user_id不能为空 type:0待支付1已支付');
-        }
+        }*/
         $data = Order::find()->where(['user_id' => GetUserInfo::actionGetUserId(), 'status' => $type])->orderBy('order_time DESC')->asArray()->all();
         if (!$data) {
             return $this->returnAjax(0, '没有活动订单');
