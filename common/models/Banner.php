@@ -5,6 +5,7 @@ namespace common\models;
 use rmrevin\yii\fontawesome\FA;
 use spec\Prophecy\Doubler\ClassPatch\ReflectionClassNewInstancePatchSpec;
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%banner}}".
@@ -59,8 +60,8 @@ class Banner extends \yii\db\ActiveRecord
                 if ($this->banner){
                     foreach ($this->banner as $file) {
                         $img = new BannerImg();
-                        $pre = 'uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
-                        $file->saveAs($pre);
+                        $pre = '/uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
+                        $file->saveAs(Yii::getAlias('@webroot').$pre);
                         $img->banner_id=$this->id;
                         $img->img=$pre;
                         $img->save();
@@ -91,8 +92,8 @@ class Banner extends \yii\db\ActiveRecord
                     }
                     foreach ($this->banner as $file) {
                         $img = new BannerImg();
-                        $pre = 'uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
-                        $file->saveAs($pre);
+                        $pre = '/uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
+                        $file->saveAs(Yii::getAlias('@webroot').$pre);
                         $img->banner_id=$this->id;
                         $img->img=$pre;
                         $img->save();

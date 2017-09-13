@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Banners', 'url' => ['index']];
                 'label'=>'',
                 'value'=>function($m){
                     foreach ($m->img as $value){
-                        echo Html::img('@web/'.$value->img,['width'=> '200px', 'height'=> '200px','style'=>'margin-left: 26px;']
+                        echo Html::img('@web'.$value->img,['width'=> '200px', 'height'=> '200px','style'=>'margin-left: 26px;']
                         ).Html::a('删除',['banner/del','id'=>$value->id,'v'=>$value->banner_id],['class'=>'btn btn-danger',  'style'=>"margin-top-width: 162px;margin-top: 161px;",'data' => [
                                 'confirm' => '确认删除这一张图片吗?',
                                 'method' => 'post',

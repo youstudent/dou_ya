@@ -1,6 +1,7 @@
 <?php
 
 namespace common\models;
+use common\components\GetUserInfo;
 use Yii;
 use Flc\Alidayu\App;
 use Flc\Alidayu\Client;
@@ -31,7 +32,7 @@ class MessageCode extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['phone', 'code', 'created_at'], 'required'],
+            [['phone', 'code'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['phone', 'code'], 'string', 'max' => 50],
         ];
@@ -57,7 +58,7 @@ class MessageCode extends \yii\db\ActiveRecord
      */
     public function sms($phone)
     {
-        if(!$this->checkCode($phone, 0)){
+        if(!$this->checkCode($phone, 0)){ //1800
             return false;
         }
         // 生成验证码
@@ -69,13 +70,13 @@ class MessageCode extends \yii\db\ActiveRecord
         $model->status = 0;
         $model->created_at = time();
         // 返回结果
-        if (!$model->save()){
+        if (!$model->save(false)){
             return false;
         }
-        if(!$this->SendSms($phone, $code, $model->id)){
+        if(!$this->SendSms($phone, $code, $model->id,'SMS_78595208')){
             //发送失败，标记验证码状态
             $model->status = -1;
-            $model->save();
+            $model->save(false);
             return false;
         }
         return true;
@@ -84,11 +85,11 @@ class MessageCode extends \yii\db\ActiveRecord
     /**
      *   发送短信
      */
-    public function SendSms($phone, $code, $id){
+    public function SendSms($phone, $code, $id,$template){
         // 配置信息
         $config = [
-            'app_key'    => '*****',
-            'app_secret' => '************',
+            'app_key'    => '24558166',
+            'app_secret' => '412f0a3698777944957ee48b96dc2863',
            //'sandbox'    => true,  // 是否为沙箱环境，默认false
         ];
         // 使用方法一
@@ -96,16 +97,14 @@ class MessageCode extends \yii\db\ActiveRecord
         $req    = new AlibabaAliqinFcSmsNumSend();
         $req->setRecNum($phone)
             ->setSmsParam([
-                'number' => $code
+                'code' => $code
             ])
-            ->setSmsFreeSignName('叶子坑')
-            ->setSmsTemplateCode('SMS_15105357');
+            ->setSmsFreeSignName('豆芽集市')
+            ->setSmsTemplateCode($template);
     
         $resp = $client->execute($req);
         // 返回结果
-        print_r($resp);
-        print_r($resp->result->model);
-        
+        return true;
     }
     
     /**
@@ -118,6 +117,32 @@ class MessageCode extends \yii\db\ActiveRecord
     {
         return !MessageCode::find()->andWhere(['>=', 'created_at', time()- $seconds])->andWhere(['phone'=>$phone])->andWhere(['!=', 'status', -1])->one();
     }
-
-
+    
+    
+    /**
+     * 验证
+     * @param $code
+     * @param $phone
+     * @return bool
+     */
+    public function Code($code,$phone){
+        if (self::find()->where(['code'=>$code])->andWhere(['>=','created_at',time()-1800])->exists()){
+            $data  = Member::findOne(['id'=>GetUserInfo::actionGetUserId()]);
+            $data->phone=$phone;
+            return $data->save(false);
+        }
+            return false;
+    }
+    
+    /**
+     *  验票成功发送短信
+     * @param $code
+     */
+    public function send($order_id)
+    {
+        //根据订单查询活动
+      $data  =   Order::findOne(['id' => $order_id]);
+      $name =$data->activity_name;
+      $this->SendSms(13219890986,$name,'','SMS_95475065');
+    }
 }

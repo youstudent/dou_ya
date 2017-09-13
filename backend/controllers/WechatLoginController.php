@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use common\models\MessageCode;
 use EasyWeChat\Foundation\Application;
 use maxwen\easywechat\Wechat;
 use maxwen\easywechat\WechatUser;
@@ -89,6 +90,12 @@ class WechatLoginController extends Controller
         $user = \Yii::$app->wechat->user;
         echo '<pre>';
         print_r($user);die;
+    }
+    
+    
+    public function actionSms(){
+       $a = new MessageCode();
+       var_dump($a->SendSms(18030492737,'成都昂科','','SMS_95475065'));
     }
     
 }
