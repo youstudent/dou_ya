@@ -19,7 +19,7 @@ class Merchant extends MerchantModel
     {
         return [
             [['id', 'phone'], 'integer'],
-            [['name', 'address', 'created_at','seleaman'], 'safe'],
+            [['name', 'address', 'created_at','seleaman','linkman'], 'safe'],
         ];
     }
 

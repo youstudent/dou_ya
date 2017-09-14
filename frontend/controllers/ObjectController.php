@@ -14,6 +14,7 @@ use yii\web\Response;
  */
 class ObjectController extends Controller
 {
+    public $enableCsrfValidation=false;
     public $layout = false;
 
     public $login_member = [];
@@ -22,7 +23,7 @@ class ObjectController extends Controller
      * @param \yii\base\Action $action
      * @return bool
      */
-    public function beforeAction($action)
+    /*public function beforeAction($action)
     {
         $this->login_member = \Yii::$app->session->get('member');
         if(empty($this->login_member)){
@@ -38,7 +39,7 @@ class ObjectController extends Controller
 
         \Yii::$app->response->format = Response::FORMAT_JSON;
         return true;
-    }
+    }*/
 
     /**
      * api 接口统一返回的数据
@@ -50,6 +51,7 @@ class ObjectController extends Controller
      */
     public function returnAjax($code, $message, $data = [], $time = '')
     {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
         if ($time == ''){
             $time = date("Y-m-d H:i:s");
         }

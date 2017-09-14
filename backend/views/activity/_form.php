@@ -53,7 +53,7 @@ $this->registerJs($fileuploadedJs);
     <?= $form->field($model, 'activity_name')->textInput() ?>
 
     <?= $form->field($model, 'file')->fileInput()?>
-    <?= Html::img('@web/'.$model->activity_img,['width'=> '100px', 'height'=> '100px'])?>
+    <?= Html::img('@web'.$model->activity_img,['width'=> '100px', 'height'=> '100px'])?>
     <?= $form->field($model, 'activity_address')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'apply_end_time')->widget(\kartik\datetime\DateTimePicker::classname(), [

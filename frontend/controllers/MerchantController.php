@@ -30,13 +30,13 @@ class MerchantController extends ObjectController
         }
         $merchant_id = \Yii::$app->request->post('merchant_id');
         $type = \Yii::$app->request->post('type');
-        if (!$type || $merchant_id ){
-           return $this->returnAjax(0,'请输入商家ID和type');
+        if (!$type || !$merchant_id) {
+            return $this->returnAjax(0, '请输入商家ID和type');
         }
         if ($type == 1) {
-            $row = Activity::find()->andWhere(['>', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id,'status'=>1])->asArray()->all();
+            $row = Activity::find()->andWhere(['>', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id, 'status' => 1])->asArray()->all();
         } else {
-            $row = Activity::find()->andWhere(['<', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id])->andWhere(['or',['status'=>0]])->asArray()->all();
+            $row = Activity::find()->andWhere(['<', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id])->orWhere(['or', ['status' => 0]])->asArray()->all();
         }
         if ($row) {
             $result = Activity::formatting($row);

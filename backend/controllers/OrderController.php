@@ -2,10 +2,12 @@
 
 namespace backend\controllers;
 
+use common\models\OrderTicket;
 use moonland\phpexcel\Excel;
 use Yii;
 use common\models\Order;
 use backend\models\Search\Order as OrderSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -141,26 +143,41 @@ class OrderController extends Controller
     /**
      *  导出订单
      */
-    public function actionExcel($status){
-        $row = Order::find()->where(['status'=>$status])->all();
-        foreach ($row as $key=>&$value){
-            $value['order_time']=date('Y-m-d H:i:s',$value['order_time']);
-            $value['status']=$value['status']==1?'已支付':'待支付';
+    public function actionExcel($status)
+    {
+        $row = Order::find()->where(['status' => $status])->all();
+        foreach ($row as $key => &$value) {
+            $datas = OrderTicket::find()->where(['order_id' => $value['id']])->asArray()->all();
+            if ($datas) {
+                $value['user_id'] = implode(',', ArrayHelper::map($datas, 'id', 'code'));
+            } else {
+                $value['user_id'] = '';
+            }
+            $value['order_time'] = date('Y-m-d H:i:s', $value['order_time']);
+            $value['status'] = $value['status'] == 1 ? '已支付' : '待支付';
         }
-        if ($row){
+        
+        if ($row) {
             Excel::export([
-                'models'=>$row,
-                'fileName'=>date('Ymd').'_'.'Export',
+                'models' => $row,
+                'fileName' => date('Ymd') . '_' . 'Export',
             ]);
         }
         
     }
     
-    
-    public function actionGetDetails($id){
-        $model= Order::findOne(['id'=>$id]);
-        return $this->renderAjax('updates', [
+    /**
+     * 电子票详情
+     * @param $id
+     * @return string
+     */
+    public function actionGetDetails($id)
+    {
+        $model = Order::findOne(['id' => $id]);
+        $data = OrderTicket::find()->where(['order_id' => $id])->asArray()->all();
+        return $this->render('updates', [
             'model' => $model,
+            'data' => $data
         ]);
     }
     

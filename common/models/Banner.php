@@ -60,8 +60,8 @@ class Banner extends \yii\db\ActiveRecord
                 if ($this->banner){
                     foreach ($this->banner as $file) {
                         $img = new BannerImg();
-                        $pre = '/uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
-                        $file->saveAs(Yii::getAlias('@webroot').$pre);
+                        $pre = 'uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
+                        $file->saveAs(Yii::getAlias('@webroot').'/'.$pre);
                         $img->banner_id=$this->id;
                         $img->img=$pre;
                         $img->save();
@@ -92,8 +92,8 @@ class Banner extends \yii\db\ActiveRecord
                     }
                     foreach ($this->banner as $file) {
                         $img = new BannerImg();
-                        $pre = '/uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
-                        $file->saveAs(Yii::getAlias('@webroot').$pre);
+                        $pre = 'uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
+                        $file->saveAs(Yii::getAlias('@webroot').'/'.$pre);
                         $img->banner_id=$this->id;
                         $img->img=$pre;
                         $img->save();

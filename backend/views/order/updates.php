@@ -1,21 +1,25 @@
 <?php
-use yii\bootstrap\Modal;
-// 更新操作
-Modal::begin([
-    'id' => 'update-modal',
-    'header' => '<h4 class="modal-title">更新</h4>',
-    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>',
-]);
-$requestUpdateUrl = \yii\helpers\Url::toRoute('update');
-$updateJs = <<<JS
-$('.data-update').on('click', function () {
-$.get('{$requestUpdateUrl}', { id: $(this).closest('tr').data('key') },
-function (data) {
-$('.modal-body').html(data);
-}
-);
-});
-JS;
-$this->registerJs($updateJs);
-Modal::end();
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+/* @var $this yii\web\View */
+/* @var $model common\models\Order */
+/* @var $form yii\widgets\ActiveForm */
 ?>
+
+<div class="order-form">
+    <?php $form = ActiveForm::begin(); ?>
+    <?= $form->field($model, 'order_number')->textInput(['disabled'=>"disabled"]) ?>
+    <?= $form->field($model, 'activity_name')->textInput(['disabled'=>"disabled"]) ?>
+    <?= $form->field($model, 'merchant_name')->textInput(['disabled'=>"disabled"]) ?>
+    <?= $form->field($model, 'order_num')->textInput(['disabled'=>"disabled"]) ?>
+    <?php foreach ($data as $value):?>
+        <div class="form-group field-order-merchant_name">
+            <label class="control-label" for="order-merchant_name">电子票票号<?php echo $value['status']==0?'[未验票]':'[已验票]'?></label>
+            <input type="text" id="order-merchant_name" class="form-control" name="Order[merchant_name]" value="<?php echo $value['code']?>" disabled>
+            <div class="help-block"></div>
+        </div>
+    <?php endforeach;?>
+    <?php ActiveForm::end(); ?>
+</div>

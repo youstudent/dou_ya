@@ -23,6 +23,7 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
+    public $ticket;
     /**
      * @inheritdoc
      */
@@ -63,6 +64,8 @@ class Order extends \yii\db\ActiveRecord
             'clearing_all_checking' => '结算总额(已验票)',
             'order_time' => '下单时间',
             'status' => '状态',
+            'ticket' => '票验证码',
+            'user_id' => '票验证码',
         ];
     }
 }

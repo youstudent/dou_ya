@@ -45,7 +45,7 @@ class Activity extends \yii\db\ActiveRecord
     {
         return [
             [['merchant_name'],'validateName','skipOnEmpty' => false,'skipOnError' => false],
-            [['activity_address','activity_name','merchant_name','apply_end_time','start_time','end_time','purchase_limitation','phone','on_line','linkman','content'], 'required'],
+            [['activity_address','activity_name','merchant_name','apply_end_time','start_time','end_time','phone','on_line','linkman','content'], 'required'],
             [['phone', 'purchase_limitation','on_line','merchant_id'], 'integer'],
             [['content'], 'string'],
             [['merchant_name'], 'string', 'max' => 30],
@@ -53,6 +53,7 @@ class Activity extends \yii\db\ActiveRecord
             [['activity_address','activity_img'], 'string', 'max' => 100],
             [['allpage_view'],'safe'],
             [['file'], 'file','extensions' => 'png,jpg'],
+            [['apply_end_time','start_time','end_time'],'time']
         ];
     }
 
@@ -96,6 +97,14 @@ class Activity extends \yii\db\ActiveRecord
         
     }
     
+    //验证商家名字
+    public function time($attribute,$params){
+        if (($this->apply_end_time>$this->start_time) || ($this->apply_end_time>=$this->end_time) || $this->start_time>$this->end_time ){
+            $this->addError('end_time','截止时间>开始时间>结束时间');
+        }
+        
+    }
+    
     
     public function validateAfterNow($attribute, $params)
     {
@@ -111,11 +120,14 @@ class Activity extends \yii\db\ActiveRecord
     public function add($data)
     {
         if ($this->validate()) {
+            if (($this->apply_end_time>$this->start_time) || ($this->apply_end_time>=$this->end_time) || $this->start_time>$this->end_time ){
+                return $this->addError('end_time','截止时间>开始时间>结束时间');
+            }
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($this->file) {
-                    $pre = '/uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
-                    if ($this->file->saveAs(Yii::getAlias('@webroot').$pre) == false) throw new Exception('上传图片失败');
+                    $pre = 'uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
+                    if ($this->file->saveAs(Yii::getAlias('@webroot').'/'.$pre) == false) throw new Exception('上传图片失败');
                     $this->activity_img = $pre;
                 }
                 $this->apply_end_time = strtotime($this->apply_end_time);
@@ -124,6 +136,9 @@ class Activity extends \yii\db\ActiveRecord
                 $this->total_price = 0;  //总售价
                 $this->total_clearing = 0; //总结算价
                 $this->created_at = time();
+                if ($this->limitation_num==0){
+                    $this->purchase_limitation='';
+                }
                 $this->status = 1;
                 if ($this->save(false) == false) throw new Exception('保存活动失败');
                 //添加活动数据
@@ -168,11 +183,14 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function edit($data){
         if ($this->validate()){
+            if (($this->apply_end_time>$this->start_time) || ($this->apply_end_time>=$this->end_time) || $this->start_time>$this->end_time ){
+                $this->addError('end_time','截止时间>开始时间>结束时间');
+            }
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($this->file) {
-                    $pre = '/uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
-                    if ($this->file->saveAs(Yii::getAlias('@webroot').$pre) == false) throw new Exception('上传图片失败');
+                    $pre = 'uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
+                    if ($this->file->saveAs(Yii::getAlias('@webroot').'/'.$pre) == false) throw new Exception('上传图片失败');
                     $this->activity_img = $pre;
                 }
                 $this->apply_end_time = strtotime($this->apply_end_time);

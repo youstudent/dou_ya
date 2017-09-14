@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'seleaman',
                         'phone',
                         'address',
+                        'linkman',
                         [
                             'label'=>'正在进行活动',
                             'value'=>
@@ -92,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ).'&nbsp';
                                 },
                                 'activity' => function ($url, $model, $key) {
-                                    return Html::a('活动管理',['/activity/index','Activity'=>['merchant_id'=>$model->id]],['class' => "btn btn-xs btn-success"]).'&nbsp';
+                                    return Html::a('活动管理',['/activity/index','Activity'=>['merchant_id'=>$model->id,'id'=>1]],['class' => "btn btn-xs btn-success"]).'&nbsp';
                                 },
 
                             ],

@@ -33,6 +33,7 @@ use yii\widgets\DetailView;
             'name',
             'phone',
             'address',
+            'linkman',
             'merchant_label',
             [
                 'attribute' => 'created_at',
@@ -47,14 +48,14 @@ use yii\widgets\DetailView;
                 'format' => 'raw',
                 'label'=>'封面',
                 'value'=>function($m){
-                  return Html::img('@web/'.$m->logo,['width'=> '300px', 'height'=> '200px']);
+                  return Html::img('@web'.$m->logo,['width'=> '300px', 'height'=> '200px']);
                 }
             ],
             [
                 'label'=>'',
                 'value'=>function($m){
                     foreach ($m->img as $value){
-                        echo Html::img('@web/'.$value->img,['width'=> '300px', 'height'=> '200px','style'=>'margin-left: 26px;']
+                        echo Html::img('@web'.$value->img,['width'=> '300px', 'height'=> '200px','style'=>'margin-left: 26px;']
                             ).Html::a('删除',['merchant/del','id'=>$value->id,'v'=>$value->merchant_id],['class'=>'btn btn-danger',  'style'=>"margin-top-width: 162px;margin-top: 161px;",'data' => [
                                 'confirm' => '确认删除这一张图片吗?',
                                 'method' => 'post',

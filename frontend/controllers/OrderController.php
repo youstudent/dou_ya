@@ -17,11 +17,34 @@ use common\models\MessageCode;
 use common\models\Order;
 use common\models\OrderRefund;
 use common\models\OrderTicket;
+use PHPUnit\Framework\Constraint\IsFalse;
 use rmrevin\yii\fontawesome\FA;
 use yii\db\Exception;
 
 class OrderController extends ObjectController
 {
+    
+    /**
+     *  申请退款页面订单数据
+     * @return mixed
+     */
+    public function actionOrderRefund()
+    {
+        if (!\Yii::$app->request->isPost) {
+            return $this->returnAjax(0, 'POST请求方式');
+        }
+        $order_id = \Yii::$app->request->post('order_id');
+        if (!$order_id){
+            return $this->returnAjax(0,'请传订单order_id');
+        }
+        $data = Order::find()->select(['order_time', 'activity_name', 'sell_all', 'order_number'])->where(['id' => $order_id])->asArray()->one();
+        if (!$data) {
+            return $this->returnAjax(0, '没有查询到订单详情数据');
+        }
+        $data['order_time'] = date('Y年m月d日 H:i:s', $data['order_time']);
+        return $this->returnAjax(1, '成功', $data);
+        
+    }
     
     /**
      * 申请退款
@@ -38,9 +61,19 @@ class OrderController extends ObjectController
         }
         $model = new OrderRefund();
         $model->load($keyword, '');
+        //查询该订单 是否已经申请过退款
+        if (Order::find()->where(['id' => $model->order_id, 'status' => 2])->exists()) {
+            return $this->returnAjax(0, '该订单不能重复申请退款');
+            
+        }
         //验证该订单号所属的票号有没有验证过
         if (OrderTicket::find()->where(['order_id' => $model->order_id, 'status' => 1])->exists()) {
             return $this->returnAjax(0, '该订单已有票种验票,不能进行退款');
+        }
+        
+        $price = OrderTicket::find()->select('sum(prize)')->where(['order_id' => $model->order_id, 'status' => 0])->asArray()->one()['sum(prize)'];
+        if ($model->money > $price) {
+            return $this->returnAjax(0, '退款金额不能大于订单总金额');
         }
         $transaction = \Yii::$app->db->beginTransaction();
         try {
@@ -51,6 +84,8 @@ class OrderController extends ObjectController
             $order = Order::findOne(['id' => $model->order_id]);
             $order->status = 2;
             if ($order->save(false) == false) throw new Exception('订单状态变更失败');
+            //根据订单找到. 票的验证码 改变状态
+            if (OrderTicket::updateAll(['status' => 9], ['order_id' => $model->order_id]) == false) throw new Exception('票种验证码状态更新失败');
             $transaction->commit();
             return $this->returnAjax(1, '退款申请成功!等待平台审核');
         } catch (\Exception $e) {
@@ -191,9 +226,10 @@ class OrderController extends ObjectController
     }
     
     
-    
-    
-    
+    /**
+     * 验票
+     * @return mixed
+     */
     public function actionCheckTicket(){
         if (!\Yii::$app->request->isPost){
             return $this->returnAjax(0,'POST请求方式');

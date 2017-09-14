@@ -35,17 +35,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
                         'name',
-                        'sex',
+                        [
+                            'attribute' => 'sex',
+                            'label'=>'性别',
+                            'value'=>
+                                function($model){
+                                    return  $model->sex==1?'男':'女';   //主要通过此种方式实现
+                                },
+                        ],
                         'phone',
                         [
                             'attribute' => 'last_time',
-                            'label'=>'创建时间',
+                            'label'=>'最后登录时间',
                             'value'=>
                                 function($model){
                                     return  date('Y-m-d H:i:s',$model->last_time);   //主要通过此种方式实现
                                 },
                         ],
-                        'identification',
+                        //'identification',
                         'order_num',
                         'order_money',
                         [

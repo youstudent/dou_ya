@@ -142,7 +142,11 @@ class ActivityController extends ObjectController
         
         //格式化订单时间,,
         foreach ($data as $key => &$value) {
-            $value['activity_img']=\Yii::$app->params['img_domain'].Activity::findOne(['id'=>$value['activity_id']])->activity_img;
+            if ($row = Activity::findOne(['id'=>$value['activity_id']])){
+                $value['activity_img']=\Yii::$app->params['img_domain'].$row->activity_img;
+            }else{
+                $value['activity_img']='';
+            }
             $value['order_time'] = date('Y年m月d日', $value['order_time']);
             //查询订到总的价格
         }

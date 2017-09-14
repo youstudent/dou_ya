@@ -5,12 +5,13 @@ namespace frontend\controllers;
 use backend\models\Search\Banner;
 use common\models\BannerImg;
 use yii\helpers\ArrayHelper;
+use yii\web\Controller;
 
 class BannerController extends ObjectController
 {
+   // public $enableCsrfValidation=false;
     /**
-     *  banner图片
-     * @return string
+     *
      */
     public function actionIndex()
     {

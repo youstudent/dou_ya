@@ -35,10 +35,11 @@ class OrderRefund extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id','money','pass_reason','bank_card','opening_bank','opening_man','no_reason'],'required'],
+            [['order_id','money','pass_reason','bank_card','opening_bank','opening_man'],'required'],
             [['order_id', 'money', 'created_at', 'updated_at'], 'integer'],
             [['pass_reason', 'no_reason'], 'string', 'max' => 255],
             [['bank_card', 'opening_bank', 'opening_man'], 'string', 'max' => 20],
+            [['no_reason'],'required','on'=>'no']
         ];
     }
 

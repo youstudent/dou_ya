@@ -124,7 +124,7 @@ class ActivityController extends Controller
         $this->findModel($id)->delete();
         //删除票种
         ActivityTicket::deleteAll(['activity_id'=>$id]);
-        return $this->redirect(['index']);
+        return $this->redirect(['/activity/index','Activity'=>['id'=>1,'merchant_id'=>'']]);
     }
 
     /**

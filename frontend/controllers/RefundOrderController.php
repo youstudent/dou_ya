@@ -11,6 +11,7 @@ namespace frontend\controllers;
 
 use Behat\Gherkin\Loader\YamlFileLoader;
 use common\components\GetUserInfo;
+use common\models\Activity;
 use common\models\Order;
 use common\models\OrderRefund;
 use PHPUnit\Framework\Constraint\IsFalse;
@@ -28,16 +29,19 @@ class RefundOrderController extends ObjectController
         }
         $user_id = GetUserInfo::actionGetUserId();
         //查询用户退款订单
-        $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id'])->where(['user_id' => $user_id, 'status' => [2, 3, 4]])->asArray()->all();
+        $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id','activity_id'])->where(['user_id' => $user_id, 'status' => [2, 3, 4]])->asArray()->all();
         if (!$data) {
             return $this->returnAjax(0, '没有退款信息');
         }
         foreach ($data as $key => &$v) {
+            if ($rows = Activity::findOne(['id'=>$v['activity_id']])){
+                $v['activity_img'] = $rows->activity_img;
+            }
             if ($row = OrderRefund::findOne(['order_id' => $v['id']])) {
                 $v['created_at'] = date('Y年m月d日', $row->created_at);
                 $v['money'] = $row->money;
             }
-            if ($v['status'] == 2) {
+           /* if ($v['status'] == 2) {
                 $v['status'] = '待处理';
             }
             if ($v['status'] == 3) {
@@ -45,7 +49,7 @@ class RefundOrderController extends ObjectController
             }
             if ($v['status'] == 4) {
                 $v['status'] = '拒绝退款';
-            }
+            }*/
             
         }
         return $this->returnAjax(1, '成功', $data);
@@ -76,7 +80,7 @@ class RefundOrderController extends ObjectController
             $data['money'] = $row->money;
             $data['no_reason'] = $row->no_reason;
         }
-        if ($data['status'] == 2) {
+       /* if ($data['status'] == 2) {
             $data['status'] = '待处理';
         }
         if ($data['status'] == 3) {
@@ -84,7 +88,7 @@ class RefundOrderController extends ObjectController
         }
         if ($data['status'] == 4) {
             $data['status'] = '拒绝退款';
-        }
+        }*/
         return $this->returnAjax(1, '成功', $data);
         
     }
