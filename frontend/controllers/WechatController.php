@@ -40,7 +40,7 @@ class WechatController extends ObjectController
     {
         $model = new Wechat();
         //TODO:: 这里传入或生成订单的数据
-        $data = $model->createWechatOrder([], $this->login_member['id']);
+        $data = $model->createWechatOrder([], $this->login_member['openid']);
         if($data === false){
             return $this->returnAjax(0, $model->message);
         }
