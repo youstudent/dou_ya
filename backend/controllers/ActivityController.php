@@ -70,7 +70,7 @@ class ActivityController extends Controller
         $models = new ActivityTicket();
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
-            if ($id = $model->add(Yii::$app->request->post('ActivityTicket'))){
+            if ($id = $model->add(Yii::$app->request->post('ActivityTicket'))) {
                 Yii::$app->getSession()->setFlash('success', '添加活动成功');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -93,19 +93,19 @@ class ActivityController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $models = ActivityTicket::find()->where(['activity_id'=>$id])->asArray()->all();
+        $models = ActivityTicket::find()->where(['activity_id' => $id])->asArray()->all();
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
-            if ($model->edit(Yii::$app->request->post('ActivityTicket'))){
+            if ($model->edit(Yii::$app->request->post('ActivityTicket'))) {
                 Yii::$app->getSession()->setFlash('success', '修改活动成功');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             Yii::$app->getSession()->setFlash('danger', $model->getFirstErrors());
             return $this->redirect(['create']);
         } else {
-            $model->apply_end_time=date('Y-m-d H:i:s',$model->apply_end_time);
-            $model->start_time=date('Y-m-d H:i:s',$model->start_time);
-            $model->end_time=date('Y-m-d H:i:s',$model->end_time);
+            $model->apply_end_time = date('Y-m-d H:i:s', $model->apply_end_time);
+            $model->start_time = date('Y-m-d H:i:s', $model->start_time);
+            $model->end_time = date('Y-m-d H:i:s', $model->end_time);
             return $this->render('update', [
                 'model' => $model,
                 'models' => $models,

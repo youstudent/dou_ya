@@ -9,11 +9,14 @@
 namespace frontend\controllers;
 
 
+use Behat\Gherkin\Loader\YamlFileLoader;
 use common\components\GetUserInfo;
 use common\models\Activity;
 use common\models\CollectActivity;
 use common\models\CollectMerchant;
+use common\models\Member;
 use common\models\Merchant;
+use common\models\MessageCode;
 use common\models\User;
 use yii\helpers\ArrayHelper;
 
@@ -25,7 +28,7 @@ class UserController extends ObjectController
      */
     public function actionGetUser()
     {
-        $data = User::findOne(['user_id' => GetUserInfo::actionGetUserId()]);
+        $data = Member::find()->select('name,sex,phone,headimgurl')->where(['id'=>GetUserInfo::actionGetUserId()])->one();
         if ($data) {
             return $this->returnAjax(1, '成功', $data);
         }
@@ -81,6 +84,42 @@ class UserController extends ObjectController
         }
         return $this->returnAjax(1, '成功', $data);
         
+    }
+    
+    /**
+     * 发送短信验证码
+     * @return mixed
+     */
+    public function actionSendSms(){
+        if (!\Yii::$app->request->isPost){
+            return $this->returnAjax(0,'请使用post');
+        }
+        $phone = \Yii::$app->request->post('phone');
+        if (!$phone){
+            return $this->returnAjax(0,'请输你要发送短信的手机号码');
+        }
+        $sms = new MessageCode();
+        return $sms->sms($phone)? $this->returnAjax(1,'发送短信成功'):$this->returnAjax(0,'发送短信失败');
+    }
+    
+    /**
+     *   绑定手机号码
+     * @return mixed
+     */
+    public function actionCheckCode(){
+        if (!\Yii::$app->request->isPost){
+            return $this->returnAjax(0,'请使用post');
+        }
+        $code = \Yii::$app->request->post('code');
+        $phone = \Yii::$app->request->post('phone');
+        if (!$code || !$phone){
+            return $this->returnAjax(0,'请输入短信验证码或手机号码');
+        }
+        $model = new MessageCode();
+        if ($model->Code($code,$phone)){
+            return $this->returnAjax(1,'绑定手机成功');
+        }
+            return $this->returnAjax(0,'验证码错或者短信超过有效期');
     }
     
 }

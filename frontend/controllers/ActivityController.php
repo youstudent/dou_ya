@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use Behat\Gherkin\Loader\YamlFileLoader;
 use common\components\GetUserInfo;
 use common\models\Activity;
 use common\models\ActivityTicket;
@@ -138,8 +139,10 @@ class ActivityController extends ObjectController
         if (!$data) {
             return $this->returnAjax(0, '没有活动订单');
         }
+        
         //格式化订单时间,,
         foreach ($data as $key => &$value) {
+            $value['activity_img']=\Yii::$app->params['img_domain'].Activity::findOne(['id'=>$value['activity_id']])->activity_img;
             $value['order_time'] = date('Y年m月d日', $value['order_time']);
             //查询订到总的价格
         }

@@ -114,8 +114,8 @@ class Activity extends \yii\db\ActiveRecord
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($this->file) {
-                    $pre = 'uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
-                    if ($this->file->saveAs($pre) == false) throw new Exception('上传图片失败');
+                    $pre = '/uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
+                    if ($this->file->saveAs(Yii::getAlias('@webroot').$pre) == false) throw new Exception('上传图片失败');
                     $this->activity_img = $pre;
                 }
                 $this->apply_end_time = strtotime($this->apply_end_time);
@@ -171,8 +171,8 @@ class Activity extends \yii\db\ActiveRecord
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($this->file) {
-                    $pre = 'uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
-                    if ($this->file->saveAs($pre) == false) throw new Exception('上传图片失败');
+                    $pre = '/uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
+                    if ($this->file->saveAs(Yii::getAlias('@webroot').$pre) == false) throw new Exception('上传图片失败');
                     $this->activity_img = $pre;
                 }
                 $this->apply_end_time = strtotime($this->apply_end_time);
@@ -226,7 +226,7 @@ class Activity extends \yii\db\ActiveRecord
             }
             //$value['activity_img'] = \Yii::$app->params['img_domain'] . $value['activity_img'];
             //查询票种
-            $value['price'] = '未票价';
+            $value['price'] = '0';
             if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $value['id']])->orderBy('price ASC')->one()) {
                 $value['price'] = $row->price;
             }
@@ -245,7 +245,7 @@ class Activity extends \yii\db\ActiveRecord
             $data['end_time'] = date('Y年m月d日 H:i:s', $data['end_time']);
             $data['activity_img'] = \Yii::$app->params['img_domain'] . $data['activity_img'];
             //查询票种
-            $data['price'] = '未票价';
+            $data['price'] = '0';
             if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $data['id']])->orderBy('price ASC')->one()) {
                 $value['price'] = $row->price;
             }
