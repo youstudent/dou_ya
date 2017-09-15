@@ -33,13 +33,42 @@ class MerchantController extends ObjectController
         if (!$type || !$merchant_id) {
             return $this->returnAjax(0, '请输入商家ID和type');
         }
-        if ($type == 1) {
-            $row = Activity::find()->andWhere(['>', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id, 'status' => 1])->asArray()->all();
+
+        //分页信息one
+        $pageSize = \Yii::$app->request->post('page');
+        if (!isset($pageSize) || empty($pageSize)) {
+            $page = 1;
         } else {
-            $row = Activity::find()->andWhere(['<', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id])->orWhere(['or', ['status' => 0]])->asArray()->all();
+            $page = $pageSize;
         }
+        //TODO::要改的size
+        $size = 3;
+        $limit = ($page-1) * $size;
+
+        if ($type == 1) {
+            $row = Activity::find()->andWhere(['>', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id, 'status' => 1])
+                ->asArray()
+                ->limit($size)
+                ->offset($limit)
+                ->all();
+            $count = Activity::find()->andWhere(['>', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id, 'status' => 1])->count();
+        } else {
+            $row = Activity::find()->andWhere(['<', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id])->orWhere(['or', ['status' => 0]])
+                ->asArray()
+                ->limit($size)
+                ->offset($limit)
+                ->all();
+            $count = Activity::find()->andWhere(['<', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id])->orWhere(['or', ['status' => 0]])->count();
+        }
+
+        // 分页信息two
+        $totalPage = ceil($count / $size);
+        $nowPage = $page;
+        $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
+
         if ($row) {
             $result = Activity::formatting($row);
+            $result['pageInfo'] = $pageInfo;
             return $this->returnAjax(1, '成功', $result);
         }
         return $this->returnAjax(0, '没有查询到商家活动数据');

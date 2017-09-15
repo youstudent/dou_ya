@@ -52,9 +52,30 @@ class UserController extends ObjectController
             return $this->returnAjax(0,'没有收藏活动');
         }
         $new_activity_id= ArrayHelper::map($Activity_id,'Activity_id','Activity_id');
+
+        //分页数据
+        $pageSize = \Yii::$app->request->post('page');
+        if (!isset($pageSize) || empty($pageSize)) {
+            $page = 1;
+        } else {
+            $page = $pageSize;
+        }
+        //TODO::要改的size
+        $size = 3;
+        $limit = ($page-1) * $size;
+        $count = Activity::find()->where(['id'=>$new_activity_id])->count();
+        $totalPage = ceil($count / $size);
+        $nowPage = $page;
+        $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
+
         //根据ID去查询活动
-        $data = Activity::find()->where(['id'=>$new_activity_id])->asArray()->all();
+        $data = Activity::find()->where(['id'=>$new_activity_id])
+            ->asArray()
+            ->limit($size)
+            ->offset($limit)
+            ->all();
         $result = Activity::formatting($data);
+        $result['pageInfo'] = $pageInfo;
         return $this->returnAjax(1,'成功',$result);
         
     }
@@ -76,12 +97,33 @@ class UserController extends ObjectController
             return $this->returnAjax(0, '没有收藏商家');
         }
         $new_merchant_id = ArrayHelper::map($merchant_id, 'merchant_id', 'merchant_id');
-        //根据ID去查询活动
-        $data = Merchant::find()->where(['id' => $new_merchant_id])->asArray()->all();
+
+        //分页数据
+        $pageSize = \Yii::$app->request->post('page');
+        if (!isset($pageSize) || empty($pageSize)) {
+            $page = 1;
+        } else {
+            $page = $pageSize;
+        }
+        //TODO::要改的size
+        $size = 3;
+        $limit = ($page-1) * $size;
+        $count = Merchant::find()->where(['id' => $new_merchant_id])->count();
+        $totalPage = ceil($count / $size);
+        $nowPage = $page;
+        $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
+
+        //根据ID去查询商家
+        $data = Merchant::find()->where(['id' => $new_merchant_id])
+            ->asArray()
+            ->limit($size)
+            ->offset($limit)
+            ->all();
         foreach ($data as $key => &$value) {
             $value['in_activity'] = Merchant::getInActivity($value['id']);
             $value['history_activity'] = Merchant::getHistoryActivity($value['id']);
         }
+        $data['pageInfo'] = $pageInfo;
         return $this->returnAjax(1, '成功', $data);
         
     }
