@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Yii;
 
 /**
@@ -63,5 +64,20 @@ class ActivityData extends \yii\db\ActiveRecord
      */
     public function getActivity(){
         return $this->hasOne(Activity::className(),['id'=>'activity_id']);
+    }
+    
+    
+    /**
+     * 更新活动的数据
+     * @param $new_orde
+     */
+    public function edit($new_order){
+       $data =  ActivityData::findOne(['activity_id'=>$new_order['activity_id']]);
+       $data-> order_num =$data-> order_num+1;
+       $data-> order_number_num =OrderTicket::find()->where(['order_id'=>$new_order['id']])->count();
+       $data-> transaction_money =$data-> transaction_money+$new_order['sell_all'];
+       $data-> footings =$data-> footings+$new_order['clearing_all'];
+       return $data->save(false);
+       
     }
 }

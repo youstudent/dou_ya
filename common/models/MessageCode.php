@@ -2,6 +2,7 @@
 
 namespace common\models;
 use common\components\GetUserInfo;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Yii;
 use Flc\Alidayu\App;
 use Flc\Alidayu\Client;
@@ -103,8 +104,7 @@ class MessageCode extends \yii\db\ActiveRecord
             ->setSmsTemplateCode($template);
     
         $resp = $client->execute($req);
-        // 返回结果
-        return true;
+        return $resp->result->success;
     }
     
     /**
@@ -143,6 +143,6 @@ class MessageCode extends \yii\db\ActiveRecord
         //根据订单查询活动
       $data  =   Order::findOne(['id' => $order_id]);
       $name =$data->activity_name;
-      $this->SendSms(13219890986,$name,'','SMS_95475065');
+     return  $this->SendSms('13219890986',$name,'','SMS_95475065');
     }
 }
