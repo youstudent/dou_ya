@@ -35,10 +35,33 @@ class ActivityController extends ObjectController
         $select = ['id', 'merchant_name', 'activity_name',
                   'activity_img', 'start_time', 'end_time',
                   'collect_number', 'allpage_view','apply_end_time'];
+
+        //分页数据
+        $pageSize = \Yii::$app->request->post('page');
+        if (!isset($pageSize) || empty($pageSize)) {
+            $page = 1;
+        } else {
+            $page = $pageSize;
+        }
+        //TODO::要改的size
+        $size = 3;
+        $limit = ($page-1) * $size;
+        $count = Activity::find()->select('id')->where(['status'=>1])->count();
+        $totalPage = ceil($count / $size);
+        $nowPage = $page;
+        $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
+
         //查询正在进行的活动
-        $data = Activity::find()->select($select)->where(['status'=>1])->orderBy("$orderBy DESC")->asArray()->all();
+        $data = Activity::find()->select($select)->where(['status'=>1])
+            ->orderBy("$orderBy DESC")
+            ->asArray()
+            ->limit($size)
+            ->offset($limit)
+            ->all();
+
         if ($data) {
             $result = Activity::formatting($data);
+            $result['pageInfo'] = $pageInfo;
             return $this->returnAjax(1, '成功', $result);
         }
         return $this->returnAjax(0, '暂未活动');
@@ -135,7 +158,28 @@ class ActivityController extends ObjectController
        /* if (empty($type)) {
             return $this->returnAjax(0, '用户user_id不能为空 type:0待支付1已支付');
         }*/
-        $data = Order::find()->where(['user_id' => GetUserInfo::actionGetUserId(), 'status' => $type])->orderBy('order_time DESC')->asArray()->all();
+
+        //分页数据
+        $pageSize = \Yii::$app->request->post('page');
+        if (!isset($pageSize) || empty($pageSize)) {
+            $page = 1;
+        } else {
+            $page = $pageSize;
+        }
+        //TODO::要改的size
+        $size = 3;
+        $limit = ($page-1) * $size;
+        $count = Order::find()->where(['user_id' => GetUserInfo::actionGetUserId(), 'status' => $type])->count();
+        $totalPage = ceil($count / $size);
+        $nowPage = $page;
+        $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
+
+        $data = Order::find()->where(['user_id' => GetUserInfo::actionGetUserId(), 'status' => $type])
+            ->orderBy('order_time DESC')
+            ->asArray()
+            ->limit($size)
+            ->offset($limit)
+            ->all();
         if (!$data) {
             return $this->returnAjax(0, '没有活动订单');
         }
@@ -150,6 +194,7 @@ class ActivityController extends ObjectController
             $value['order_time'] = date('Y年m月d日', $value['order_time']);
             //查询订到总的价格
         }
+        $data['pageInfo'] = $pageInfo;
         return $this->returnAjax(1, '成功', $data);
     }
     

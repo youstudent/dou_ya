@@ -28,8 +28,28 @@ class RefundOrderController extends ObjectController
             return $this->returnAjax(0, '请使用POST方式');
         }
         $user_id = GetUserInfo::actionGetUserId();
+
+        //分页数据
+        $pageSize = \Yii::$app->request->post('page');
+        if (!isset($pageSize) || empty($pageSize)) {
+            $page = 1;
+        } else {
+            $page = $pageSize;
+        }
+        //TODO::要改的size
+        $size = 3;
+        $limit = ($page-1) * $size;
+        $count = Order::find()->select(['order_number', 'activity_name', 'status', 'id','activity_id'])->where(['user_id' => $user_id, 'status' => [2, 3, 4]])->count();
+        $totalPage = ceil($count / $size);
+        $nowPage = $page;
+        $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
+
         //查询用户退款订单
-        $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id','activity_id'])->where(['user_id' => $user_id, 'status' => [2, 3, 4]])->asArray()->all();
+        $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id','activity_id'])->where(['user_id' => $user_id, 'status' => [2, 3, 4]])
+            ->asArray()
+            ->limit($size)
+            ->offset($limit)
+            ->all();
         if (!$data) {
             return $this->returnAjax(0, '没有退款信息');
         }
@@ -52,6 +72,8 @@ class RefundOrderController extends ObjectController
             }*/
             
         }
+        $data['pageInfo'] = $pageInfo;
+
         return $this->returnAjax(1, '成功', $data);
         
     }
