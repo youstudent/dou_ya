@@ -90,7 +90,7 @@ class MerchantController extends ObjectController
         if (!$data) {
             return $this->returnAjax(0, '未查询到数据');
         }
-        $data['logo'] = \Yii::$app->params['img_domain'] . $data['logo'];
+        $data['logo'] = \Yii::$app->params['imgs'] . $data['logo'];
         $data['collect_merchant'] = CollectMerchant::find()->where(['user_id' =>$user_id, 'merchant_id' => $merchant_id])->exists();
         
         return $this->returnAjax(1, '成功', $data);

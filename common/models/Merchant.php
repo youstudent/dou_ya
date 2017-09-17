@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\components\ImgUrl;
 use backend\models\Salesman;
 use Yii;
 use yii\db\Exception;
@@ -93,20 +94,24 @@ class Merchant extends \yii\db\ActiveRecord
             $this->created_at = time();
             //上传封面
             if ($this->file){
-                $pre = 'uploads/merchant/'.rand(999,9999).time().'.'.$this->file->extension;
-                if ($this->file->saveAs(Yii::getAlias('@webroot').'/'.$pre)){
-                    $this->logo=$pre;
+                $activityUrl = '/upload/merchant/';
+                $Url = ImgUrl::Url($activityUrl);
+                $pre = rand(999,9999).time().'.'.$this->file->extension;
+                if ($this->file->saveAs($Url.$pre)){
+                    $this->logo=$activityUrl.$pre;
                 }
             }
             if ($this->save(false)){
                 //上传合同图片
                 if ($this->imgs){
                     foreach ($this->imgs as $file) {
+                        $activityUrl = '/upload/merchant/';
+                        $Url = ImgUrl::Url($activityUrl);
+                        $pre = rand(999,9999).time().'.'.$file->extension;
                         $img = new MerchantImg();
-                        $pre = 'uploads/merchant/'.rand(999,9999).time().'.'.$file->extension;
-                        $file->saveAs(Yii::getAlias('@webroot').'/'.$pre);
+                        $file->saveAs($Url.$pre);
                         $img->merchant_id=$this->id;
-                        $img->img=$pre;
+                        $img->img=$activityUrl.$pre;
                         $img->save();
                     }
                 }

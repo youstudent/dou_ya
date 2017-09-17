@@ -6,8 +6,10 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Activity */
 /* @var $form yii\widgets\ActiveForm */
-
-
+$class ='';
+if($model->limitation_num == 0 ){
+    $class ='hide';
+}
 ?>
 
 <div class="activity-form">
@@ -23,7 +25,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'activity_name')->textInput() ?>
 
     <?= $form->field($model, 'file')->fileInput()?>
-    <?= Html::img('@web/'.$model->activity_img,['width'=> '100px', 'height'=> '100px'])?>
+    <?= Html::img(Yii::$app->params['imgs'].$model->activity_img,['width'=> '100px', 'height'=> '100px'])?>
     <?= $form->field($model, 'activity_address')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'apply_end_time')->widget(\kartik\datetime\DateTimePicker::classname(), [
@@ -53,7 +55,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'linkman')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'limitation_num')->radioList(\common\models\Activity::$num)?>
-    <div class="hide" id="limit">
+    <div class="<?= $class?>" id="limit">
         <?= $form->field($model, 'purchase_limitation')->textInput(['style'=>'width:50px;height:34px'])->label(false) ?>
     </div>
 

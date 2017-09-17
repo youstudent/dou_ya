@@ -2,9 +2,11 @@
 
 namespace common\models;
 
+use backend\components\ImgUrl;
 use rmrevin\yii\fontawesome\FA;
 use spec\Prophecy\Doubler\ClassPatch\ReflectionClassNewInstancePatchSpec;
 use Yii;
+use yii\helpers\FileHelper;
 use yii\helpers\Url;
 
 /**
@@ -58,12 +60,15 @@ class Banner extends \yii\db\ActiveRecord
             $this->created_at = time();
             if ($this->save()){
                 if ($this->banner){
+                    // 上传图片路径并创建文件目录
+                    $bannerUrl = '/upload/banner/';
+                    $directory  = ImgUrl::Url($bannerUrl);
                     foreach ($this->banner as $file) {
                         $img = new BannerImg();
-                        $pre = 'uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
-                        $file->saveAs(Yii::getAlias('@webroot').'/'.$pre);
+                        $pre = rand(999,9999).time().'.'.$file->extension;
+                        $file->saveAs($directory.$pre);
                         $img->banner_id=$this->id;
-                        $img->img=$pre;
+                        $img->img= $bannerUrl.$pre;
                         $img->save();
                     }
                 }
@@ -90,12 +95,15 @@ class Banner extends \yii\db\ActiveRecord
                         $this->addError('banner','已经有四张图片,请删除在上传');
                         return false;
                     }
+                    // 上传图片路径并创建文件目录
+                    $bannerUrl = '/upload/banner/';
+                    $directory  = ImgUrl::Url($bannerUrl);
                     foreach ($this->banner as $file) {
                         $img = new BannerImg();
-                        $pre = 'uploads/banner/'.rand(999,9999).time().'.'.$file->extension;
-                        $file->saveAs(Yii::getAlias('@webroot').'/'.$pre);
+                        $pre = rand(999,9999).time().'.'.$file->extension;
+                        $file->saveAs($directory.$pre);
                         $img->banner_id=$this->id;
-                        $img->img=$pre;
+                        $img->img=$bannerUrl.$pre;
                         $img->save();
                     }
                 }

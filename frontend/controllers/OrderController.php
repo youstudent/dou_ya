@@ -100,12 +100,12 @@ class OrderController extends ObjectController
     }
     
     /**
-     * 用户下单
+     * 用户下单 加支付
      * @return mixed
      */
     public function actionOrder()
     {
-       
+        
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请求方式POST');
         }
@@ -133,8 +133,8 @@ class OrderController extends ObjectController
             $order->activity_id = $row['id'];
             $order->user_id = $member->id;
             if ($order->save(false) == false) throw new Exception('保存订单失败');
-            //保存票种
             
+            //保存票种
             foreach ($tickets as $value) {
                 $ActivityTicket = ActivityTicket::findOne(['id' => $value['id']]);
                 for ($i = 1; $i <= $value['num']; $i++) {
@@ -148,28 +148,29 @@ class OrderController extends ObjectController
                     $OrderTicket->prize = $ActivityTicket->price;
                     $OrderTicket->settlement = $ActivityTicket->settlement;
                     $OrderTicket->title = $ActivityTicket->title;
-                   if ($OrderTicket->save(false) == false) throw new Exception('保存订单票种失败');
+                    if ($OrderTicket->save(false) == false) throw new Exception('保存订单票种失败');
                 }
             }
+            //更新待支付订单
             $new_order = Order::findOne(['id' => $order->id]);
             $new_order->sell_all = OrderTicket::find()->select('sum(prize)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(prize)'];
             $new_order->clearing_all = OrderTicket::find()->select('sum(settlement)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(settlement)'];
             $new_order->order_num = OrderTicket::find()->where(['order_id' => $order->id])->count();
             if ($new_order->save(false) == false) throw new Exception('订单数据更新失败');
             $transaction->commit();
-            //下单成功增加活动数据
-            $ActivityData = new ActivityData();
-            if (!$res = $ActivityData->edit($new_order)){
-                return  $this->returnAjax(0, '更新活动数据失败');
-            }
             //订单提交后台
-            $weachat =new Wechat();
-            
-            $res = $weachat->createWechatOrder($new_order,'SJFIJIJ');//$this->login_member['openid']
-            if($res !== false){
-               return  $this->returnAjax(1, $weachat->message, $res);
+            $weachat = new Wechat();
+            //TODO 要修改的:openid
+            $res = $weachat->createWechatOrder($new_order, 'SJFIJIJ');//$this->login_member['openid']
+            if ($res !== false) {
+                //支付成功 才更新活动数据总数据
+                $ActivityData = new ActivityData();
+                if (!$res = $ActivityData->edit($new_order)) {
+                    return $this->returnAjax(0, '更新活动数据失败');
+                }
+                return $this->returnAjax(1, $weachat->message, $res);
             }
-               return  $this->returnAjax(0, $weachat->message);
+            return $this->returnAjax(0, $weachat->message);
         } catch (\Exception $e) {
             $transaction->rollBack();
             return $this->returnAjax(0, current($order->getFirstErrors()));
@@ -250,15 +251,18 @@ class OrderController extends ObjectController
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             foreach ($data['code'] as $v){
+                //根据 票号查找活动是否
                 $row = OrderTicket::findOne(['code'=>$v,'phone'=>$data['phone'],'status'=>0]);
                 if (!$row){
                     throw new Exception('验票中有不正确的验证码');
                 }
                 $id=$row->order_id;
-                $row->status=0;
+                $row->status=1;
                 if ($row->save(false)==false ) throw new \Exception('验票失败');
             }
             $transaction->commit();
+            //验票成功后修改该订单已验票的金额[售卖价,结算价]
+            OrderTicket::updateOrder($data);
             //验票成功 发送短信给用户
             $MessageCode = new MessageCode();
             if ($MessageCode->send($id)){
@@ -284,6 +288,26 @@ class OrderController extends ObjectController
             return $this->returnAjax(1, $order->message, $re);
         }
             return $this->returnAjax(0, $order->message);
+        
+    }
+    
+    /**
+     * 订单的支付
+     * @return mixed
+     */
+    public function actionPay(){
+        $order  = new Order();
+        //TODO 要修改的:openid
+        $re = $order->pay(\Yii::$app->request->post('order_id'),'jkjkg');
+        if ($re !==false){  //$this->login_member['openid']
+            return $this->returnAjax(1,'成功',$re);
+        }
+        if ($order->message!=='success'){
+            $re =$order->message;
+        }else{
+            $re ='微信支付异常, 请稍后再试';
+        }
+           return $this->returnAjax(0,$re);
         
     }
     

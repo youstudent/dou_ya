@@ -89,4 +89,22 @@ class OrderTicket extends \yii\db\ActiveRecord
         $data['ticket']=$datas;
         return $data;
     }
+    
+    
+    /**
+     * 修改该订单的已验票的 金额
+     * @param $data
+     * @return bool
+     */
+    public static function updateOrder($data){
+       //查询该用户 提供的手机号和验证码查找数据
+      $rows  =   self::find()->where(['phone'=>$data['phone'],'code'=>$data['code']])->asArray()->all();
+      $order=   Order::findOne(['id'=>['order_id']]);
+      foreach ($rows as $key=>$value){
+         $order->sell_all_checking=$order->sell_all_checking+$value['prize'];
+         $order->clearing_all_checking=$order->clearing_all_checking+$value['settlement'];
+         $order->order_num=$order->order_num+1;
+      }
+        return $order->save(false);
+    }
 }

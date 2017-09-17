@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\controllers;
+use backend\components\ImgUrl;
 use common\models\ActivityTicket;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Yii;
@@ -103,6 +104,11 @@ class ActivityController extends Controller
             Yii::$app->getSession()->setFlash('danger', $model->getFirstErrors());
             return $this->redirect(['create']);
         } else {
+            if ($model->purchase_limitation) {
+                $model->limitation_num = 1;
+            } else {
+                $model->limitation_num = 0;
+            }
             $model->apply_end_time = date('Y-m-d H:i:s', $model->apply_end_time);
             $model->start_time = date('Y-m-d H:i:s', $model->start_time);
             $model->end_time = date('Y-m-d H:i:s', $model->end_time);
@@ -150,14 +156,16 @@ class ActivityController extends Controller
      */
     public function actions()
     {
+        $bannerUrl = '/upload/activity/';
+        $Url  =ImgUrl::Url($bannerUrl);
         return [
             'upload' => [
                 'class' => 'kucha\ueditor\UEditorAction',
                 'config' => [
-                    'imageUrlPrefix' => Yii::$app->params['img_domain'],
-                    'imagePathFormat' => Yii::getAlias('@web')."/uploads/activity/{time}{rand:6}"
+                    'imageUrlPrefix' => Yii::$app->params['imgs'],
+                    'imagePathFormat' => $Url."{time}{rand:6}",
                    // "imageUrlPrefix"  => "www.douya.com",//图片访问路径前缀
-                   // "imagePathFormat" => "/uploads/activity/{time}{rand:6}" //上传保存路径{yyyy}{mm}{dd}
+                 // "imagePathFormat" => "/upload/activity/{time}{rand:6}" //上传保存路径{yyyy}{mm}{dd}
                 ],
             ]
         ];

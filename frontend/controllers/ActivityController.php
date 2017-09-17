@@ -33,9 +33,9 @@ class ActivityController extends ObjectController
             return $this->returnAjax(0, '必须传参数!!type:created_at最新,type:allpage_view最热');
         }
         $select = ['id', 'merchant_name', 'activity_name',
-                  'activity_img', 'start_time', 'end_time',
-                  'collect_number', 'allpage_view','apply_end_time'];
-
+            'activity_img', 'start_time', 'end_time',
+            'collect_number', 'allpage_view', 'apply_end_time'];
+        
         //分页数据
         $pageSize = \Yii::$app->request->post('page');
         if (!isset($pageSize) || empty($pageSize)) {
@@ -45,24 +45,24 @@ class ActivityController extends ObjectController
         }
         //TODO::要改的size
         $size = \Yii::$app->params['size'];
-        $limit = ($page-1) * $size;
-        $count = Activity::find()->select('id')->where(['status'=>1])->count();
+        $limit = ($page - 1) * $size;
+        $count = Activity::find()->select('id')->where(['status' => 1])->andWhere(['<', 'end_time', time()])->count();
         $totalPage = ceil($count / $size);
         $nowPage = $page;
-        $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
-
+        $pageInfo = ['totalPage' => $totalPage, 'nowPage' => $nowPage];
+        
         //查询正在进行的活动
-        $data = Activity::find()->select($select)->where(['status'=>1])
+        $data = Activity::find()->select($select)->where(['status' => 1])->andWhere(['<', 'end_time', time()])
             ->orderBy("$orderBy DESC")
             ->asArray()
             ->limit($size)
             ->offset($limit)
             ->all();
-
+        
         if ($data) {
             $result = Activity::formatting($data);
-            $datas['data']=$result;
-            $datas['pageInfo']=$pageInfo;
+            $datas['data'] = $result;
+            $datas['pageInfo'] = $pageInfo;
             return $this->returnAjax(1, '成功', $datas);
         }
         return $this->returnAjax(0, '暂未活动');
@@ -82,14 +82,14 @@ class ActivityController extends ObjectController
             return $this->returnAjax(0, '请传参数!!search:商家名或者活动名');
         }
         $select = ['id', 'merchant_name', 'activity_name',
-                  'activity_img', 'start_time', 'end_time',
-                  'collect_number', 'allpage_view','apply_end_time'];
-        $data = Activity::find()->select($select)->where(['or', ['like', 'merchant_name', $keyword], ['like', 'activity_name', $keyword]]) ->andWhere(['status'=>1])->asArray()->all();
+            'activity_img', 'start_time', 'end_time',
+            'collect_number', 'allpage_view', 'apply_end_time'];
+        $data = Activity::find()->select($select)->where(['or', ['like', 'merchant_name', $keyword], ['like', 'activity_name', $keyword]])->andWhere(['status' => 1])->asArray()->all();
         if ($data) {
             $result = Activity::formatting($data);
             return $this->returnAjax(1, '成功', $result);
         }
-        return $this->returnAjax(0, '未搜索到');
+        return $this->returnAjax(0, '该商家或活动已下线');
     }
     
     /**
@@ -107,43 +107,21 @@ class ActivityController extends ObjectController
         }
         $data = Activity::find()->where(['id' => $activity_id])->asArray()->one();
         if ($data) {
-            $row = Merchant::findOne(['id'=>$data['merchant_id']]);
+            $row = Merchant::findOne(['id' => $data['merchant_id']]);
             // 返回查询的活动详情的结果
             $result = Activity::details($data);
-            $result['logo']=\Yii::$app->params['img_domain'].$row->logo;
-            $result['merchant_label']=$row->merchant_label;
-            $result['collect_merchant']=CollectMerchant::find()->where(['user_id'=>GetUserInfo::GetUserId(),'merchant_id'=>$data['merchant_id']])->exists();
-            $result['collect_activity']=CollectActivity::find()->where(['user_id'=>GetUserInfo::GetUserId(),'activity_id'=>$data['id']])->exists();
+            $result['logo'] = \Yii::$app->params['imgs'] . $row->logo;
+            $result['merchant_label'] = $row->merchant_label;
+            $result['collect_merchant'] = CollectMerchant::find()->where(['user_id' => GetUserInfo::GetUserId(), 'merchant_id' => $data['merchant_id']])->exists();
+            $result['collect_activity'] = CollectActivity::find()->where(['user_id' => GetUserInfo::GetUserId(), 'activity_id' => $data['id']])->exists();
             // 增加活动的点击率
-            $results = Activity::findOne(['id'=>$activity_id]);
-            $results->allpage_view=$results->allpage_view  +1;
+            $results = Activity::findOne(['id' => $activity_id]);
+            $results->allpage_view = $results->allpage_view + 1;
             $results->save(false);
             return $this->returnAjax(1, '成功', $result);
         }
         return $this->returnAjax(0, '未找到活动详情activity_id为' . $activity_id);
     }
-    
-    
-    /**
-     *  更新活动浏览量
-     * @return mixed
-     */
-   /* public function actionAllpageView()
-    {
-        if (!\Yii::$app->request->isPost) {
-            return $this->returnAjax(0, '请用POST请求方式');
-        }
-        $activity_id = \Yii::$app->request->post('activity_id');
-        if (!$activity_id) {
-            return $this->returnAjax(0, '请传活动ID参数');
-        }
-        if ($result = Activity::findOne(['id' => $activity_id])) {
-            $result->allpage_view = $result->allpage_view + 1;
-            return $result->save(false) ? $this->returnAjax(1, '成功') : $this->returnAjax(0, '增加浏览量失败ID为' . $activity_id);
-        }
-        return $this->returnAjax(0, '未查询活动数据ID'.$activity_id);
-    }*/
-    
     
     /**
      * 查询我的活动 (已支付|待支付)
@@ -154,12 +132,8 @@ class ActivityController extends ObjectController
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
-        //$user_id = \Yii::$app->request->post('user_id');
+        // type 0待支付  1已支付
         $type = \Yii::$app->request->post('type');
-       /* if (empty($type)) {
-            return $this->returnAjax(0, '用户user_id不能为空 type:0待支付1已支付');
-        }*/
-
         //分页数据
         $pageSize = \Yii::$app->request->post('page');
         if (!isset($pageSize) || empty($pageSize)) {
@@ -169,12 +143,12 @@ class ActivityController extends ObjectController
         }
         //TODO::要改的size
         $size = \Yii::$app->params['size'];
-        $limit = ($page-1) * $size;
+        $limit = ($page - 1) * $size;
         $count = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => $type])->count();
         $totalPage = ceil($count / $size);
         $nowPage = $page;
-        $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
-
+        $pageInfo = ['totalPage' => $totalPage, 'nowPage' => $nowPage];
+        
         $data = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => $type])
             ->orderBy('order_time DESC')
             ->asArray()
@@ -187,10 +161,10 @@ class ActivityController extends ObjectController
         
         //格式化订单时间,,
         foreach ($data as $key => &$value) {
-            if ($row = Activity::findOne(['id'=>$value['activity_id']])){
-                $value['activity_img']=\Yii::$app->params['img_domain'].$row->activity_img;
-            }else{
-                $value['activity_img']='';
+            if ($row = Activity::findOne(['id' => $value['activity_id']])) {
+                $value['activity_img'] = \Yii::$app->params['imgs'] . $row->activity_img;
+            } else {
+                $value['activity_img'] = '';
             }
             $value['order_time'] = date('Y年m月d日', $value['order_time']);
             //查询订到总的价格
@@ -223,14 +197,12 @@ class ActivityController extends ObjectController
         //查询票种
         $ticket = ActivityTicket::find()->select('id,price,title')->orderBy('price ASC')->where(['activity_id' => $activity_id])->asArray()->all();
         //合并活动和票种
-        foreach ($ticket as &$value){
-            $value['num']=0;
+        foreach ($ticket as &$value) {
+            $value['num'] = 0;
         }
-        $data['ticket']=$ticket;
-        //$new_data = ArrayHelper::merge($ticket, $data);
-    
+        $data['ticket'] = $ticket;
         return $this->returnAjax(1, '成功', $data);
-    
+        
     }
     
     /**
@@ -245,7 +217,7 @@ class ActivityController extends ObjectController
         $model = new CollectActivity();
         //接收参数
         $model->load(\Yii::$app->request->post(), '');
-        $model->user_id=GetUserInfo::GetUserId();
+        $model->user_id = GetUserInfo::GetUserId();
         if (!Activity::find()->where(['id' => $model->activity_id])->exists()) {
             return $this->returnAjax(0, '该活动不存在ID' . $model->activity_id);
         }
@@ -254,22 +226,22 @@ class ActivityController extends ObjectController
         try {
             $row = CollectActivity::findOne(['user_id' => $model->user_id, 'activity_id' => $model->activity_id]);
             $Activity = Activity::findOne(['id' => $model->activity_id]);
-            $re =true;
+            $re = true;
             if ($row) {
                 $row->delete();
                 $Activity->collect_number = $Activity->collect_number - 1;
-                $re=false;
+                $re = false;
             } else {
                 //收藏活动
                 $model->created_at = time();
-                $re=true;
+                $re = true;
                 if ($model->save() == false) throw new Exception('收藏活动失败');
                 
                 $Activity->collect_number = $Activity->collect_number + 1;
             }
             if ($Activity->save(false) == false) throw new Exception('更新活动收藏数失败');
             $transaction->commit();
-            return $this->returnAjax(1, $re?'收藏成功':'取消成功',$re);
+            return $this->returnAjax(1, $re ? '收藏成功' : '取消成功', $re);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->returnAjax(0, current($model->getFirstErrors()));
@@ -289,7 +261,7 @@ class ActivityController extends ObjectController
         $model = new CollectMerchant();
         //接收参数
         $model->load(\Yii::$app->request->post(), '');
-        $model->user_id=GetUserInfo::GetUserId();
+        $model->user_id = GetUserInfo::GetUserId();
         //查询商家是否存在
         if (!Merchant::find()->where(['id' => $model->merchant_id])->exists()) {
             return $this->returnAjax(0, '该商家不存在ID' . $model->merchant_id);
@@ -297,18 +269,18 @@ class ActivityController extends ObjectController
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             //查询用户是否收藏该商家
-            $re =true;
+            $re = true;
             $row = CollectMerchant::findOne(['user_id' => $model->user_id, 'merchant_id' => $model->merchant_id]);
             if ($row) {
                 $row->delete();
-                $re=false;
+                $re = false;
             } else {
                 $model->created_at = time();
                 if ($model->save() == false) throw new Exception('收藏商家失败');
-                $re=true;
+                $re = true;
             }
             $transaction->commit();
-            return $this->returnAjax(1, $re?'收藏成功':'取消成功',$re);
+            return $this->returnAjax(1, $re ? '收藏成功' : '取消成功', $re);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->returnAjax(0, current($model->getFirstErrors()));

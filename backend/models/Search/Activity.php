@@ -46,6 +46,7 @@ class Activity extends ActivityModel
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => ['pageSize' => Yii::$app->params['pageSize'],],
         ]);
 
         $this->load($params);

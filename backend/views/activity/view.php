@@ -36,7 +36,7 @@ use yii\widgets\DetailView;
                 'format' => 'raw',
                 'value' =>  function($model){
                     if ($model->activity_img){
-                        return  Html::img('@web/'.$model->activity_img, ['width'=> '100px', 'height'=> '100px']);
+                        return  Html::img(Yii::$app->params['imgs'].$model->activity_img, ['width'=> '100px', 'height'=> '100px']);
                     }
                     return '还未上传图片';
             
@@ -67,7 +67,13 @@ use yii\widgets\DetailView;
             ],
             'phone',
             'linkman',
-            'purchase_limitation',
+            [
+                'attribute' => 'purchase_limitation',
+                'value'=>
+                    function($model){
+                        return $model->purchase_limitation?$model->purchase_limitation:'无限制';   //主要通过此种方式实现
+                    },
+            ],
             'on_line',
             [
                 'attribute' => 'created_at',

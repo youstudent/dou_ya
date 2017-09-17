@@ -20,7 +20,7 @@ class BannerController extends ObjectController
             //查询banner图片
             $data = BannerImg::find()->select('img,id')->where(['banner_id'=>$row['id']])->asArray()->all();
             foreach ($data as $key=>&$value){
-                $value['img']=\Yii::$app->params['img_domain'].$value['img'];
+                $value['img']=\Yii::$app->params['imgs'].$value['img'];
             }
             $row['imgs']=$data;
           return $this->returnAjax(1,'成功',$row);

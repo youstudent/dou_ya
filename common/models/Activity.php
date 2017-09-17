@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\components\ImgUrl;
 use PHPUnit\Framework\Constraint\IsFalse;
 use Yii;
 use yii\db\Exception;
@@ -45,7 +46,7 @@ class Activity extends \yii\db\ActiveRecord
     {
         return [
             [['merchant_name'],'validateName','skipOnEmpty' => false,'skipOnError' => false],
-            [['activity_address','activity_name','merchant_name','apply_end_time','start_time','end_time','phone','on_line','linkman','content'], 'required'],
+            [['activity_address','activity_name','merchant_name','apply_end_time','start_time','end_time','phone','on_line','linkman','content','limitation_num'], 'required'],
             [['phone', 'purchase_limitation','on_line','merchant_id'], 'integer'],
             [['content'], 'string'],
             [['merchant_name'], 'string', 'max' => 30],
@@ -53,7 +54,8 @@ class Activity extends \yii\db\ActiveRecord
             [['activity_address','activity_img'], 'string', 'max' => 100],
             [['allpage_view'],'safe'],
             [['file'], 'file','extensions' => 'png,jpg'],
-            [['apply_end_time','start_time','end_time'],'time']
+            [['apply_end_time','start_time','end_time'],'time'],
+            [['limitation_num'],'validateLimit']
         ];
     }
 
@@ -74,7 +76,7 @@ class Activity extends \yii\db\ActiveRecord
             'phone' => '电话',
             'linkman' => '联系人',
             'purchase_limitation' => '单人限购量',
-            'limitation_num' => '单人限购量',
+            'limitation_num' => '单人限购类型',
             'on_line' => '总参与上限',
             'content' => '内容',
             'created_at' => '创建时间',
@@ -84,6 +86,21 @@ class Activity extends \yii\db\ActiveRecord
             'status' => '状态',
             'merchant_id' => '商家ID',
         ];
+    }
+    
+    
+    /**
+     * 验证限制人数
+     * @param $attribute
+     * @param $params
+     */
+    public function validateLimit($attribute,$params){
+        if ($this->limitation_num ==1) {
+            if (empty($this->purchase_limitation)){
+                $this->addError('purchase_limitation','有限必须选择限制人数');
+            }
+        }
+        
     }
     
     //验证商家名字
@@ -105,7 +122,11 @@ class Activity extends \yii\db\ActiveRecord
         
     }
     
-    
+    /**
+     * 验证日期
+     * @param $attribute
+     * @param $params
+     */
     public function validateAfterNow($attribute, $params)
     {
         if(strtotime($this->apply_end_time) < time()) {
@@ -126,9 +147,11 @@ class Activity extends \yii\db\ActiveRecord
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($this->file) {
-                    $pre = 'uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
-                    if ($this->file->saveAs(Yii::getAlias('@webroot').'/'.$pre) == false) throw new Exception('上传图片失败');
-                    $this->activity_img = $pre;
+                    $activityUrl = '/upload/activity/';
+                    $Url = ImgUrl::Url($activityUrl);
+                    $pre = rand(999, 9999) . time() . '.' . $this->file->extension;
+                    if ($this->file->saveAs($Url.$pre) == false) throw new Exception('上传图片失败');
+                    $this->activity_img = $activityUrl.$pre;
                 }
                 $this->apply_end_time = strtotime($this->apply_end_time);
                 $this->start_time = strtotime($this->start_time);
@@ -189,13 +212,18 @@ class Activity extends \yii\db\ActiveRecord
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($this->file) {
-                    $pre = 'uploads/activity/' . rand(999, 9999) . time() . '.' . $this->file->extension;
-                    if ($this->file->saveAs(Yii::getAlias('@webroot').'/'.$pre) == false) throw new Exception('上传图片失败');
-                    $this->activity_img = $pre;
+                    $activityUrl = '/upload/activity/';
+                    $Url = ImgUrl::Url($activityUrl);
+                    $pre = rand(999, 9999) . time() . '.' . $this->file->extension;
+                    if ($this->file->saveAs($Url.$pre) == false) throw new Exception('上传图片失败');
+                    $this->activity_img = $activityUrl.$pre;
                 }
                 $this->apply_end_time = strtotime($this->apply_end_time);
                 $this->end_time = strtotime($this->end_time);
                 $this->start_time=strtotime($this->start_time);
+                if ($this->limitation_num==0){
+                    $this->purchase_limitation='';
+                }
                 $this->status = 1;
                 if ($this->save(false) == false) throw new Exception('保存活动失败');
                 $row = [];
@@ -210,6 +238,9 @@ class Activity extends \yii\db\ActiveRecord
                         'settlement' => $data['settlement'][$k],
                     ];
                 }
+                /**
+                 *  删除该活动之前添加的票种,按修改的票种为准
+                 */
                 ActivityTicket::deleteAll(['activity_id'=>$this->id]);
                 foreach ($row as $value) {
                     $model = new  ActivityTicket();
@@ -240,7 +271,7 @@ class Activity extends \yii\db\ActiveRecord
             $value['start_time'] = date('m月d日', $value['start_time']);
             $value['end_time'] = date('m月d日', $value['end_time']);
             if ($value['activity_img']){
-                $value['activity_img'] = \Yii::$app->params['img_domain'] . $value['activity_img'];
+                $value['activity_img'] = \Yii::$app->params['imgs'] . $value['activity_img'];
             }
             //$value['activity_img'] = \Yii::$app->params['img_domain'] . $value['activity_img'];
             //查询票种
@@ -261,7 +292,7 @@ class Activity extends \yii\db\ActiveRecord
             $data['start_time'] = date('Y年m月d日 H:i:s', $data['start_time']);
             $data['apply_end_time'] = date('Y年m月d日 H:i:s', $data['apply_end_time']);
             $data['end_time'] = date('Y年m月d日 H:i:s', $data['end_time']);
-            $data['activity_img'] = \Yii::$app->params['img_domain'] . $data['activity_img'];
+            $data['activity_img'] = \Yii::$app->params['imgs'] . $data['activity_img'];
             //查询票种
             $data['price'] = '0';
             if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $data['id']])->orderBy('price ASC')->one()) {

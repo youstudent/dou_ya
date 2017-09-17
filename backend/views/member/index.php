@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },
                         ],
                         'phone',
-                        [
+                       [
                             'attribute' => 'last_time',
                             'label'=>'最后登录时间',
                             'value'=>
@@ -52,6 +52,23 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return  date('Y-m-d H:i:s',$model->last_time);   //主要通过此种方式实现
                                 },
                         ],
+                       /* [
+                            'attribute' => 'last_time',
+                            'label' => '最后登录时间',
+                            'value' => function ($model) {
+                                return date('Y-m-d H:i:s', $model->last_time);
+                            },
+                            'filter'    => \bburim\daterangepicker\DateRangePicker::widget([
+                                'model'         => $searchModel,
+                                'attribute'     => 'last_time',
+                                'convertFormat' => true,
+                                'pluginOptions' => [
+                                    'locale' => ['format' => 'Y-m-d'],
+                                ],
+                            ]),
+                            'headerOptions' => ['width' => '200'],
+    
+                        ],*/
                         //'identification',
                         'order_num',
                         'order_money',

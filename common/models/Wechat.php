@@ -33,7 +33,6 @@ class Wechat extends Model
              'total_fee'    => 1, // 单位：分
             'notify_url'   => 'http://api.douyajishi.com/wechat/order-notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
         ];
-      
         $order = new \EasyWeChat\Payment\Order($orderData);
         $payment = Yii::$app->wechat->payment;
         $prepayRequest = $payment->prepare($order);

@@ -22,7 +22,7 @@ class UEditorAction extends Action
         $_config = require(__DIR__ . '/config.php');
 
         //添加图片默认root路径；
-        $_config['imageRoot'] = Yii::getAlias('@webroot');
+        $_config['imageRoot'] = Yii::getAlias('@common/static/upload/activity/');
         $_config['scrawlRoot'] = Yii::getAlias('@webroot');
         $_config['videoRoot'] = Yii::getAlias('@webroot');
         $_config['fileRoot'] = Yii::getAlias('@webroot');
@@ -92,13 +92,11 @@ class UEditorAction extends Action
 
     }
 
-    /**
-     * 上传
-     * @return array
-     */
+    
     protected function actionUpload()
     {
         $base64 = "upload";
+        //echo $this->config['imagePathFormat'];exit;
         switch (htmlspecialchars($_GET['action'])) {
             case 'uploadimage':
                 $config = array(
