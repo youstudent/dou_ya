@@ -8,6 +8,7 @@
 namespace frontend\controllers;
 
 
+use common\models\Member;
 use common\models\Wechat;
 
 class WechatController extends ObjectController
@@ -19,11 +20,11 @@ class WechatController extends ObjectController
     public function actionLogin()
     {
 
-        if (!isset(Yii::$app->wechat) || empty(Yii::$app->wechat->getUser())) {
+        if (!isset(\Yii::$app->wechat) || empty(\Yii::$app->wechat->getUser())) {
             return $this->returnAjax(0, '未正确拉取到用户信息', []);
         }
         //自动登录逻辑
-        $user = Yii::$app->wechat->getUser();
+        $user = \Yii::$app->wechat->getUser();
         $model = new Member();
         if (!$model->login($user, true)) {
             return $this->returnAjax(0, '微信登录失败', []);
@@ -52,7 +53,7 @@ class WechatController extends ObjectController
      */
     public function actionOrderNotify()
     {
-        $response = Yii::$app->wechat->payment->handleNotify(function($notify, $successful){
+        $response = \Yii::$app->wechat->payment->handleNotify(function($notify, $successful){
             // 你的逻辑
             return true; // 或者错误消息
         });

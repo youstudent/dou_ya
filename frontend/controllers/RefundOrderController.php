@@ -10,10 +10,10 @@ namespace frontend\controllers;
 
 
 use Behat\Gherkin\Loader\YamlFileLoader;
-use common\components\GetUserInfo;
 use common\models\Activity;
 use common\models\Order;
 use common\models\OrderRefund;
+use frontend\models\GetUserInfo;
 use PHPUnit\Framework\Constraint\IsFalse;
 
 class RefundOrderController extends ObjectController
@@ -27,7 +27,7 @@ class RefundOrderController extends ObjectController
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请使用POST方式');
         }
-        $user_id = GetUserInfo::actionGetUserId();
+        $user_id = GetUserInfo::GetUserId();
 
         //分页数据
         $pageSize = \Yii::$app->request->post('page');
@@ -37,7 +37,7 @@ class RefundOrderController extends ObjectController
             $page = $pageSize;
         }
         //TODO::要改的size
-        $size = 3;
+        $size = \Yii::$app->params['size'];
         $limit = ($page-1) * $size;
         $count = Order::find()->select(['order_number', 'activity_name', 'status', 'id','activity_id'])->where(['user_id' => $user_id, 'status' => [2, 3, 4]])->count();
         $totalPage = ceil($count / $size);
@@ -45,6 +45,7 @@ class RefundOrderController extends ObjectController
         $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
 
         //查询用户退款订单
+        //TODO :  status    2:待处理   3:退款通过   4:拒绝退款
         $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id','activity_id'])->where(['user_id' => $user_id, 'status' => [2, 3, 4]])
             ->asArray()
             ->limit($size)
@@ -61,20 +62,10 @@ class RefundOrderController extends ObjectController
                 $v['created_at'] = date('Y年m月d日', $row->created_at);
                 $v['money'] = $row->money;
             }
-           /* if ($v['status'] == 2) {
-                $v['status'] = '待处理';
-            }
-            if ($v['status'] == 3) {
-                $v['status'] = '退款通过';
-            }
-            if ($v['status'] == 4) {
-                $v['status'] = '拒绝退款';
-            }*/
-            
         }
-        $data['pageInfo'] = $pageInfo;
-
-        return $this->returnAjax(1, '成功', $data);
+        $datas['data'] = $data;
+        $datas['pageInfo'] = $pageInfo;
+        return $this->returnAjax(1, '成功', $datas);
         
     }
     
@@ -93,6 +84,7 @@ class RefundOrderController extends ObjectController
             return $this->returnAjax(0, '请传order_id参数或者user_id');
         }
         //查询用户退款订单
+        //TODO :  status    2:待处理   3:退款通过   4:拒绝退款
         $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id'])->where(['id' => $order_id])->asArray()->one();
         if (!$data) {
             return $this->returnAjax(0, '查询到退款详情');
@@ -102,15 +94,6 @@ class RefundOrderController extends ObjectController
             $data['money'] = $row->money;
             $data['no_reason'] = $row->no_reason;
         }
-       /* if ($data['status'] == 2) {
-            $data['status'] = '待处理';
-        }
-        if ($data['status'] == 3) {
-            $data['status'] = '退款通过';
-        }
-        if ($data['status'] == 4) {
-            $data['status'] = '拒绝退款';
-        }*/
         return $this->returnAjax(1, '成功', $data);
         
     }

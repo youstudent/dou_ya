@@ -1,7 +1,8 @@
 <?php
 
 namespace common\models;
-use common\components\GetUserInfo;
+use frontend\models\GetUserInfo;
+use Monolog\Handler\GelfHandler;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Yii;
 use Flc\Alidayu\App;
@@ -127,7 +128,7 @@ class MessageCode extends \yii\db\ActiveRecord
      */
     public function Code($code,$phone){
         if (self::find()->where(['code'=>$code])->andWhere(['>=','created_at',time()-1800])->exists()){
-            $data  = Member::findOne(['id'=>GetUserInfo::actionGetUserId()]);
+            $data  = Member::findOne(['id'=>GetUserInfo::GetUserId()]);
             $data->phone=$phone;
             return $data->save(false);
         }

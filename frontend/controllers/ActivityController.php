@@ -3,13 +3,13 @@
 namespace frontend\controllers;
 
 use Behat\Gherkin\Loader\YamlFileLoader;
-use common\components\GetUserInfo;
 use common\models\Activity;
 use common\models\ActivityTicket;
 use common\models\CollectActivity;
 use common\models\CollectMerchant;
 use common\models\Merchant;
 use common\models\Order;
+use frontend\models\GetUserInfo;
 use function GuzzleHttp\Psr7\str;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use PHPUnit\Framework\Constraint\IsFalse;
@@ -44,7 +44,7 @@ class ActivityController extends ObjectController
             $page = $pageSize;
         }
         //TODO::要改的size
-        $size = 3;
+        $size = \Yii::$app->params['size'];
         $limit = ($page-1) * $size;
         $count = Activity::find()->select('id')->where(['status'=>1])->count();
         $totalPage = ceil($count / $size);
@@ -61,8 +61,9 @@ class ActivityController extends ObjectController
 
         if ($data) {
             $result = Activity::formatting($data);
-            $result['pageInfo'] = $pageInfo;
-            return $this->returnAjax(1, '成功', $result);
+            $datas['data']=$result;
+            $datas['pageInfo']=$pageInfo;
+            return $this->returnAjax(1, '成功', $datas);
         }
         return $this->returnAjax(0, '暂未活动');
     }
@@ -111,8 +112,8 @@ class ActivityController extends ObjectController
             $result = Activity::details($data);
             $result['logo']=\Yii::$app->params['img_domain'].$row->logo;
             $result['merchant_label']=$row->merchant_label;
-            $result['collect_merchant']=CollectMerchant::find()->where(['user_id'=>GetUserInfo::actionGetUserId(),'merchant_id'=>$data['merchant_id']])->exists();
-            $result['collect_activity']=CollectActivity::find()->where(['user_id'=>GetUserInfo::actionGetUserId(),'activity_id'=>$data['id']])->exists();
+            $result['collect_merchant']=CollectMerchant::find()->where(['user_id'=>GetUserInfo::GetUserId(),'merchant_id'=>$data['merchant_id']])->exists();
+            $result['collect_activity']=CollectActivity::find()->where(['user_id'=>GetUserInfo::GetUserId(),'activity_id'=>$data['id']])->exists();
             // 增加活动的点击率
             $results = Activity::findOne(['id'=>$activity_id]);
             $results->allpage_view=$results->allpage_view  +1;
@@ -167,14 +168,14 @@ class ActivityController extends ObjectController
             $page = $pageSize;
         }
         //TODO::要改的size
-        $size = 3;
+        $size = \Yii::$app->params['size'];
         $limit = ($page-1) * $size;
-        $count = Order::find()->where(['user_id' => GetUserInfo::actionGetUserId(), 'status' => $type])->count();
+        $count = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => $type])->count();
         $totalPage = ceil($count / $size);
         $nowPage = $page;
         $pageInfo = ['totalPage'=>$totalPage, 'nowPage'=>$nowPage];
 
-        $data = Order::find()->where(['user_id' => GetUserInfo::actionGetUserId(), 'status' => $type])
+        $data = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => $type])
             ->orderBy('order_time DESC')
             ->asArray()
             ->limit($size)
@@ -194,8 +195,9 @@ class ActivityController extends ObjectController
             $value['order_time'] = date('Y年m月d日', $value['order_time']);
             //查询订到总的价格
         }
-        $data['pageInfo'] = $pageInfo;
-        return $this->returnAjax(1, '成功', $data);
+        $datas['data'] = $data;
+        $datas['pageInfo'] = $pageInfo;
+        return $this->returnAjax(1, '成功', $datas);
     }
     
     /**
@@ -243,7 +245,7 @@ class ActivityController extends ObjectController
         $model = new CollectActivity();
         //接收参数
         $model->load(\Yii::$app->request->post(), '');
-        $model->user_id=GetUserInfo::actionGetUserId();
+        $model->user_id=GetUserInfo::GetUserId();
         if (!Activity::find()->where(['id' => $model->activity_id])->exists()) {
             return $this->returnAjax(0, '该活动不存在ID' . $model->activity_id);
         }
@@ -287,7 +289,7 @@ class ActivityController extends ObjectController
         $model = new CollectMerchant();
         //接收参数
         $model->load(\Yii::$app->request->post(), '');
-        $model->user_id=GetUserInfo::actionGetUserId();
+        $model->user_id=GetUserInfo::GetUserId();
         //查询商家是否存在
         if (!Merchant::find()->where(['id' => $model->merchant_id])->exists()) {
             return $this->returnAjax(0, '该商家不存在ID' . $model->merchant_id);

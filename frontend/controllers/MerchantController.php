@@ -10,9 +10,9 @@ namespace frontend\controllers;
 
 
 use backend\models\Search\Merchant;
-use common\components\GetUserInfo;
 use common\models\Activity;
 use common\models\CollectMerchant;
+use frontend\models\GetUserInfo;
 use Monolog\Handler\GelfHandler;
 use yii\web\Controller;
 
@@ -42,7 +42,7 @@ class MerchantController extends ObjectController
             $page = $pageSize;
         }
         //TODO::要改的size
-        $size = 3;
+        $size = \Yii::$app->params['size'];
         $limit = ($page-1) * $size;
 
         if ($type == 1) {
@@ -68,8 +68,9 @@ class MerchantController extends ObjectController
 
         if ($row) {
             $result = Activity::formatting($row);
-            $result['pageInfo'] = $pageInfo;
-            return $this->returnAjax(1, '成功', $result);
+            $datas['data']=$result;
+            $datas['pageInfo'] = $pageInfo;
+            return $this->returnAjax(1, '成功', $datas);
         }
         return $this->returnAjax(0, '没有查询到商家活动数据');
     }
@@ -80,7 +81,7 @@ class MerchantController extends ObjectController
      */
     public function actionMerchantDateil()
     {
-        $user_id = GetUserInfo::actionGetUserId();
+        $user_id = GetUserInfo::GetUserId();
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
@@ -93,7 +94,6 @@ class MerchantController extends ObjectController
         $data['collect_merchant'] = CollectMerchant::find()->where(['user_id' =>$user_id, 'merchant_id' => $merchant_id])->exists();
         
         return $this->returnAjax(1, '成功', $data);
-        
         
     }
     

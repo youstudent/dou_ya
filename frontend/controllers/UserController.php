@@ -10,7 +10,6 @@ namespace frontend\controllers;
 
 
 use Behat\Gherkin\Loader\YamlFileLoader;
-use common\components\GetUserInfo;
 use common\models\Activity;
 use common\models\CollectActivity;
 use common\models\CollectMerchant;
@@ -18,6 +17,7 @@ use common\models\Member;
 use common\models\Merchant;
 use common\models\MessageCode;
 use common\models\User;
+use frontend\models\GetUserInfo;
 use yii\helpers\ArrayHelper;
 
 class UserController extends ObjectController
@@ -28,7 +28,7 @@ class UserController extends ObjectController
      */
     public function actionGetUser()
     {
-        $data = Member::find()->select('name,sex,phone,headimgurl')->where(['id'=>GetUserInfo::actionGetUserId()])->one();
+        $data = Member::find()->select('name,sex,phone,headimgurl')->where(['id'=> GetUserInfo::GetUserId()])->one();
         if ($data) {
             return $this->returnAjax(1, '成功', $data);
         }
@@ -47,7 +47,7 @@ class UserController extends ObjectController
             return $this->returnAjax(0, '请用POST请求方式');
         }
         //获取当前用户收藏活动的ID
-        $Activity_id = CollectActivity::find()->orderBy('created_at ASC')->select('Activity_id')->where(['user_id'=>GetUserInfo::actionGetUserId()])->asArray()->all();
+        $Activity_id = CollectActivity::find()->orderBy('created_at ASC')->select('Activity_id')->where(['user_id'=>GetUserInfo::GetUserId()])->asArray()->all();
         if (!$Activity_id){
             return $this->returnAjax(0,'没有收藏活动');
         }
@@ -61,7 +61,7 @@ class UserController extends ObjectController
             $page = $pageSize;
         }
         //TODO::要改的size
-        $size = 3;
+        $size = \Yii::$app->params['size'];
         $limit = ($page-1) * $size;
         $count = Activity::find()->where(['id'=>$new_activity_id])->count();
         $totalPage = ceil($count / $size);
@@ -75,8 +75,9 @@ class UserController extends ObjectController
             ->offset($limit)
             ->all();
         $result = Activity::formatting($data);
-        $result['pageInfo'] = $pageInfo;
-        return $this->returnAjax(1,'成功',$result);
+        $datas ['data'] = $result;
+        $datas ['pageInfo'] = $pageInfo;
+        return $this->returnAjax(1,'成功',$datas);
         
     }
     
@@ -92,7 +93,7 @@ class UserController extends ObjectController
         }
         
         //获取当前用户收藏商家的ID
-        $merchant_id = CollectMerchant::find()->select('merchant_id')->where(['user_id' => GetUserInfo::actionGetUserId()])->asArray()->all();
+        $merchant_id = CollectMerchant::find()->select('merchant_id')->where(['user_id' => GetUserInfo::GetUserId()])->asArray()->all();
         if (!$merchant_id) {
             return $this->returnAjax(0, '没有收藏商家');
         }
@@ -106,7 +107,7 @@ class UserController extends ObjectController
             $page = $pageSize;
         }
         //TODO::要改的size
-        $size = 3;
+        $size = \Yii::$app->params['size'];
         $limit = ($page-1) * $size;
         $count = Merchant::find()->where(['id' => $new_merchant_id])->count();
         $totalPage = ceil($count / $size);
@@ -123,8 +124,9 @@ class UserController extends ObjectController
             $value['in_activity'] = Merchant::getInActivity($value['id']);
             $value['history_activity'] = Merchant::getHistoryActivity($value['id']);
         }
-        $data['pageInfo'] = $pageInfo;
-        return $this->returnAjax(1, '成功', $data);
+        $datas['data'] = $data;
+        $datas['pageInfo'] = $pageInfo;
+        return $this->returnAjax(1, '成功', $datas);
         
     }
     

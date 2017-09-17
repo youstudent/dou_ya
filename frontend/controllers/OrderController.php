@@ -10,7 +10,6 @@ namespace frontend\controllers;
 
 
 use Codeception\PHPUnit\Constraint\JsonContains;
-use common\components\GetUserInfo;
 use common\models\Activity;
 use common\models\ActivityData;
 use common\models\ActivityTicket;
@@ -21,6 +20,7 @@ use common\models\OrderRefund;
 use common\models\OrderTicket;
 use common\models\Wechat;
 use EasyWeChat\Js\Js;
+use frontend\models\GetUserInfo;
 use PHPUnit\Framework\Constraint\IsFalse;
 use rmrevin\yii\fontawesome\FA;
 use yii\db\Exception;
@@ -123,7 +123,7 @@ class OrderController extends ObjectController
             $order->order_num = 1;
             $order->activity_name = $row['activity_name'];
             $order->merchant_name = $row['merchant_name'];
-            $member = Member::findOne(['id' => GetUserInfo::actionGetUserId()]);
+            $member = Member::findOne(['id' => GetUserInfo::GetUserId()]);
             if (!$member) {
                 return $this->returnAjax(0, '没有查询到用户信息');
             }
@@ -229,15 +229,6 @@ class OrderController extends ObjectController
         
         return $str;
     }
-    
-    /**
-     *  下单成功后,,支付订单
-     */
-    public function actionPay(){
-        echo '下单成功等待支付';
-        //支付成功发送短信给用户
-    }
-    
     
     /**
      * 验票
