@@ -10,7 +10,7 @@ use common\models\CollectMerchant;
 use common\models\Merchant;
 use common\models\Order;
 use frontend\models\GetUserInfo;
-use function GuzzleHttp\Psr7\str;
+//use function GuzzleHttp\Psr7\str;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use PHPUnit\Framework\Constraint\IsFalse;
 use Prophecy\Argument\Token\ExactValueToken;
