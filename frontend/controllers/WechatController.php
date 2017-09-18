@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 use common\models\Member;
 use common\models\Wechat;
+use yii\web\Response;
 
 class WechatController extends ObjectController
 {
@@ -19,6 +20,9 @@ class WechatController extends ObjectController
      */
     public function actionLogin()
     {
+        if (\Yii::$app->wechat->isWechat && !\Yii::$app->wechat->isAuthorized()) {
+            return \Yii::$app->wechat->authorizeRequired()->send();
+        }
 
         if (!isset(\Yii::$app->wechat) || empty(\Yii::$app->wechat->getUser())) {
             return $this->returnAjax(0, '未正确拉取到用户信息', []);
@@ -26,11 +30,14 @@ class WechatController extends ObjectController
         //自动登录逻辑
         $user = \Yii::$app->wechat->getUser();
         $model = new Member();
-        if (!$model->login($user, true)) {
-            return $this->returnAjax(0, '微信登录失败', []);
+        if ($model->login($user, true)) {
+            $this->goBack();
         }
-
-        $this->goBack();
+        \Yii::$app->response->format = Response::FORMAT_HTML;
+        echo $model->message;
+        $this->render('login_warning', [
+            'message' => $model->message,
+        ]);
     }
 
     /**
@@ -42,7 +49,7 @@ class WechatController extends ObjectController
         $model = new Wechat();
         //TODO:: 这里传入或生成订单的数据
         $data = $model->createWechatOrder([], $this->login_member['openid']);
-        if($data === false){
+        if ($data === false) {
             return $this->returnAjax(0, $model->message);
         }
         return $this->returnAjax(1, $model->message, $data);
@@ -53,7 +60,7 @@ class WechatController extends ObjectController
      */
     public function actionOrderNotify()
     {
-        $response = \Yii::$app->wechat->payment->handleNotify(function($notify, $successful){
+        $response = \Yii::$app->wechat->payment->handleNotify(function ($notify, $successful) {
             // 你的逻辑
             return true; // 或者错误消息
         });

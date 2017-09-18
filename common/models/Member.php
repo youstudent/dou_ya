@@ -21,6 +21,7 @@ use Yii;
  */
 class Member extends \yii\db\ActiveRecord
 {
+    public $message;
     /**
      * @inheritdoc
      */
@@ -70,6 +71,7 @@ class Member extends \yii\db\ActiveRecord
     {
         //检查用户的openid是否正确;
         if(!isset($wechat_user->id) || empty($wechat_user->id)){
+            $this->message = '未正确拉取到微信数据';
             return false;
         }
 
@@ -86,6 +88,7 @@ class Member extends \yii\db\ActiveRecord
         }
 
         if($user->status != 1){
+            $this->message = '已被禁止登陆';
             return false;
         }
 

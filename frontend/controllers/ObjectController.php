@@ -6,6 +6,7 @@
  */
 namespace frontend\controllers;
 
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 /**
@@ -18,6 +19,7 @@ class ObjectController extends Controller
     public $layout = false;
 
     public $login_member = [];
+
     /**
      * 检查是否有权限执行代码
      * @param \yii\base\Action $action
@@ -25,19 +27,29 @@ class ObjectController extends Controller
      */
     public function beforeAction($action)
     {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
         $this->login_member = \Yii::$app->session->get('member');
-        if(empty($this->login_member)){
+        if(empty($this->login_member) &&  !in_array($this->id, ['wechat'])){
             //TODO::不知道为啥正常登陆没有走session。这里先强制获取试试
             if(\Yii::$app->wechat->isAuthorized()){
                 $user = \Yii::$app->wechat->getUser();
                 $model = new \common\models\Member();
                 $model->login($user);
             }else{
-                return \Yii::$app->wechat->authorizeRequired()->send();
+                $return = [
+                    'code' => -101,
+                    'message' => '授权过期',
+                    'time' => time(),
+                    'data' =>  [
+                        'url' => Url::to(['wechat/login'], true)
+                    ]
+                ];
+                echo json_encode($return);
+                die();
             }
         }
 
-        \Yii::$app->response->format = Response::FORMAT_JSON;
         return true;
     }
 
