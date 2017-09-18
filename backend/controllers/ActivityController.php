@@ -162,10 +162,10 @@ class ActivityController extends Controller
             'upload' => [
                 'class' => 'kucha\ueditor\UEditorAction',
                 'config' => [
-                    'imageUrlPrefix' => Yii::$app->params['imgs'],
-                    'imagePathFormat' => $Url."{time}{rand:6}",
+                  'imageUrlPrefix' => 'http:/',
+                    //'imagePathFormat' => $Url."{time}{rand:6}",
                    // "imageUrlPrefix"  => "www.douya.com",//图片访问路径前缀
-                 // "imagePathFormat" => "/upload/activity/{time}{rand:6}" //上传保存路径{yyyy}{mm}{dd}
+                    "imagePathFormat" => "{time}{rand:6}" //上传保存路径{yyyy}{mm}{dd}
                 ],
             ]
         ];

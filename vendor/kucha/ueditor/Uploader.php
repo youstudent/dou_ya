@@ -331,7 +331,7 @@ class Uploader
     {
         return array(
             "state"    => $this->stateInfo,
-            "url"      => \Yii::$app->params['imgs'].$this->fullName,
+            "url"      => \Yii::$app->params['imgs'].'/upload/activity/'.$this->fullName,
             "title"    => $this->fileName,
             "original" => $this->oriName,
             "type"     => $this->fileType,

@@ -151,23 +151,19 @@ class OrderController extends ObjectController
                     if ($OrderTicket->save(false) == false) throw new Exception('保存订单票种失败');
                 }
             }
-            //更新待支付订单
+            //更新待支付订单 状态:未支付
             $new_order = Order::findOne(['id' => $order->id]);
             $new_order->sell_all = OrderTicket::find()->select('sum(prize)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(prize)'];
             $new_order->clearing_all = OrderTicket::find()->select('sum(settlement)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(settlement)'];
             $new_order->order_num = OrderTicket::find()->where(['order_id' => $order->id])->count();
             if ($new_order->save(false) == false) throw new Exception('订单数据更新失败');
             $transaction->commit();
-            //订单提交后台
+           
             $weachat = new Wechat();
             //TODO 要修改的:openid
-            $res = $weachat->createWechatOrder($new_order, 'SJFIJIJ');//$this->login_member['openid']
+            // 创建微信支付订单
+            $res = $weachat->createWechatOrder($new_order, $this->login_member['openid']);//$this->login_member['openid']
             if ($res !== false) {
-                //支付成功 才更新活动数据总数据
-                $ActivityData = new ActivityData();
-                if (!$res = $ActivityData->edit($new_order)) {
-                    return $this->returnAjax(0, '更新活动数据失败');
-                }
                 return $this->returnAjax(1, $weachat->message, $res);
             }
             return $this->returnAjax(0, $weachat->message);
@@ -296,9 +292,30 @@ class OrderController extends ObjectController
      * @return mixed
      */
     public function actionPay(){
+        
+        /*return $this->returnAjax(1,'成功',[
+            'jsApiConfig' => [
+                'appId' => 'xxx',
+                'timeStamp' => strval(time()),
+                'nonceStr' => uniqid(),
+                'package' => "prepay_id=11",
+                'signType' => 'MD5',
+                'paySign' => 'xxx',
+            ],
+            'orderData' => [
+                'openid'       => 111 ,
+                'trade_type'   => 'JSAPI', // JSAPI，NATIVE，APP...
+                'body'         => '活动',
+                'detail'       => '好的活动',
+                'out_trade_no' => 'sfsf',
+                'total_fee'    => 112, // 单位：分
+                'total_fee'    => 1, // 单位：分
+                'notify_url'   => 'http://api.douyajishi.com/wechat/order-notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+            ],
+        ]);*/
         $order  = new Order();
         //TODO 要修改的:openid
-        $re = $order->pay(\Yii::$app->request->post('order_id'),'jkjkg');
+        $re = $order->pay(\Yii::$app->request->post('order_id'),$this->login_member['openid']);
         if ($re !==false){  //$this->login_member['openid']
             return $this->returnAjax(1,'成功',$re);
         }

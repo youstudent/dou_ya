@@ -105,12 +105,7 @@ class Order extends \yii\db\ActiveRecord
         }
         $Wechat = new Wechat();
         $res = $Wechat->createWechatOrder($order, $openid);
-        if ($res !== false) {
-            //支付成功更新该订单活动的总数据
-            $ActivityData = new ActivityData();
-            $ActivityData->edit($order);
-        }
-            return $res;
+        return $res;
         
     }
 }
