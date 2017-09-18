@@ -17,10 +17,11 @@ use mdm\admin\components\Helper;
     <p>
         <?= Html::a('添加管理员', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?=
-    GridView::widget([
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'filterPosition' => false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'username',

@@ -13,15 +13,16 @@ use yii\grid\GridView;
 <div class="activity-data-index">
 
     <h3>数据</h3>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <div class="box box-success">
         <div class="box-header with-border">
             <h3 class="box-title"></h3>
+            <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
             <div class="box-body">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'filterPosition' => false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'merchant_name',

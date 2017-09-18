@@ -16,10 +16,11 @@ use yii\grid\GridView;
     <p style="text-align: right">
         <?= Html::a('导出EXCEL', ['excel','status'=>0], ['class' => 'btn btn-success']) ?>
     </p>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'filterPosition' => false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'order_number',

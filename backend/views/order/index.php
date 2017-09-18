@@ -16,14 +16,15 @@ use yii\grid\GridView;
     <p style="text-align: right">
         <?= Html::a('导出EXCEL', ['excel','status'=>1], ['class' => 'btn btn-success']) ?>
     </p>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="box box-success">
         <div class="box-header with-border">
             <h3 class="box-title"></h3>
+            <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
             <div class="box-body">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
+                    'filterPosition' => false,
                     'pager'=>[
                         //'options'=>['class'=>'hidden']//关闭分页
                         'firstPageLabel'=>"首页",
