@@ -22,9 +22,6 @@ class WechatController extends ObjectController
     public function actionLogin()
     {
         if (\Yii::$app->wechat->isWechat && !\Yii::$app->wechat->isAuthorized()) {
-
-            $target_url = ArrayHelper::getValue(\Yii::$app->request->getQueryParams(), 'nowUrl', 'http://www.douyajishi.com');
-            \Yii::$app->session->set('targetUrl', $target_url);
             return \Yii::$app->wechat->authorizeRequired()->send();
         }
 
@@ -35,7 +32,8 @@ class WechatController extends ObjectController
         $user = \Yii::$app->wechat->getUser();
         $model = new Member();
         if ($model->login($user, true)) {
-            $target_url = \Yii::$app->session->get('targetUrl');
+            $params = \Yii::$app->request->getQueryParams();
+            $target_url = ArrayHelper::getValue($params, 'nowUrl', \Yii::$app->params['wechat_domain']);
             return \Yii::$app->getResponse()->redirect($target_url);
         }
         \Yii::$app->response->format = Response::FORMAT_HTML;
