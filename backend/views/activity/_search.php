@@ -17,9 +17,9 @@ use kartik\datetime\DateTimePicker;
         'options' => ['class'=>'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'activity_name')->textInput(['class'=>'form-control','placeholder'=>'活动名称'])->label(false) ?>
+    <?= $form->field($model, 'activity_name')->textInput(['class'=>'form-control','placeholder'=>'活动名'])->label(false) ?>
 
-    <?= $form->field($model, 'merchant_name')->textInput(['class'=>'form-control','placeholder'=>'活动名称'])->label(false) ?>
+    <?= $form->field($model, 'merchant_name')->textInput(['class'=>'form-control','placeholder'=>'商家名'])->label(false) ?>
 
     <?= $form->field($model, 'start_time')->label(false)->widget(DateTimePicker::className(), [
         'options' => ['placeholder' => '开始时间'],
@@ -50,8 +50,8 @@ use kartik\datetime\DateTimePicker;
     <?php // echo $form->field($model, 'content') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-sm btn-primary','style'=>'margin-bottom:9px']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-sm btn-default','style'=>'margin-bottom:9px']) ?>
+        <?= Html::submitButton('搜索', ['class' => 'btn btn-sm btn-primary','style'=>'margin-bottom:9px']) ?>
+        <?= Html::resetButton('重置', ['class' => 'btn btn-sm btn-default','style'=>'margin-bottom:9px']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

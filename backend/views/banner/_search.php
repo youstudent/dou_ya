@@ -20,8 +20,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'title') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
