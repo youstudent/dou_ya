@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 use common\models\Member;
 use common\models\Wechat;
+use yii\helpers\ArrayHelper;
 use yii\web\Response;
 
 class WechatController extends ObjectController
@@ -21,6 +22,9 @@ class WechatController extends ObjectController
     public function actionLogin()
     {
         if (\Yii::$app->wechat->isWechat && !\Yii::$app->wechat->isAuthorized()) {
+
+            $target_url = ArrayHelper::getValue(\Yii::$app->request->getQueryParams(), 'nowUrl', 'http://www.douyajishi.com');
+            \Yii::$app->session->set('targetUrl', $target_url);
             return \Yii::$app->wechat->authorizeRequired()->send();
         }
 
@@ -31,10 +35,10 @@ class WechatController extends ObjectController
         $user = \Yii::$app->wechat->getUser();
         $model = new Member();
         if ($model->login($user, true)) {
-            $this->goBack();
+            $target_url = \Yii::$app->session->get('targetUrl');
+            return \Yii::$app->getResponse()->redirect($target_url);
         }
         \Yii::$app->response->format = Response::FORMAT_HTML;
-        echo $model->message;
         $this->render('login_warning', [
             'message' => $model->message,
         ]);
