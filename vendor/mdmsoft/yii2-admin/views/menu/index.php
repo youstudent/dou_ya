@@ -14,17 +14,17 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="menu-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
         <?= Html::a(Yii::t('rbac-admin', 'Create Menu'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
-    <?=
-    GridView::widget([
+    <?php  echo $this->render('_search', ['model' => $searchModel]);  ?>
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'filterPosition' =>  false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'name',

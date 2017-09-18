@@ -17,23 +17,13 @@ use yii\widgets\ActiveForm;
 //        'action'=>\yii\helpers\Url::to(['count/index']),
     ]); ?>
 
-    <?php // echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'name')->textInput(['placeholder' => '昵称','class'=>'form-control'])->label(false) ?>&nbsp;&nbsp;&nbsp;&nbsp;
-
-    <?php // echo $form->field($model, 'sex') ?>
+    <?= $form->field($model, 'username')->textInput(['placeholder' => '姓名','class'=>'form-control'])->label(false) ?>&nbsp;&nbsp;&nbsp;&nbsp;
 
     <?= $form->field($model, 'phone')->textInput(['placeholder' => '电话','class'=>'form-control'])->label(false) ?>
 
-    <?php // echo $form->field($model, 'last_time') ?>
+    <?= $form->field($model, 'account')->textInput(['placeholder' => '账号','class'=>'form-control'])->label(false) ?>
 
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'identification') ?>
-
-    <?php // echo $form->field($model, 'order_num') ?>
-
-    <?php // echo $form->field($model, 'order_money') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-sm btn-primary','style'=>'margin-bottom:9px']) ?>

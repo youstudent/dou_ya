@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="member-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <!--<p>
         <?/*= Html::a('Create Member', ['create'], ['class' => 'btn btn-success']) */?>
@@ -21,10 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box box-success">
         <div class="box-header with-border">
             <h3 class="box-title"></h3>
+            <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
             <div class="box-body">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
+                    'filterPosition' =>  false,
                     'pager'=>[
                         //'options'=>['class'=>'hidden']//关闭分页
                         'firstPageLabel'=>"首页",

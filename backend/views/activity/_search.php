@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\datetime\DateTimePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Search\Activity */
@@ -13,17 +14,24 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => ['class'=>'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'activity_name')->textInput(['class'=>'form-control','placeholder'=>'活动名称'])->label(false) ?>
 
-    <?= $form->field($model, 'merchant_name') ?>
+    <?= $form->field($model, 'merchant_name')->textInput(['class'=>'form-control','placeholder'=>'活动名称'])->label(false) ?>
 
-    <?= $form->field($model, 'activity_name') ?>
+    <?= $form->field($model, 'start_time')->label(false)->widget(DateTimePicker::className(), [
+        'options' => ['placeholder' => '开始时间'],
+        'pluginOptions' => [
+            'autoclose' => true,
+            'todayHighlight' => true,
+        ]
+    ]) ?>
 
-    <?= $form->field($model, 'activity_img') ?>
+    <?php // echo $form->field($model, 'activity_img') ?>
 
-    <?= $form->field($model, 'activity_address') ?>
+    <?php // echo $form->field($model, 'activity_address') ?>
 
     <?php // echo $form->field($model, 'apply_end_time') ?>
 
@@ -41,11 +49,9 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'content') ?>
 
-    <?php // echo $form->field($model, 'created_at') ?>
-
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-sm btn-primary','style'=>'margin-bottom:9px']) ?>
+        <?= Html::resetButton('Reset', ['class' => 'btn btn-sm btn-default','style'=>'margin-bottom:9px']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

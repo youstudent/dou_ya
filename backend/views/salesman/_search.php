@@ -13,19 +13,18 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options'=>['class'=>'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'name')->textInput(['placeholder' => '姓名','class'=>'form-control'])->label(false) ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'phone')->textInput(['placeholder' => '电话','class'=>'form-control'])->label(false) ?>
 
-    <?= $form->field($model, 'job_number') ?>
-
-    <?= $form->field($model, 'phone') ?>
+    <?= $form->field($model, 'job_number')->textInput(['placeholder' => '工号','class'=>'form-control'])->label(false) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-sm btn-primary','style'=>'margin-bottom:9px']) ?>
+        <?= Html::resetButton('Reset', ['class' => 'btn btn-sm btn-default','style'=>'margin-bottom:9px']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
