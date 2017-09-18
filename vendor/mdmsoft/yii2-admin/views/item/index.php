@@ -23,10 +23,12 @@ unset($rules[RouteRule::RULE_NAME]);
     <p>
         <?= Html::a(Yii::t('rbac-admin', 'Create ' . $labels['Item']), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'filterPosition' =>  false,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [

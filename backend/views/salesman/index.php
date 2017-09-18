@@ -13,7 +13,6 @@ use yii\grid\GridView;
 <div class="salesman-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('添加业务员', ['create'], ['class' => 'btn btn-success']) ?>
@@ -21,12 +20,14 @@ use yii\grid\GridView;
     <div class="box box-success">
         <div class="box-header with-border">
             <h3 class="box-title"></h3>
+            <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
             <div class="box-body">
                 <?= GridView::widget([
                     'tableOptions' => ['class' => 'table table-hover table-striped'],
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
                     'layout'=> '{items}<div class="text-right tooltip-demo">{pager}</div>',
+                    'filterPosition' =>  false,
                     'pager'=>[
                         //'options'=>['class'=>'hidden']//关闭分页
                         'firstPageLabel'=>"首页",

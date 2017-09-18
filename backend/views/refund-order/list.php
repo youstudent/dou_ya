@@ -13,10 +13,11 @@ use yii\grid\GridView;
 <div class="order-index">
 
     <h3>退款已处理</h3>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'filterPosition' => false,
         'pager'=>[
             //'options'=>['class'=>'hidden']//关闭分页
             'firstPageLabel'=>"首页",

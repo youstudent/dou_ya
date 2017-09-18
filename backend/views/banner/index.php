@@ -24,6 +24,7 @@ use yii\grid\GridView;
                     'tableOptions' => ['class' => 'table table-hover'],
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
+                    'filterPosition' => false,
                     'pager'=>[
                         //'options'=>['class'=>'hidden']//关闭分页
                         'firstPageLabel'=>"首页",

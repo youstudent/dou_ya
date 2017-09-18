@@ -63,14 +63,15 @@ $this->registerJs($js);
 <div class="order-index">
 
     <h3>退款待处理</h3>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <div class="box box-success">
         <div class="box-header with-border">
             <h3 class="box-title"></h3>
+            <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
             <div class="box-body">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
+                    'filterPosition' => false,
                     'pager'=>[
                         //'options'=>['class'=>'hidden']//关闭分页
                         'firstPageLabel'=>"首页",
