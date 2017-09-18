@@ -46,13 +46,10 @@ class Wechat extends Model
 
         $jsApiConfig = $payment->configForPayment($prepayId);
         
+        //返回配置和 订单信息
         $data['jsApiConfig'] =$jsApiConfig;
         $data['orderData'] =$orderData;
         return $data;
-        /*return [
-            'jsApiConfig' => $jsApiConfig,
-            'orderData'   => $orderData,
-        ];*/
     }
 
     /**
@@ -61,7 +58,17 @@ class Wechat extends Model
      */
     public function orderNotify($order)
     {
-
+       //通知支付是否成功
+        
+        //TODO: 1.改变订单状态 2.更新订单
+    
+        /**
+         * 更新该订单所属活动的的数据
+         */
+        $new_order ='';
+        $ActivityData = new ActivityData();
+        if (!$res = $ActivityData->edit($new_order)) {
+        }
     }
     
 }

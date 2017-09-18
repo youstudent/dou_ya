@@ -80,7 +80,7 @@ class RefundOrderController extends ObjectController
             return $this->returnAjax(0, '请使用POST方式');
         }
         $order_id = \Yii::$app->request->post('order_id');
-        if (!$order_id ) {
+        if (!$order_id) {
             return $this->returnAjax(0, '请传order_id参数或者user_id');
         }
         //查询用户退款订单
@@ -89,23 +89,23 @@ class RefundOrderController extends ObjectController
         if (!$data) {
             return $this->returnAjax(0, '查询到退款详情');
         }
-        $flow=[];
-        $row = OrderRefund::find()->where(['order_id'=>$order_id])->asArray()->all();
-        foreach ($row as $k=>&$v){
-           // $data['created_at'] = date('Y年m月d日 H:i:s', $row['created_at']);
-           // $data['money'] = $row['money'];
+        $flows = [];
+        $i=0;
+        $row = OrderRefund::find()->where(['order_id' => $order_id])->asArray()->orderBy('created_at DESC')->all();
+        foreach ($row as $k => &$v) {
+            $data['created_at'] = date('Y年m月d日 H:i:s', $v['created_at']);
+            $data['money'] = $v['money'];
             //$data['no_reason'] = $row->no_reason;
-            $flow =[
-                ['id'=>1,'title'=>'已申请','details'=>'你的退款申请已提交请耐心等待工作人员审核','created'=>$data['created_at']],
-                ['id'=>2,'title'=>'正在处理中','details'=>'你的退款申请正在游工作人员审核,审核需要2-3个工作日','created'=>$data['created_at']],
+            $flow = [
+                ['id' => 1, 'title' => '已申请', 'details' => '你的退款申请已提交请耐心等待工作人员审核', 'created' => $v['created_at']],
+                ['id' => 2, 'title' => '正在处理中', 'details' => '你的退款申请正在游工作人员审核,审核需要2-3个工作日', 'created' => $v['created_at']],
             ];
-            if ($data['status']!=='2'){
-                $flow []=['id'=>3,'title'=>$data['status']==3?'退款通过':'拒绝退款','details'=>$data['status']==3?'你的退款已由工作人员转入你的账户,转账需要2-3个工作日!':$data['no_reason'],'created'=>date('Y年m月d日 H:i:s', $row['updated_at'])];
+            if ($data['status'] !== '2') {
+                $flow [] = ['id' => 3, 'title' => $data['status'] == 3 ? '退款通过' : '拒绝退款', 'details' => $data['status'] == 3 ? '你的退款已由工作人员转入你的账户,转账需要2-3个工作日!' : $v['no_reason'], 'created' => date('Y年m月d日 H:i:s', $v['updated_at'])];
             }
+            $flows[$i++] = $flow;
         }
-       
-        $data['flow'] =$flow;
-       
+        $data['flow'] = $flows;
         return $this->returnAjax(1, '成功', $data);
         
     }

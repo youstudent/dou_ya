@@ -87,7 +87,6 @@ class UEditorAction extends Action
                 break;
         }
         /* 输出结果 */
-
         return $result;
 
     }
