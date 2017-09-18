@@ -190,7 +190,7 @@ class ActivityController extends ObjectController
         //查询活动
         $data = Activity::find()->select(['id', 'activity_name', 'activity_img'])->where(['id' => $activity_id, 'status' => 1])->andWhere(['>', 'apply_end_time', time()])->asArray()->one();
         if (!$data) {
-            return $this->returnAjax(0, '该活动报名截止或已下线');
+            return $this->returnAjax(1, '该活动报名截止或已下线');
         }
         //处理图片
         $data['activity_img'] = \Yii::$app->params['img_domain'] . $data['activity_img'];

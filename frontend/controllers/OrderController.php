@@ -162,7 +162,7 @@ class OrderController extends ObjectController
             $weachat = new Wechat();
             //TODO 要修改的:openid
             // 创建微信支付订单
-            $res = $weachat->createWechatOrder($new_order, 'SJFIJIJ');//$this->login_member['openid']
+            $res = $weachat->createWechatOrder($new_order, $this->login_member['openid']);//$this->login_member['openid']
             if ($res !== false) {
                 return $this->returnAjax(1, $weachat->message, $res);
             }
@@ -315,7 +315,7 @@ class OrderController extends ObjectController
         ]);*/
         $order  = new Order();
         //TODO 要修改的:openid
-        $re = $order->pay(\Yii::$app->request->post('order_id'),'jkjkg');
+        $re = $order->pay(\Yii::$app->request->post('order_id'),$this->login_member['openid']);
         if ($re !==false){  //$this->login_member['openid']
             return $this->returnAjax(1,'成功',$re);
         }
