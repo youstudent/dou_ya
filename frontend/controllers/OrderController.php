@@ -235,10 +235,6 @@ class OrderController extends ObjectController
             return $this->returnAjax(0,'POST请求方式');
         }
        $data  = \Yii::$app->request->post();
-        /*$data =[
-          'phone'=>13219890986,
-           'code'=>['13150446','13150446']
-        ];*/
         /**
          *  查找所有未验票的 的票
          */
@@ -257,7 +253,7 @@ class OrderController extends ObjectController
             }
             $transaction->commit();
             //验票成功后修改该订单已验票的金额[售卖价,结算价]
-            OrderTicket::updateOrder($data);
+           OrderTicket::updateOrder($data);
             //验票成功 发送短信给用户
             $MessageCode = new MessageCode();
             if ($MessageCode->send($id)){

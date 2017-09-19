@@ -97,14 +97,20 @@ class OrderTicket extends \yii\db\ActiveRecord
      * @return bool
      */
     public static function updateOrder($data){
-       //查询该用户 提供的手机号和验证码查找数据
+      //更新该订单的数据
       $rows  =   self::find()->where(['phone'=>$data['phone'],'code'=>$data['code']])->asArray()->all();
-      $order=   Order::findOne(['id'=>['order_id']]);
       foreach ($rows as $key=>$value){
+         $order=   Order::findOne(['id'=>$value['order_id']]);
          $order->sell_all_checking=$order->sell_all_checking+$value['prize'];
          $order->clearing_all_checking=$order->clearing_all_checking+$value['settlement'];
          $order->order_num=$order->order_num+1;
+         $re = ActivityData::findOne(['activity_id'=>$order->activity_id]);
+         $re->checking_transaction_money= $re->checking_transaction_money+$value['prize'];;
+         $re->checking_footings= $re->checking_footings+$value['settlement'];
+         $re->checking_num= $re->checking_num+1;
+         $re->save(false);
+         $order->save(false);
       }
-        return $order->save(false);
+        return true;
     }
 }
