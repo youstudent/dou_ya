@@ -16,6 +16,14 @@ return [
             'charset' => 'utf8',
             'tablePrefix' => 'ya_',
         ],
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=120.27.211.32;dbname=douya_market',
+            'username' => 'angke',
+            'password' => 'angke_ypxl',
+            'charset' => 'utf8',
+            'tablePrefix' => 'ya_',
+        ],
         // ...
         'wechat' => [
             'class' => 'maxwen\easywechat\Wechat',

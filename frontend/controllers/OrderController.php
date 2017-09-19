@@ -105,7 +105,6 @@ class OrderController extends ObjectController
      */
     public function actionOrder()
     {
-        
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请求方式POST');
         }
@@ -123,6 +122,7 @@ class OrderController extends ObjectController
             $order->order_num = 1;
             $order->activity_name = $row['activity_name'];
             $order->merchant_name = $row['merchant_name'];
+            $order->status = 0;
             $member = Member::findOne(['id' => GetUserInfo::GetUserId()]);
             if (!$member) {
                 return $this->returnAjax(0, '没有查询到用户信息');
@@ -133,7 +133,6 @@ class OrderController extends ObjectController
             $order->activity_id = $row['id'];
             $order->user_id = $member->id;
             if ($order->save(false) == false) throw new Exception('保存订单失败');
-            
             //保存票种
             foreach ($tickets as $value) {
                 $ActivityTicket = ActivityTicket::findOne(['id' => $value['id']]);
@@ -156,9 +155,9 @@ class OrderController extends ObjectController
             $new_order->sell_all = OrderTicket::find()->select('sum(prize)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(prize)'];
             $new_order->clearing_all = OrderTicket::find()->select('sum(settlement)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(settlement)'];
             $new_order->order_num = OrderTicket::find()->where(['order_id' => $order->id])->count();
+           
             if ($new_order->save(false) == false) throw new Exception('订单数据更新失败');
             $transaction->commit();
-           
             $weachat = new Wechat();
             //TODO 要修改的:openid
             // 创建微信支付订单
@@ -235,11 +234,11 @@ class OrderController extends ObjectController
         if (!\Yii::$app->request->isPost){
             return $this->returnAjax(0,'POST请求方式');
         }
-       //$data  = \Yii::$app->request->post();
-        $data =[
+       $data  = \Yii::$app->request->post();
+        /*$data =[
           'phone'=>13219890986,
-            'code'=>['13150446','13150446']
-        ];
+           'code'=>['13150446','13150446']
+        ];*/
         /**
          *  查找所有未验票的 的票
          */

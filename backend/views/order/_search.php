@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 <div class="order-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['order/paid-index'],
         'method' => 'get',
         'options' => ['class'=>'form-inline'],
     ]); ?>

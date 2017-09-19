@@ -19,8 +19,8 @@ class GetUserInfo
    public static function GetUserId()
    {
        //TODO:  从session获取用户ID
-       //$member =  \Yii::$app->session->get('member');
-       //return $member['id'];
-       return 1;
+       $member =  \Yii::$app->session->get('member');
+       return $member['id'];
+      // return 1;
    }
 }

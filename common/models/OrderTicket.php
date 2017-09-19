@@ -35,9 +35,9 @@ class OrderTicket extends \yii\db\ActiveRecord
     {
         return [
             [['phone'], 'required'],
-            [['user_id', 'code', 'activity_tivket_id', 'created_at', 'status', 'order_id'], 'integer'],
+            [['user_id', 'code', 'activity_tivket_id', 'created_at', 'status',], 'integer'],
             [['phone'], 'string', 'max' => 11],
-            [['prize','settlement','title'],'safe']
+            [['prize','settlement','title','order_id'],'safe']
         ];
     }
 
