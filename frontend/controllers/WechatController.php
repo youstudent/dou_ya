@@ -78,7 +78,7 @@ class WechatController extends ObjectController
     public function actionWechatConfig()
     {
         $js = Yii::$app->wechat->js;
-        $apis = ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone'];
+        $apis = ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone', 'chooseWXPay'];
         $config = $js->config($apis, $debug = true, $beta = false, $json = false);
 
         return $this->returnAjax(1, 'success', compact('config'));
