@@ -105,7 +105,6 @@ class OrderController extends ObjectController
      */
     public function actionOrder()
     {
-        
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请求方式POST');
         }
@@ -133,7 +132,6 @@ class OrderController extends ObjectController
             $order->activity_id = $row['id'];
             $order->user_id = $member->id;
             if ($order->save(false) == false) throw new Exception('保存订单失败');
-            
             //保存票种
             foreach ($tickets as $value) {
                 $ActivityTicket = ActivityTicket::findOne(['id' => $value['id']]);
@@ -156,9 +154,10 @@ class OrderController extends ObjectController
             $new_order->sell_all = OrderTicket::find()->select('sum(prize)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(prize)'];
             $new_order->clearing_all = OrderTicket::find()->select('sum(settlement)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(settlement)'];
             $new_order->order_num = OrderTicket::find()->where(['order_id' => $order->id])->count();
-            if ($new_order->save(false) == false) throw new Exception('订单数据更新失败');
-            $transaction->commit();
            
+            if ($new_order->save(false) == false) throw new Exception('订单数据更新失败');
+            
+            $transaction->commit();
             $weachat = new Wechat();
             //TODO 要修改的:openid
             // 创建微信支付订单
