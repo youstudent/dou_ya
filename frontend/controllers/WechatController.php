@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 use common\models\Member;
 use common\models\Wechat;
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Response;
 
@@ -67,5 +68,18 @@ class WechatController extends ObjectController
             return true; // 或者错误消息
         });
         $response->send();
+    }
+
+    /**
+     * 获取微信js-sdk的配置文件
+     * @return mixed
+     */
+    public function actionWechatConfig()
+    {
+        $js = Yii::$app->wechat->js;
+        $apis = ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone'];
+        $config = $js->config($apis, $debug = true, $beta = false, $json = false);
+
+        return $this->returnAjax(1, 'success', compact('config'));
     }
 }

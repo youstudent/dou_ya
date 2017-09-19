@@ -44,7 +44,7 @@ class Wechat extends Model
             return false;
         }
 
-        $jsApiConfig = $payment->configForPayment($prepayId);
+        $jsApiConfig = $payment->configForPayment($prepayId, false);
         
         //返回配置和 订单信息
         $data['jsApiConfig'] =$jsApiConfig;
