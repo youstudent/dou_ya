@@ -14,10 +14,12 @@ use common\models\Order;
 use common\models\Wechat;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\web\Controller;
 use yii\web\Response;
 
 class WechatController extends ObjectController
 {
+    public $enableCsrfValidation=false;
     /**
      * 微信登录
      * @return mixed
@@ -68,7 +70,8 @@ class WechatController extends ObjectController
     {
         $response = \Yii::$app->wechat->payment->handleNotify(function ($notify, $successful) {
             // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
-            $order =Order::findOne(['order_num'=>$notify->out_trade_no]);
+        
+            $order =Order::find()->where(['order_number'=>$notify->out_trade_no])->one();
             if (!$order) { // 如果订单不存在
                 return 'Order not exist.'; // 告诉微信，我已经处理完了，订单没找到，别再通知我了
             }
@@ -92,8 +95,8 @@ class WechatController extends ObjectController
               
             } // 保存订单
             return true; // 或者错误消息
-        });
-        $response->send();
+       });
+       $response->send();
     }
 
     /**
