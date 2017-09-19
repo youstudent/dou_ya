@@ -68,7 +68,29 @@ class WechatController extends ObjectController
     {
         $response = \Yii::$app->wechat->payment->handleNotify(function ($notify, $successful) {
             // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
-            // 保存订单
+            $order =Order::findOne(['order_num'=>$notify->out_trade_no]);
+            if (!$order) { // 如果订单不存在
+                return 'Order not exist.'; // 告诉微信，我已经处理完了，订单没找到，别再通知我了
+            }
+            // 如果订单存在
+            // 检查订单是否已经更新过支付状态
+            if ($order->status==1) { // 假设订单字段“支付时间”不为空代表已经支付
+                return true; // 已经支付成功了就不再更新了
+            }
+            // 用户是否支付成功
+            if ($successful) {
+                // 不是已经支付状态则修改为已经支付状态
+                $order->pay_time = time(); // 更新支付时间为当前时间
+                $order->status = 1;
+            } else { // 用户支付失败
+                $order->status = 0;
+            }
+            if ($order->save(false)){
+                //更新该订单的所属活动的数据
+               // $ActivityData = new ActivityData();
+              //  $res = $ActivityData->edit($order);
+              
+            } // 保存订单
             return true; // 或者错误消息
         });
         $response->send();
