@@ -25,7 +25,7 @@ class ObjectController extends Controller
      * @param \yii\base\Action $action
      * @return bool
      */
-    /*public function beforeAction($action)
+    public function beforeAction($action)
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -51,7 +51,7 @@ class ObjectController extends Controller
         }
 
         return true;
-    }*/
+    }
 
     /**
      * api 接口统一返回的数据

@@ -122,7 +122,8 @@ class OrderController extends ObjectController
             $order->order_num = 1;
             $order->activity_name = $row['activity_name'];
             $order->merchant_name = $row['merchant_name'];
-            $member = Member::findOne(['id' => GetUserInfo::GetUserId()]);
+            $order->status = 0;
+            $member = Member::findOne(['id' => 5]);
             if (!$member) {
                 return $this->returnAjax(0, '没有查询到用户信息');
             }
@@ -156,9 +157,7 @@ class OrderController extends ObjectController
             $new_order->order_num = OrderTicket::find()->where(['order_id' => $order->id])->count();
            
             if ($new_order->save(false) == false) throw new Exception('订单数据更新失败');
-            
             $transaction->commit();
-            return true;
             $weachat = new Wechat();
             //TODO 要修改的:openid
             // 创建微信支付订单
