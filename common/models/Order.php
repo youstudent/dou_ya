@@ -40,7 +40,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_num', 'order_checking', 'phone', 'sell_all', 'clearing_all', 'sell_all_checking', 'clearing_all_checking', 'order_time'], 'integer'],
+            [['order_num', 'order_checking', 'phone', 'sell_all', 'clearing_all', 'sell_all_checking', 'clearing_all_checking', 'order_time','pay_time'], 'integer'],
             [['order_number'], 'string', 'max' => 100],
             [['activity_name', 'merchant_name', 'order_name'], 'string', 'max' => 20],
         ];
@@ -68,6 +68,7 @@ class Order extends \yii\db\ActiveRecord
             'status' => '状态',
             'ticket' => '票验证码',
             'user_id' => '票验证码',
+            'pay_time' => '支付时间',
         ];
     }
     
