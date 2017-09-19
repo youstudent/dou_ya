@@ -21,8 +21,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['placeholder' => '权限名称','class'=>'form-control'])->label(false) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('rbac-admin', 'Search'), ['class' => 'btn btn-sm btn-primary','style'=>'margin-bottom:9px']) ?>
-        <?= Html::resetButton(Yii::t('rbac-admin', 'Reset'), ['class' => 'btn btn-sm btn-default','style'=>'margin-bottom:9px']) ?>
+        <?= Html::submitButton(Yii::t('rbac-admin', '搜索'), ['class' => 'btn btn-sm btn-primary','style'=>'margin-bottom:9px']) ?>
+        <?= Html::resetButton(Yii::t('rbac-admin', '重置'), ['class' => 'btn btn-sm btn-default','style'=>'margin-bottom:9px']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
