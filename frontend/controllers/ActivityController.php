@@ -193,7 +193,7 @@ class ActivityController extends ObjectController
             return $this->returnAjax(1, '该活动报名截止或已下线');
         }
         //处理图片
-        $data['activity_img'] = \Yii::$app->params['img_domain'] . $data['activity_img'];
+        $data['activity_img'] = \Yii::$app->params['imgs'] . $data['activity_img'];
         //查询票种
         $ticket = ActivityTicket::find()->select('id,price,title')->orderBy('price ASC')->where(['activity_id' => $activity_id])->asArray()->all();
         //合并活动和票种

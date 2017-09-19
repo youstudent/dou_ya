@@ -235,11 +235,11 @@ class OrderController extends ObjectController
         if (!\Yii::$app->request->isPost){
             return $this->returnAjax(0,'POST请求方式');
         }
-       //$data  = \Yii::$app->request->post();
-        $data =[
+       $data  = \Yii::$app->request->post();
+        /*$data =[
           'phone'=>13219890986,
-            'code'=>['13150446','13150446']
-        ];
+           'code'=>['13150446','13150446']
+        ];*/
         /**
          *  查找所有未验票的 的票
          */
