@@ -123,7 +123,7 @@ class OrderController extends ObjectController
             $order->activity_name = $row['activity_name'];
             $order->merchant_name = $row['merchant_name'];
             $order->status = 0;
-            $member = Member::findOne(['id' => 5]);
+            $member = Member::findOne(['id' => GetUserInfo::GetUserId()]);
             if (!$member) {
                 return $this->returnAjax(0, '没有查询到用户信息');
             }
