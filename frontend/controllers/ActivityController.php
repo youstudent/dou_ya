@@ -52,7 +52,7 @@ class ActivityController extends ObjectController
         $pageInfo = ['totalPage' => $totalPage, 'nowPage' => $nowPage];
         
         //查询正在进行的活动
-        $data = Activity::find()->select($select)->where(['status' => 1])->andWhere(['<', 'end_time', time()])
+        $data = Activity::find()->select($select)->where(['status' => 1])->andWhere(['>', 'end_time', time()])
             ->orderBy("$orderBy DESC")
             ->asArray()
             ->limit($size)
