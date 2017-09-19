@@ -6,6 +6,7 @@
  */
 namespace frontend\controllers;
 
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 /**
@@ -33,11 +34,11 @@ class ObjectController extends Controller
                 $model = new \common\models\Member();
                 $model->login($user);
             }else{
-                return \Yii::$app->wechat->authorizeRequired()->send();
+                //return \Yii::$app->wechat->authorizeRequired()->send();
             }
         }
 
-        \Yii::$app->response->format = Response::FORMAT_JSON;
+       
         return true;
     }
 

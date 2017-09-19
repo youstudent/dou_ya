@@ -24,6 +24,7 @@ class WechatController extends ObjectController
             return $this->returnAjax(0, '未正确拉取到用户信息', []);
         }
         //自动登录逻辑
+        
         $user = \Yii::$app->wechat->getUser();
         $model = new Member();
         if (!$model->login($user, true)) {
@@ -58,5 +59,12 @@ class WechatController extends ObjectController
             return true; // 或者错误消息
         });
         $response->send();
+    }
+    
+    
+    public function actionShare()
+    {
+    
+    
     }
 }
