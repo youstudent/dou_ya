@@ -158,6 +158,7 @@ class OrderController extends ObjectController
             if ($new_order->save(false) == false) throw new Exception('订单数据更新失败');
             
             $transaction->commit();
+            return true;
             $weachat = new Wechat();
             //TODO 要修改的:openid
             // 创建微信支付订单
