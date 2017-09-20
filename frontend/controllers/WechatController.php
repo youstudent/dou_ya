@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 use common\models\ActivityData;
 use common\models\Member;
+use common\models\MessageCode;
 use common\models\Order;
 use common\models\Wechat;
 use Yii;
@@ -89,9 +90,12 @@ class WechatController extends ObjectController
                 $order->status = 0;
             }
             if ($order->save(false)){
+                //发送短信给用户,
+                $message  = new MessageCode();
+                $message->paySuccessSms($order);
                 //更新该订单的所属活动的数据
-               // $ActivityData = new ActivityData();
-              //  $res = $ActivityData->edit($order);
+             //  $ActivityData = new ActivityData();
+             //  $res = $ActivityData->edit($order);
               
             } // 保存订单
             return true; // 或者错误消息

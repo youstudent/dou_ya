@@ -14,35 +14,45 @@ use yii\grid\GridView;
 
     <h3>待支付订单</h3>
     <p style="text-align: right">
-        <?= Html::a('导出EXCEL', ['excel','status'=>0], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('导出EXCEL', ['excel', 'status' => 0], ['class' => 'btn btn-success']) ?>
     </p>
-    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'filterPosition' => false,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'order_number',
-            'activity_name',
-            'merchant_name',
-            'order_name',
-            'order_num',
-            //'order_checking',
-            'phone',
-            'sell_all',
-            'clearing_all',
-            //'sell_all_checking',
-           // 'clearing_all_checking',
-            [
-                'attribute' => 'order_time',
-                'label'=>'下单时间',
-                'value'=>
-                    function($model){
-                        return  date('Y-m-d H:i:s',$model->order_time);   //主要通过此种方式实现
-                    },
-            ],
-            
-        ],
-    ]); ?>
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title"></h3>
+            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'filterPosition' => false,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'order_number',
+                    'activity_name',
+                    'merchant_name',
+                    'order_name',
+                    'order_num',
+                    //'order_checking',
+                    'phone',
+                    'sell_all',
+                    'clearing_all',
+                    //'sell_all_checking',
+                    // 'clearing_all_checking',
+                    [
+                        'attribute' => 'order_time',
+                        'label' => '下单时间',
+                        'value' =>
+                            function ($model) {
+                                return date('Y-m-d H:i:s', $model->order_time);   //主要通过此种方式实现
+                            },
+                    ],
+                
+                ],
+            ]); ?>
+        </div>
+        <div class="box-footer clearfix">
+
+        </div>
+    </div>
+</div>
+
 </div>

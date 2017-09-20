@@ -91,7 +91,8 @@ class Member extends \yii\db\ActiveRecord
             $this->message = '已被禁止登陆';
             return false;
         }
-
+        $user->last_time =time();//更新用户最后登录时间
+        $user->save();
         Yii::$app->session->set('member', [
             'id' => $user->id,
             'openid' => $user->openid,
@@ -116,6 +117,7 @@ class Member extends \yii\db\ActiveRecord
         $model->sex = $wechat_user->original['sex'];
         $model->phone = '';
         $model->status = 1;
+        $model->last_time = time(); //最后登录时间
         $model->headimgurl = $wechat_user->avatar;
         $model->openid = $wechat_user->id;
         if(!$model->save()){

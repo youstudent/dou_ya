@@ -8,6 +8,8 @@ use Yii;
 use Flc\Alidayu\App;
 use Flc\Alidayu\Client;
 use Flc\Alidayu\Requests\AlibabaAliqinFcSmsNumSend;
+use yii\helpers\ArrayHelper;
+
 /**
  * This is the model class for table "{{%message_code}}".
  *
@@ -60,7 +62,7 @@ class MessageCode extends \yii\db\ActiveRecord
      */
     public function sms($phone)
     {
-        if(!$this->checkCode($phone, 0)){ //1800
+        if(!$this->checkCode($phone, 1800)){ //1800
             return false;
         }
         // 生成验证码
@@ -85,7 +87,7 @@ class MessageCode extends \yii\db\ActiveRecord
     }
     
     /**
-     *   发送短信
+     *   发送短信  验证码和验票成功
      */
     public function SendSms($phone, $code, $id,$template){
         // 配置信息
@@ -145,5 +147,39 @@ class MessageCode extends \yii\db\ActiveRecord
       $data  =   Order::findOne(['id' => $order_id]);
       $name =$data->activity_name;
      return  $this->SendSms('13219890986',$name,'','SMS_95475065');
+    }
+    
+    
+    public function paySuccessSms($order){
+       $data = OrderTicket::find()->where(['order_id'=>$order->id])->asArray()->all();
+       $content = implode(',', ArrayHelper::map($data, 'id', 'code'));
+       
+       $this->SendMessage($order->phone,$order->activity_name,$content,'SMS_95815017');
+       
+    }
+    
+    /**
+     *   发送支付后的短信
+     */
+    public function SendMessage($phone, $name, $content,$template){
+        // 配置信息
+        $config = [
+            'app_key'    => '24558166',
+            'app_secret' => '412f0a3698777944957ee48b96dc2863',
+            //'sandbox'    => true,  // 是否为沙箱环境，默认false
+        ];
+        // 使用方法一
+        $client = new Client(new App($config));
+        $req    = new AlibabaAliqinFcSmsNumSend();
+        $req->setRecNum($phone)
+            ->setSmsParam([
+                'name' => $name,
+                'content' => $content,
+            ])
+            ->setSmsFreeSignName('豆芽集市')
+            ->setSmsTemplateCode($template);
+        
+        $resp = $client->execute($req);
+        return $resp->result->success;
     }
 }

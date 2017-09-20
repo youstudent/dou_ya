@@ -69,14 +69,6 @@ use yii\grid\GridView;
                                         ]
                                     );
                                 },
-                                /*'get-details' => function ($url, $model, $key) {
-                                    return Html::a('更新', '/order/get-details', [
-                                        'data-toggle' => 'modal',
-                                        'data-target' => '#update-modal',
-                                        'class' => 'data-update',
-                                        'data-id' => $key,
-                                    ]);
-                                },*/
                             ],
                         ],
 

@@ -103,7 +103,7 @@ class OrderTicket extends \yii\db\ActiveRecord
          $order=   Order::findOne(['id'=>$value['order_id']]);
          $order->sell_all_checking=$order->sell_all_checking+$value['prize'];
          $order->clearing_all_checking=$order->clearing_all_checking+$value['settlement'];
-         $order->order_num=$order->order_num+1;
+         $order->order_checking=$order->order_checking+1;
          $re = ActivityData::findOne(['activity_id'=>$order->activity_id]);
          $re->checking_transaction_money= $re->checking_transaction_money+$value['prize'];;
          $re->checking_footings= $re->checking_footings+$value['settlement'];
