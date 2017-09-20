@@ -9,6 +9,7 @@ namespace frontend\controllers;
 
 
 use common\models\ActivityData;
+use common\models\ActivityTicket;
 use common\models\Member;
 use common\models\MessageCode;
 use common\models\Order;
@@ -90,6 +91,9 @@ class WechatController extends ObjectController
                 $order->status = 0;
             }
             if ($order->save(false)){
+                //将该订单的票种状态改变
+                $ActivityTicket =new ActivityTicket();
+                $ActivityTicket->status($order->id);
                 //发送短信给用户,
                 $message  = new MessageCode();
                 $message->paySuccessSms($order);

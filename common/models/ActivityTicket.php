@@ -50,7 +50,11 @@ class ActivityTicket extends \yii\db\ActiveRecord
         ];
     }
     
-    public function add($data,$activity_id){
-    
+    /**
+     * 更新 订单状态
+     * @param $order_id
+     */
+    public function Status($order_id){
+        OrderTicket::updateAll(['status' => 9], ['order_id' => $order_id]);
     }
 }
