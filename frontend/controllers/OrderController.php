@@ -114,7 +114,7 @@ class OrderController extends ObjectController
         //判断该用户有没有绑定手机号
         $member = new Member();
         if(!$member->checkPhone()){
-            return $this->returnAjax(0,'请绑定手机号');
+            return $this->returnAjax(1,'请绑定手机号');
         }
         //判断用户 加上当前购买的票种数量是否超过限制数量
         $activity = new Activity();

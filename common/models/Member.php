@@ -149,8 +149,7 @@ class Member extends \yii\db\ActiveRecord
     
     public function checkPhone(){
         //从session中获取用户数据
-       // $member = Yii::$app->session->get('member');
-        $member['id']=4;
+        $member = Yii::$app->session->get('member');
         $data = Member::findOne(['id'=>$member['id']]);
         //检查用户是否绑定手机号
         if (empty($data->phone)){
