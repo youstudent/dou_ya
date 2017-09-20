@@ -150,11 +150,12 @@ class MessageCode extends \yii\db\ActiveRecord
     }
     
     
+    /**
+     * 订单支付成发送短信
+     * @param $order
+     */
     public function paySuccessSms($order){
-       $data = OrderTicket::find()->where(['order_id'=>$order->id])->asArray()->all();
-       $content = implode(',', ArrayHelper::map($data, 'id', 'code'));
-       
-       $this->SendMessage($order->phone,$order->activity_name,$content,'SMS_95815017');
+       $this->SendMessage($order->phone,$order->activity_name,$order->order_number,'SMS_97835024');
        
     }
     
@@ -178,7 +179,6 @@ class MessageCode extends \yii\db\ActiveRecord
             ])
             ->setSmsFreeSignName('豆芽集市')
             ->setSmsTemplateCode($template);
-        
         $resp = $client->execute($req);
         return $resp->result->success;
     }

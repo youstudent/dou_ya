@@ -8,8 +8,8 @@ return [
         'defaultUserStatus' => 0, // 0 = inactive, 10 = active
         'userTable' => '{{%admin}}',
     ],
-    'size'=>1,  // Api每页要显示的条数
-    'pageSize'=>2,  // 后台每页要显示的条数
+    'size'=>10,  // Api每页要显示的条数
+    'pageSize'=>15,  // 后台每页要显示的条数
     'img' => 'www.douyajishi.com',//图片前缀
     'imgs' => 'http://img.douyajishi.com',//图片前缀
     //微信登录参数

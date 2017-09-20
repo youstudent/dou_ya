@@ -21,6 +21,7 @@ use common\models\OrderTicket;
 use common\models\Wechat;
 use EasyWeChat\Js\Js;
 use frontend\models\GetUserInfo;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use PHPUnit\Framework\Constraint\IsFalse;
 use rmrevin\yii\fontawesome\FA;
 use yii\db\Exception;
@@ -109,8 +110,18 @@ class OrderController extends ObjectController
             return $this->returnAjax(0, '请求方式POST');
         }
         $data = \Yii::$app->request->post();
-        $order = new Order();
         $tickets = $data['ticket'];
+        //判断该用户有没有绑定手机号
+        $member = new Member();
+        if(!$member->checkPhone()){
+            return $this->returnAjax(0,'请绑定手机号');
+        }
+        //判断用户 加上当前购买的票种数量是否超过限制数量
+        $activity = new Activity();
+        if (!$activity->checkOrderNum($data)){
+            return $this->returnAjax(0,'不能超过每人限购数');
+        }
+        $order = new Order();
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             // 查询活动是否在报名截止时间之内和 停封启用状态

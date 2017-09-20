@@ -3,6 +3,7 @@
 namespace common\models;
 
 use backend\components\ImgUrl;
+use frontend\models\GetUserInfo;
 use PHPUnit\Framework\Constraint\IsFalse;
 use Yii;
 use yii\db\Exception;
@@ -296,7 +297,7 @@ class Activity extends \yii\db\ActiveRecord
             //查询票种
             $data['price'] = '0';
             if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $data['id']])->orderBy('price ASC')->one()) {
-                $value['price'] = $row->price;
+                $data['price'] = $row->price;
             }
         return $data;
         
@@ -307,4 +308,64 @@ class Activity extends \yii\db\ActiveRecord
       return $this->hasMany(CollectActivity::className(),['activity_id'=>'id']);
     
     }
+    
+    /**
+     * 参加活动前检查该用户是否超过活动限购数
+     * @param $activity_id
+     * @return bool
+     */
+    public function checkNum($activity_id)
+    {
+        $member_id = GetUserInfo::GetUserId();
+        
+        $data = Order::find()->where(['activity_id' => $activity_id, 'user_id' => $member_id])->asArray()->all();
+        if (!$data) {
+            return true;
+        }
+        $num = 0;
+        foreach ($data as $key => $value) {
+            $num += OrderTicket::find()->where(['order_id' => $value['id']])->count();
+        }
+        $activity = Activity::findOne(['id' => $activity_id]);
+        if ($num >= $activity->purchase_limitation) {
+            return false;
+        }
+        return true;
+        
+    }
+    
+    
+    /**
+     * 用户参加活动前未超过限制,但进入下单选择数量后检查是否超过限制
+     * @param $data
+     * @return bool
+     */
+    public function checkOrderNum($data)
+    {
+        // 获取用户信息
+        $member_id = GetUserInfo::GetUserId();
+        // 查询该用户操作活动的订单,订单不存在说明该用户没有下过单
+        $order = Order::find()->where(['activity_id' => $data['activity_id'], 'user_id' => $member_id])->asArray()->all();
+        if (!$order) {
+            return true;
+        }
+        // 循环查找每个订单的票种数量,加起来就是该用户该活动的总票种数
+        $num = 0;
+        foreach ($order as $key => $value) {
+            $num += OrderTicket::find()->where(['order_id' => $value['id']])->count();
+        }
+        //循环用户提交,票种的总数量
+        $nums = 0;
+        foreach ($data['ticket'] as $key => $value) {
+            $nums += $value['num'];
+        }
+        // 用之前用户下单的数量加上即将要下单的数量作对比
+        $activity = Activity::findOne(['id' => $data['activity_id']]);
+        // 如果大于限制数量就,不能再进行下单了
+        if ($num + $nums > $activity->purchase_limitation) {
+            return false;
+        }
+        return true;
+    }
+    
 }

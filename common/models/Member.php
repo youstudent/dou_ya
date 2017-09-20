@@ -92,7 +92,7 @@ class Member extends \yii\db\ActiveRecord
             return false;
         }
         $user->last_time =time();//更新用户最后登录时间
-        $user->save();
+        $user->save(false);
         Yii::$app->session->set('member', [
             'id' => $user->id,
             'openid' => $user->openid,
@@ -143,6 +143,20 @@ class Member extends \yii\db\ActiveRecord
             return false;
         }
         return $user;
+    }
+    
+    
+    
+    public function checkPhone(){
+        //从session中获取用户数据
+       // $member = Yii::$app->session->get('member');
+        $member['id']=4;
+        $data = Member::findOne(['id'=>$member['id']]);
+        //检查用户是否绑定手机号
+        if (empty($data->phone)){
+            return false;
+        }
+        return true;
     }
 
    
