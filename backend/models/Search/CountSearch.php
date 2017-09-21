@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models\search;
+namespace backend\models\Search;
 
 
 use common\models\Count;
