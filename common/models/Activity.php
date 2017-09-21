@@ -361,7 +361,7 @@ class Activity extends \yii\db\ActiveRecord
         }
         //用户下单检查是否可以进行下单
         $activity = Activity::findOne(['id' => $data['activity_id']]);
-        if ($num >= $activity->purchase_limitation) {
+        if ($nums >= $activity->purchase_limitation) {
             return false;
         }
         // 用户可以进行下单,加上即将要下单的数量,是否大于限制数据
