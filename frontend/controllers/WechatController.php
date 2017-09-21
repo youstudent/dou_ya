@@ -98,8 +98,8 @@ class WechatController extends ObjectController
                 $message  = new MessageCode();
                 $message->paySuccessSms($order);
                 //更新该订单的所属活动的数据
-             //  $ActivityData = new ActivityData();
-             //  $res = $ActivityData->edit($order);
+                $ActivityData = new ActivityData();
+                $ActivityData->edit($order);
               
             } // 保存订单
             return true; // 或者错误消息

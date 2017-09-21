@@ -55,6 +55,7 @@ class ActivityTicket extends \yii\db\ActiveRecord
      * @param $order_id
      */
     public function Status($order_id){
-        OrderTicket::updateAll(['status' => 9], ['order_id' => $order_id]);
+        //支付成功,订单票该为未验票
+        OrderTicket::updateAll(['status' => 0], ['order_id' => $order_id]);
     }
 }

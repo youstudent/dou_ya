@@ -155,7 +155,7 @@ class MessageCode extends \yii\db\ActiveRecord
      * @param $order
      */
     public function paySuccessSms($order){
-       $this->SendMessage($order->phone,$order->activity_name,$order->order_number,'SMS_97835024');
+       $this->SendMessage($order->phone,$order->activity_name,$order->order_number,'SMS_98235004');
        
     }
     

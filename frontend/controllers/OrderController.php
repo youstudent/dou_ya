@@ -134,7 +134,7 @@ class OrderController extends ObjectController
             $order->activity_name = $row['activity_name'];
             $order->merchant_name = $row['merchant_name'];
             $order->status = 0;
-            $member = Member::findOne(['id' => GetUserInfo::GetUserId()]);
+            $member = Member::findOne(['id' =>GetUserInfo::GetUserId()]);
             if (!$member) {
                 return $this->returnAjax(0, '没有查询到用户信息');
             }
@@ -163,10 +163,9 @@ class OrderController extends ObjectController
             }
             //更新待支付订单 状态:未支付
             $new_order = Order::findOne(['id' => $order->id]);
-            $new_order->sell_all = OrderTicket::find()->select('sum(prize)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(prize)'];
-            $new_order->clearing_all = OrderTicket::find()->select('sum(settlement)')->where(['order_id' => $order->id, 'status' => 0])->asArray()->one()['sum(settlement)'];
+            $new_order->sell_all = OrderTicket::find()->select('sum(prize)')->where(['order_id' => $order->id, 'status' => 9])->asArray()->one()['sum(prize)'];
+            $new_order->clearing_all = OrderTicket::find()->select('sum(settlement)')->where(['order_id' => $order->id, 'status' => 9])->asArray()->one()['sum(settlement)'];
             $new_order->order_num = OrderTicket::find()->where(['order_id' => $order->id])->count();
-           
             if ($new_order->save(false) == false) throw new Exception('订单数据更新失败');
             $transaction->commit();
             $weachat = new Wechat();
