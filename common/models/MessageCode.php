@@ -163,6 +163,7 @@ class MessageCode extends \yii\db\ActiveRecord
      *   发送支付后的短信
      */
     public function SendMessage($phone, $name, $content,$template){
+       
         // 配置信息
         $config = [
             'app_key'    => '24558166',
@@ -178,7 +179,7 @@ class MessageCode extends \yii\db\ActiveRecord
                 'content' => $content,
             ])
             ->setSmsFreeSignName('豆芽集市')
-            ->setSmsTemplateCode($template);
+            ->setSmsTemplateCode('SMS_98235004');
         $resp = $client->execute($req);
         return $resp->result->success;
     }

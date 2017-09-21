@@ -3,6 +3,8 @@
 namespace backend\controllers;
 use backend\components\ImgUrl;
 use common\models\ActivityTicket;
+use common\models\MessageCode;
+use common\models\Order;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Yii;
 use common\models\Activity;
@@ -212,5 +214,11 @@ class ActivityController extends Controller
         }
         Yii::$app->getSession()->setFlash('danger','启用活动失败');
         return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+    }
+    
+    public function actionTest(){
+        $message  = new MessageCode();
+        $order = Order::findOne(['id'=>17]);
+        $message->paySuccessSms($order);
     }
 }
