@@ -359,9 +359,12 @@ class Activity extends \yii\db\ActiveRecord
         foreach ($data['ticket'] as $key => $value) {
             $nums += $value['num'];
         }
-        // 用之前用户下单的数量加上即将要下单的数量作对比
+        //用户下单检查是否可以进行下单
         $activity = Activity::findOne(['id' => $data['activity_id']]);
-        // 如果大于限制数量就,不能再进行下单了
+        if ($num >= $activity->purchase_limitation) {
+            return false;
+        }
+        // 用户可以进行下单,加上即将要下单的数量,是否大于限制数据
         if ($num + $nums > $activity->purchase_limitation) {
             return false;
         }

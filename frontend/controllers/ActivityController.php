@@ -187,11 +187,6 @@ class ActivityController extends ObjectController
         if (!$activity_id) {
             return $this->returnAjax(0, '活动activity_id不能为空');
         }
-        //判断用户下单数是否 超过该活动的限制人数
-        $activity = new Activity();
-        if (!$activity->checkNum($activity_id)){
-            return $this->returnAjax(0,'');
-        }
         //查询活动
         $data = Activity::find()->select(['id', 'activity_name', 'activity_img'])->where(['id' => $activity_id, 'status' => 1])->andWhere(['>', 'apply_end_time', time()])->asArray()->one();
         if (!$data) {
