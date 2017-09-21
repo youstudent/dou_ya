@@ -10,7 +10,7 @@ namespace backend\controllers;
 
 
 
-use backend\models\search\CountSearch;
+use backend\models\Search\CountSearch;
 use common\models\Count;
 use yii\web\Controller;
 
