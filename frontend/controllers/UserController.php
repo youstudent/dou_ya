@@ -122,6 +122,7 @@ class UserController extends ObjectController
             ->all();
         foreach ($data as $key => &$value) {
             $value['in_activity'] = Merchant::getInActivity($value['id']);
+            $value['logo'] = \Yii::$app->params['imgs'].$value['logo'];
             $value['history_activity'] = Merchant::getHistoryActivity($value['id']);
         }
         $datas['data'] = $data;

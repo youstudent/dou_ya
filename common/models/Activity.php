@@ -371,4 +371,17 @@ class Activity extends \yii\db\ActiveRecord
         return true;
     }
     
+    /**
+     * 更新 活动的数据
+     * @param $order
+     */
+    public function updated($order){
+        $activity_id = $order['activity_id'];
+        $data = self::findOne(['id'=>$activity_id]);
+        if ($data){
+            $data->total_clearing=$data->total_clearing+$order['sell_all'];
+            $data->total_price=$data->total_price+$order['clearing_all'];
+        }
+    }
+    
 }

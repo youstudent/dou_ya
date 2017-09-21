@@ -8,6 +8,7 @@
 namespace frontend\controllers;
 
 
+use common\models\Activity;
 use common\models\ActivityData;
 use common\models\ActivityTicket;
 use common\models\Member;
@@ -100,7 +101,9 @@ class WechatController extends ObjectController
                 //更新该订单的所属活动的数据
                $ActivityData = new ActivityData();
                $ActivityData->edit($order);
-              
+               
+               $Activity  = new Activity();
+               $Activity->updated($order);
             } // 保存订单
             return true; // 或者错误消息
        });
