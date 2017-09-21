@@ -92,14 +92,14 @@ class WechatController extends ObjectController
             }
             if ($order->save(false)){
                 //将该订单的票种状态改变
-                $ActivityTicket =new ActivityTicket();
-                $ActivityTicket->status($order->id);
+               // $ActivityTicket =new ActivityTicket();
+              //  $ActivityTicket->status($order->id);
                 //发送短信给用户,
                 $message  = new MessageCode();
                 $message->paySuccessSms($order);
                 //更新该订单的所属活动的数据
-                $ActivityData = new ActivityData();
-                $ActivityData->edit($order);
+                //$ActivityData = new ActivityData();
+               // $ActivityData->edit($order);
               
             } // 保存订单
             return true; // 或者错误消息
