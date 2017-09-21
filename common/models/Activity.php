@@ -344,6 +344,16 @@ class Activity extends \yii\db\ActiveRecord
     {
         // 获取用户信息
         $member_id = GetUserInfo::GetUserId();
+        //循环用户提交,票种的总数量
+        $nums = 0;
+        foreach ($data['ticket'] as $key => $value) {
+            $nums += $value['num'];
+        }
+        //用户下单检查是否可以进行下单
+        $activity = Activity::findOne(['id' => $data['activity_id']]);
+        if ($nums > $activity->purchase_limitation) {
+            return false;
+        }
         // 查询该用户操作活动的订单,订单不存在说明该用户没有下过单
         $order = Order::find()->where(['activity_id' => $data['activity_id'], 'user_id' => $member_id])->asArray()->all();
         if (!$order) {
@@ -353,16 +363,6 @@ class Activity extends \yii\db\ActiveRecord
         $num = 0;
         foreach ($order as $key => $value) {
             $num += OrderTicket::find()->where(['order_id' => $value['id']])->count();
-        }
-        //循环用户提交,票种的总数量
-        $nums = 0;
-        foreach ($data['ticket'] as $key => $value) {
-            $nums += $value['num'];
-        }
-        //用户下单检查是否可以进行下单
-        $activity = Activity::findOne(['id' => $data['activity_id']]);
-        if ($nums >= $activity->purchase_limitation) {
-            return false;
         }
         // 用户可以进行下单,加上即将要下单的数量,是否大于限制数据
         if ($num + $nums > $activity->purchase_limitation) {
