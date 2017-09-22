@@ -41,7 +41,7 @@ class User extends UserModel
      */
     public function search($params)
     {
-        $query = UserModel::find();
+        $query = UserModel::find()->orderBy('created_at DESC');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

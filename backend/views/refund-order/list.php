@@ -10,9 +10,11 @@ use yii\grid\GridView;
 //$this->title = 'Orders';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
+<h3>退款已处理</h3>
 <div class="order-index">
-
-    <h3>退款已处理</h3>
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <div class="box-body">
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -86,4 +88,10 @@ use yii\grid\GridView;
         
         ],
     ]); ?>
+        </div>
+        <div class="box-footer clearfix">
+
+        </div>
+    </div>
+</div>
 </div>

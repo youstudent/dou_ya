@@ -41,7 +41,7 @@ class Activity extends ActivityModel
      */
     public function search($params)
     {
-        $query = ActivityModel::find();
+        $query = ActivityModel::find()->orderBy('created_at DESC');
 
         // add conditions that should always apply here
 

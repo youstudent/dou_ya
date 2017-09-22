@@ -145,7 +145,7 @@ class Activity extends \yii\db\ActiveRecord
     {
         if ($this->validate()) {
             if (($this->apply_end_time>$this->start_time) || ($this->apply_end_time>=$this->end_time) || $this->start_time>$this->end_time ){
-                return $this->addError('end_time','截止时间>开始时间>结束时间');
+                return $this->addError('end_time','截止时间<开始时间<结束时间');
             }
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -172,6 +172,7 @@ class Activity extends \yii\db\ActiveRecord
                 $ActivityData->merchant_name = $this->merchant_name;
                 $ActivityData->activity_name = $this->activity_name;
                 $ActivityData->activity_id = $this->id;
+                $ActivityData->created_at =time();
                 if ($ActivityData->save() ==false) throw new Exception('保存活动数据失败');
                 $row = [];
                 foreach ($data['title'] as $k => $v) {
@@ -188,9 +189,6 @@ class Activity extends \yii\db\ActiveRecord
                     $model->price = $value['price'];
                     if (!empty($value['title']) && !empty($value['price']) && !empty($value['settlement'])){
                         $model->return = (int)round(($value['price']-$value['settlement'])/$value['price']*100, 1);
-                    }
-                    if ($value['price']>$value['settlement']){
-                        return $this->addError('end_time','截止时间>开始时间>结束时间');
                     }
                     $model->settlement = $value['settlement'];
                     if ($model->save(false) == false) throw new Exception('添加票种失败');
@@ -375,6 +373,10 @@ class Activity extends \yii\db\ActiveRecord
         }
         //用户下单检查是否可以进行下单
         $activity = Activity::findOne(['id' => $data['activity_id']]);
+        // 如果该活动 是无限制就不用验证下单量了
+        if (empty($activity->purchase_limitation)){
+            return true;
+        }
         if ($nums > $activity->purchase_limitation) {
             return false;
         }

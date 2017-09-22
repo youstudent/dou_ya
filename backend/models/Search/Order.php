@@ -41,7 +41,7 @@ class Order extends OrderModel
      */
     public function search($params)
     {
-        $query = OrderModel::find();
+        $query = OrderModel::find()->orderBy('order_time DESC');
 
         // add conditions that should always apply here
 

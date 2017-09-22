@@ -32,9 +32,23 @@ class ActivityTicket extends \yii\db\ActiveRecord
         return [
             [['price','title','settlement'], 'required'],
             [['activity_id', 'price', 'settlement', 'return'], 'integer'],
+            [['price','settlement'], 'checktagname'],
         ];
     }
-
+    
+    
+    /**
+     * 验证结算价不能大于售价
+     * @param $attribute
+     * @param $params
+     */
+    public function checktagname($attribute,$params){
+        exit;
+        if($this->settlement > $this->price){
+            $this->addError($attribute, '结算价不能大于售价');
+        }
+    }
+    
     /**
      * @inheritdoc
      */

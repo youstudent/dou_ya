@@ -60,7 +60,8 @@ class Count extends \yii\db\ActiveRecord
         //利润
         $return = self::find()->select(['sum(num)'])->where(['type'=>5])->asArray()->one()['sum(num)'];
         //用户数
-        $user = self::find()->where(['type'=>6])->count();
+        //$user = self::find()->where(['type'=>6])->count();
+        $user = Member::find()->count();
         //商户数
         $merchant = self::find()->where(['type'=>7])->count();
         //正在进行的活动

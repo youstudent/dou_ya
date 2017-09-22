@@ -40,7 +40,7 @@ class Banner extends BannerModel
      */
     public function search($params)
     {
-        $query = BannerModel::find();
+        $query = BannerModel::find()->orderBy('created_at DESC');
 
         // add conditions that should always apply here
 

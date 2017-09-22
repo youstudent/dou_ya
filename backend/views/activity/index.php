@@ -12,7 +12,7 @@ use yii\grid\GridView;
 ?>
 <div class="activity-index">
     <p>
-        <?= Html::a('请在商家管理中添加活动', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('请在商家管理中添加活动', ['/merchant/index'], ['class' => 'btn btn-success']) ?>
     </p>
     <div class="box box-success">
         <div class="box-header with-border">
@@ -111,7 +111,7 @@ use yii\grid\GridView;
                                                 'class' => 'btn btn-danger btn-xs',
                                                 'data' => ['confirm' => '你确定要启用该活动吗？', 'method' => 'post'],
                                             ]
-                                        );
+                                        ) . '&nbsp';
                                     }
 
                                 },

@@ -41,7 +41,7 @@ class Merchant extends MerchantModel
      */
     public function search($params)
     {
-        $query = MerchantModel::find();
+        $query = MerchantModel::find()->orderBy('created_at DESC');
 
         // add conditions that should always apply here
 

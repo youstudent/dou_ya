@@ -177,7 +177,7 @@ class ActivityController extends ObjectController
             } else {
                 $value['activity_img'] = '';
             }
-            $value['order_time'] = date('Y年m月d日', $value['order_time']);
+            $value['order_time'] = date('Y年m月d日 H:i:s', $value['order_time']);
             //查询订到总的价格
         }
         $datas['data'] = $data;

@@ -35,7 +35,7 @@ class ActivityData extends \yii\db\ActiveRecord
     {
         return [
             [['activity_id', 'order_num', 'order_number_num', 'checking_num', 'transaction_money', 'footings', 'checking_transaction_money', 'checking_footings'], 'integer'],
-            [['merchant_name','activity_name'],'safe']
+            [['merchant_name','activity_name','created_at'],'safe']
         ];
     }
 

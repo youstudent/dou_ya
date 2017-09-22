@@ -74,7 +74,7 @@ return [
         'allowActions' => [
 //            'site/*',
 //            'admin/*',
-            '*',
+            //'*',
         ]
     ],
     'params' => $params,

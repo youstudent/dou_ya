@@ -42,7 +42,7 @@ class Salesman extends SalesmanModel
      */
     public function search($params)
     {
-        $query = SalesmanModel::find();
+        $query = SalesmanModel::find()->orderBy('created_at DESC');
 
         // add conditions that should always apply here
 

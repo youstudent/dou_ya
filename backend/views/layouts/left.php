@@ -20,7 +20,7 @@
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => '正在进行', 'icon' => 'file-code-o', 'url' => ['/activity/index','Activity'=>['id'=>1,'merchant_id'=>'']]],
+                            ['label' => '活动列表', 'icon' => 'file-code-o', 'url' => ['/activity/index','Activity'=>['id'=>1,'merchant_id'=>'']]],
                             ['label' => '历史', 'icon' => 'dashboard', 'url' => ['/activity/index'],],
                             ['label' => '数据', 'icon' => 'dashboard', 'url' => ['/activity-data/index'],],
                         ],
@@ -59,11 +59,11 @@
                             ['label' => '角色', 'icon' => 'dashboard', 'url' => ['/admin/role']],
                         ],
                     ],
-                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
-                    ['label' => '日志', 'icon' => 'dashboard', 'url' => ['/debug']],
+                   // ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
+                   // ['label' => '日志', 'icon' => 'dashboard', 'url' => ['/debug']],
                     
                    // ['label' => 'assignment', 'icon' => 'dashboard', 'url' => ['/admin/assignment']],
-                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
+                   // ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     /*[
                         'label' => 'Same tools',
                         'icon' => 'share',
