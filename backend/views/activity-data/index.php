@@ -22,6 +22,7 @@ use yii\grid\GridView;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'filterPosition' => false,
         'pager'=>[
             //'options'=>['class'=>'hidden']//关闭分页
             'firstPageLabel'=>"首页",

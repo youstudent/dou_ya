@@ -85,25 +85,16 @@ class RefundOrderController extends ObjectController
         }
         //查询用户退款订单
         //TODO :  status    2:待处理   3:退款通过   4:拒绝退款
-        $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id'])->where(['id' => $order_id])->asArray()->one();
+        $data = Order::find()->select(['order_number', 'activity_name', 'status', 'id','sell_all'])->where(['id' => $order_id])->asArray()->one();
         if (!$data) {
             return $this->returnAjax(0, '查询到退款详情');
         }
         $row = OrderRefund::find()->where(['order_id' => $order_id])->asArray()->orderBy('created_at DESC')->all();
-        
+        $rows = OrderRefund::find()->where(['order_id' => $order_id])->asArray()->orderBy('created_at DESC')->one();
+        $data['created_at'] =date('Y-m-d H:i:s',$rows['created_at']);
        foreach ($row as $k => &$v) {
            $v['created_at'] = date('Y-m-d H:i:s',$v['created_at']);
            $v['updated_at'] = date('Y-m-d H:i:s',$v['updated_at']);
-           // $data['created_at'] = date('Y年m月d日 H:i:s', $v['created_at']);
-           // $data['money'] = $v['money'];
-           //$data['no_reason'] = $row->no_reason;
-           //$flow = [
-           //  ['id' => 1, 'title' => '已申请', 'details' => '你的退款申请已提交请耐心等待工作人员审核', 'created' => $v['created_at']],
-           //    ['id' => 2, 'title' => '正在处理中', 'details' => '你的退款申请正在游工作人员审核,审核需要2-3个工作日', 'created' => $v['created_at']],
-           //];
-           // if ($data['status'] !== '2') {
-           //   $flow [] = ['id' => 3, 'title' => $data['status'] == 3 ? '退款通过' : '拒绝退款', 'details' => $data['status'] == 3 ? '你的退款已由工作人员转入你的账户,转账需要2-3个工作日!' : $v['no_reason'], 'created' => date('Y年m月d日 H:i:s', $v['updated_at'])];
-           // }
        }
         $data['flow'] = $row;
         return $this->returnAjax(1, '成功', $data);
