@@ -30,14 +30,14 @@ $fieldOptions2 = [
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
 
         <?= $form
-            ->field($model, 'username', $fieldOptions1)
+            ->field($model, 'username')
             ->label(false)
             ->textInput(['placeholder' => '登录名']) ?>
 
         <?= $form
-            ->field($model, 'password', '登录密码')
+            ->field($model, 'password')
             ->label(false)
-            ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+            ->passwordInput(['placeholder' => '密码']) ?>
 
         <div class="row">
             <!-- /.col -->

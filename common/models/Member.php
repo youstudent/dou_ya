@@ -50,7 +50,7 @@ class Member extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => '用户名',
+            'name' => '昵称',
             'sex' => '性别',
             'phone' => '电话',
             'last_time' => '最后登录时间',

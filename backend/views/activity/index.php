@@ -12,7 +12,7 @@ use yii\grid\GridView;
 ?>
 <div class="activity-index">
     <p>
-        <?= Html::a('添加活动', ['create'], ['class' => 'btn btn-success']) ?>
+        <span class= 'btn btn-success'>请在商家管理中添加活动</span>
     </p>
     <div class="box box-success">
         <div class="box-header with-border">

@@ -120,7 +120,7 @@ class Activity extends \yii\db\ActiveRecord
     //验证商家名字
     public function time($attribute,$params){
         if (($this->apply_end_time>$this->start_time) || ($this->apply_end_time>=$this->end_time) || $this->start_time>$this->end_time ){
-            $this->addError('end_time','截止时间>开始时间>结束时间');
+            $this->addError('end_time','截止时间<开始时间<结束时间');
         }
         
     }
@@ -188,6 +188,9 @@ class Activity extends \yii\db\ActiveRecord
                     $model->price = $value['price'];
                     if (!empty($value['title']) && !empty($value['price']) && !empty($value['settlement'])){
                         $model->return = (int)round(($value['price']-$value['settlement'])/$value['price']*100, 1);
+                    }
+                    if ($value['price']>$value['settlement']){
+                        return $this->addError('end_time','截止时间>开始时间>结束时间');
                     }
                     $model->settlement = $value['settlement'];
                     if ($model->save(false) == false) throw new Exception('添加票种失败');

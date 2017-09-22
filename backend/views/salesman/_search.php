@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
         'options'=>['class'=>'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'name')->textInput(['placeholder' => '姓名','class'=>'form-control'])->label(false) ?>
+    <?= $form->field($model, 'name')->textInput(['placeholder' => '业务员姓名','class'=>'form-control'])->label(false) ?>
 
     <?= $form->field($model, 'phone')->textInput(['placeholder' => '电话','class'=>'form-control'])->label(false) ?>
 

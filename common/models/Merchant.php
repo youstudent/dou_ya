@@ -60,7 +60,7 @@ class Merchant extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => '商家名',
+            'name' => '商家名字',
             'phone' => '电话',
             'address' => '地址',
             'seleaman' => '业务员',

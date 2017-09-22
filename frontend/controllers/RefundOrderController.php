@@ -56,7 +56,7 @@ class RefundOrderController extends ObjectController
         }
         foreach ($data as $key => &$v) {
             if ($rows = Activity::findOne(['id'=>$v['activity_id']])){
-                $v['activity_img'] = $rows->activity_img;
+                $v['activity_img'] =\Yii::$app->params['imgs'].$rows->activity_img;
             }
             if ($row = OrderRefund::findOne(['order_id' => $v['id']])) {
                 $v['created_at'] = date('Y年m月d日', $row->created_at);

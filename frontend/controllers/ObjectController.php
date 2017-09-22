@@ -35,7 +35,9 @@ class ObjectController extends Controller
             if(\Yii::$app->wechat->isAuthorized()){
                 $user = \Yii::$app->wechat->getUser();
                 $model = new \common\models\Member();
-                $model->login($user);
+                if (!$model->login($user)){
+                    return $this->returnAjax(0,'你已经被停封了');
+                };
             }else{
                 $return = [
                     'code' => -101,

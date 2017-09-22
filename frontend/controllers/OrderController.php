@@ -81,6 +81,7 @@ class OrderController extends ObjectController
         if ($model->money > $price) {
             return $this->returnAjax(0, '退款金额不能大于订单总金额');
         }
+        $model->money = $price;
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             //添加退款信息
