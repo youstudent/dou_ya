@@ -23,13 +23,11 @@
         "kartik-v/yii2-widget-datetimepicker": "v1.4.2",
         "kucha/ueditor": "*",
         "kak/datetimepicker": "*",
-        "nkovacs/yii2-datetimepicker": "*",
         "moonlandsoft/yii2-phpexcel": "*",
         "overtrue/wechat": "~3.1",
         "flc/alidayu": "^2.0",
         "maxwen/yii2-easy-wechat": "^1.0",
-        "conquer/daterangepicker": "*",
-        "kartik-v/yii2-date-range": "*"
+        "bower-asset/bootstrap-daterangepicker": "2.1.*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

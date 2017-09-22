@@ -8,10 +8,11 @@ $params = array_merge(
 
 return [
     'id' => '豆芽集市',
+    'name' => '豆芽集市',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     //'defaultRoute' => 'site/login',
-    'homeUrl' => 'panel/index',
+    'homeUrl' => '/index/index',
     'language' => 'zh-CN',
     'bootstrap' => ['log'],
     'modules' => [

@@ -18,7 +18,8 @@ class Activity extends ActivityModel
     public function rules()
     {
         return [
-            [['merchant_id','id', 'apply_end_time', 'end_time', 'phone', 'purchase_limitation', 'on_line', 'created_at','status','total_clearing','total_price'], 'integer'],
+            [['merchant_id','id', 'phone', 'purchase_limitation', 'on_line', 'created_at','status','total_clearing','total_price'], 'integer'],
+            [['start_time'], 'string'],
             [['merchant_name', 'activity_name', 'activity_img', 'activity_address', 'linkman', 'content'], 'safe'],
         ];
     }
@@ -50,38 +51,40 @@ class Activity extends ActivityModel
         ]);
 
         $this->load($params);
-        if ($this->id==1){
-            $query->andWhere(['>','end_time',time()]);
-        }else{
-            $query->andWhere(['<','end_time',time()]);
-        }
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
 
-        $start='';
-        $end = '';
         //格式化时间
         if ($this->start_time){
-            $start_date = substr($this->start_time,0,10);
+            $start_date = substr($this->start_time,0,17);
             $start = strtotime($start_date);
-            $end_date =  substr($this->start_time,12);
+
+            if($start > 0){
+                $query->andFilterWhere(['>=','start_time',$start]);
+            }
+
+            $end_date =  substr($this->start_time,19);
             $end = strtotime($end_date);
+            if($end > 0){
+                $query->andFilterWhere(['<=','start_time',$end]);
+            }
         }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'apply_end_time' => $this->apply_end_time,
             'merchant_id' => $this->merchant_id,
-            'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'phone' => $this->phone,
             'purchase_limitation' => $this->purchase_limitation,
             'on_line' => $this->on_line,
             'created_at' => $this->created_at,
             'status' => $this->status,
-        ])->andFilterWhere(['>=','start_time',$start])->andFilterWhere(['<=','start_time',$end]);
+        ]);
 
         $query->andFilterWhere(['like', 'merchant_name', $this->merchant_name])
             ->andFilterWhere(['like', 'activity_name', $this->activity_name])
