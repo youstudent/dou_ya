@@ -5,6 +5,7 @@ namespace common\models;
 use backend\components\ImgUrl;
 use frontend\models\GetUserInfo;
 use PHPUnit\Framework\Constraint\IsFalse;
+use Symfony\Component\Debug\Tests\Fixtures\ClassAlias;
 use Yii;
 use yii\db\Exception;
 
@@ -184,10 +185,13 @@ class Activity extends \yii\db\ActiveRecord
                     $model->title = $value['title'];
                     $model->activity_id = $this->id;
                     $model->price = $value['price'];
-                    $model->return = (int)round(($value['price']-$value['settlement'])/$value['price']*100, 1);
+                    if (!empty($value['title']) && !empty($value['price']) && !empty($value['settlement'])){
+                        $model->return = (int)round(($value['price']-$value['settlement'])/$value['price']*100, 1);
+                    }
                     $model->settlement = $value['settlement'];
                     if ($model->save(false) == false) throw new Exception('添加票种失败');
                 }
+                ActivityTicket::deleteAll(['return'=>000]);
                 if(\common\components\Count::create(1,2)==false) throw new Exception('统计活动数据失败');
                 $transaction->commit();
                 return true;
@@ -208,7 +212,20 @@ class Activity extends \yii\db\ActiveRecord
     public function edit($data){
         if ($this->validate()){
             if (($this->apply_end_time>$this->start_time) || ($this->apply_end_time>=$this->end_time) || $this->start_time>$this->end_time ){
-                $this->addError('end_time','截止时间>开始时间>结束时间');
+              return  $this->addError('end_time','截止时间>开始时间>结束时间');
+            }
+            $row = [];
+            foreach ($data['title'] as $k => $v) {
+                $row[] = [
+                    'title' => $v,
+                    'price' => $data['price'][$k],
+                    'settlement' => $data['settlement'][$k],
+                ];
+            }
+            foreach ($row as $value) {
+                if (empty($value['title']) || empty($value['price'])|| empty($value['settlement'])){
+                   return false;
+                }
             }
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -248,15 +265,18 @@ class Activity extends \yii\db\ActiveRecord
                     $model->title = $value['title'];
                     $model->activity_id = $this->id;
                     $model->price = $value['price'];
-                    $model->return = (int)round(($value['price']-$value['settlement'])/$value['price']*100, 1);
+                    if (!empty($value['title']) && !empty($value['price']) && !empty($value['settlement'])){
+                        $model->return = (int)round(($value['price']-$value['settlement'])/$value['price']*100, 1);
+                    }
+                    //$model->return = (int)round(($value['price']-$value['settlement'])/$value['price']*100, 1);
                     $model->settlement = $value['settlement'];
                     if ($model->save(false) == false) throw new Exception('添加票种失败');
                 }
+                ActivityTicket::deleteAll(['return'=>000]);
                 $transaction->commit();
                 return true;
             } catch (\Exception $e) {
                 $transaction->rollBack();
-                throw $e;
             }
         }
     }
@@ -382,6 +402,21 @@ class Activity extends \yii\db\ActiveRecord
             $data->total_clearing=$data->total_clearing+$order['sell_all'];
             $data->total_price=$data->total_price+$order['clearing_all'];
         }
+        //更新用户的数据
+        $member =  Member::findOne(['id'=>$order['user_id']]);
+        $member->order_num = $member->order_num+1;
+        $member->order_money = $member->order_money+$order['sell_all'];
+        $member->save(false);
+        //更新统计表订单的数量
+        \common\components\Count::create(1,1); //订单的数量
+        //更新统计表流水的数据(已支付|总售卖额)
+        \common\components\Count::create($order['sell_all'],3);
+        //更新统计表流水的数据(已支付|结算总额)
+        \common\components\Count::create($order['clearing_all'],4);
+    
+        //更新统计表流水的数据(已支付|利润)
+        $row  = $order['sell_all']-$order['clearing_all'];
+        \common\components\Count::create($row,5);
     }
     
 }

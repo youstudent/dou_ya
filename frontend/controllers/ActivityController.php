@@ -144,21 +144,32 @@ class ActivityController extends ObjectController
         //TODO::要改的size
         $size = \Yii::$app->params['size'];
         $limit = ($page - 1) * $size;
-        $count = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => $type])->count();
+        if($type ==1){
+            $count = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => [$type,2]])->count();
+        }else{
+            $count = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => $type])->count();
+        }
         $totalPage = ceil($count / $size);
         $nowPage = $page;
         $pageInfo = ['totalPage' => $totalPage, 'nowPage' => $nowPage];
-        
-        $data = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => $type])
-            ->orderBy('order_time DESC')
-            ->asArray()
-            ->limit($size)
-            ->offset($limit)
-            ->all();
+        if ($type ==1){
+            $data = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => [$type,2]])
+                ->orderBy('order_time DESC')
+                ->asArray()
+                ->limit($size)
+                ->offset($limit)
+                ->all();
+        }else{
+            $data = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => $type])
+                ->orderBy('order_time DESC')
+                ->asArray()
+                ->limit($size)
+                ->offset($limit)
+                ->all();
+        }
         if (!$data) {
             return $this->returnAjax(0, '没有活动订单');
         }
-        
         //格式化订单时间,,
         foreach ($data as $key => &$value) {
             if ($row = Activity::findOne(['id' => $value['activity_id']])) {

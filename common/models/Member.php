@@ -121,6 +121,8 @@ class Member extends \yii\db\ActiveRecord
         $model->headimgurl = $wechat_user->avatar;
         $model->openid = $wechat_user->id;
         if(!$model->save()){
+            // 添加用户数据
+            \common\components\Count::create(1,6);
             return false;
         }
         return $model;

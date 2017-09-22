@@ -15,10 +15,10 @@ $fileuploadedJs = <<<JS
  $('#activity-limitation_num input[value=0]').click(function () {
           $('#limit').addClass('hide')
     });
- 
+        var tempTheLastBoxNum;
       var i=1;
   $('#add').click(function() {
-      var html1 = '<div ><div class="form-group field-activityticket-title required">'+
+      var html1 = '<div id="addTheTicket'+ i +'"><div class="form-group field-activityticket-title required">'+
         '<label class="control-label" for="activityticket-title">标题[票种'+i+']</label>'+
         '<input type="text" id="activityticket-title" class="form-control" name="ActivityTicket[title]['+i+']" aria-required="true">'+
         '<div class="help-block"></div>'+
@@ -33,8 +33,20 @@ $fileuploadedJs = <<<JS
         '<input type="text" id="activityticket-title" class="form-control" name="ActivityTicket[settlement]['+i+']" aria-required="true">'+
         '<div class="help-block"></div>'+
         '</div></div>';
+      tempTheLastBoxNum = i;
       i += 1;
+      
+    console.log(tempTheLastBoxNum + '======' + i);
     $('#DDD').append(html1);
+  });
+  $('#del').click(function() {
+    $('#addTheTicket' + tempTheLastBoxNum).remove();
+    tempTheLastBoxNum -= 1;
+    if(i <= 1){
+        return
+    }else {
+        i -= 1;
+    }
   })
 JS;
 $this->registerJs($fileuploadedJs);
@@ -48,12 +60,12 @@ $this->registerJs($fileuploadedJs);
         'validationUrl' => \yii\helpers\Url::toRoute(['validate-form']),
     ]); ?>
 
-    <?= $form->field($model, 'merchant_name')->textInput() ?>
+    <?= $form->field($model, 'merchant_name')->textInput(['readonly'=>'true']) ?>
 
     <?= $form->field($model, 'activity_name')->textInput() ?>
 
     <?= $form->field($model, 'file')->fileInput()?>
-    <?= Html::img('@web'.$model->activity_img,['width'=> '100px', 'height'=> '100px'])?>
+    <?/*= Html::img('@web'.$model->activity_img,['width'=> '100px', 'height'=> '100px'])*/?>
     <?= $form->field($model, 'activity_address')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'apply_end_time')->widget(\kartik\datetime\DateTimePicker::classname(), [
@@ -96,7 +108,7 @@ $this->registerJs($fileuploadedJs);
         
     ]) ?>
     <?= Html::button('添加票种',['id'=>'add'])?>
-    <?= Html::button('删除票种',['id'=>'add'])?>
+    <?= Html::button('删除票种',['id'=>'del'])?>
     <?= $form->field($models, 'title[0]')->textInput()->label('标题[票种1]') ?>
     <?= $form->field($models, 'price[0]')->textInput() ?>
     <?= $form->field($models, 'settlement[0]')->textInput() ?>

@@ -79,7 +79,7 @@ use yii\grid\GridView;
                             //用于显示一些动作按钮，如每一行的更新、删除操作。
                             'class' => 'yii\grid\ActionColumn',
                             'header' => '操作',
-                            'template' => '{view}{update}{delete}{stop}{open}',//只需要展示删除和更新
+                            'template' => '{view}{update}{stop}{open}',//只需要展示删除和更新
                             'headerOptions' => ['width' => '240'],
                             'buttons' => [
                                 'view' => function ($url, $model, $key) {
@@ -87,16 +87,6 @@ use yii\grid\GridView;
                                 },
                                 'update' => function ($url, $model, $key) {
                                     return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['update', 'id'=>$model->id]).'&nbsp';
-                                },
-                                'delete' => function($url, $model, $key){
-                                    return Html::a('删除',
-                                        ['delete', 'id' => $model->id],
-                                        [
-                                            'class' => 'btn btn-danger btn-xs',
-                                            'data' => ['confirm' => '确认删除该活动吗？', 'method' => 'post'],
-
-                                        ]
-                                    ) . '&nbsp';
                                 },
                                 'stop' => function ($url, $model, $key) {
                                     if ($model->status==1){

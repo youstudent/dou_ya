@@ -70,6 +70,9 @@ class ActivityController extends Controller
     public function actionCreate()
     {
         $model = new Activity();
+        if ( $name = Yii::$app->request->get('name')){
+            $model->merchant_name=$name;
+        }
         $models = new ActivityTicket();
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
@@ -216,9 +219,4 @@ class ActivityController extends Controller
         return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
     }
     
-    public function actionTest(){
-        $message  = new MessageCode();
-        $order = Order::findOne(['id'=>19]);
-        $message->paySuccessSms($order);
-    }
 }

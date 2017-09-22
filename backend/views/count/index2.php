@@ -141,7 +141,7 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">商户数</span>
-                                <span class="info-box-number"><?=$row['merchant']?></span>
+                                <span class="info-box-number"><?=\common\models\Count::merchant()?></span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>

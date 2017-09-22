@@ -40,7 +40,14 @@ use yii\grid\GridView;
                         'name',
                         'job_number',
                         'phone',
-                        'bound_merchant',
+                        [
+                            'attribute' => 'bound_merchant',
+                            'label'=>'绑定商户数',
+                            'value'=>
+                                function($model){
+                                    return \backend\models\Salesman::select($model->name) ;   //主要通过此种方式实现
+                                },
+                        ],
                         [
                             'attribute' => 'created_at',
                             'label'=>'创建时间',
@@ -48,14 +55,6 @@ use yii\grid\GridView;
                                 function($model){
                                     return  date('Y-m-d H:i:s',$model->created_at);   //主要通过此种方式实现
                                 },
-                            /*'filter'    => \kartik\datetime\DateTimePicker::widget([
-                                'model'         => $searchModel,
-                                'attribute'     => 'created_at',
-                                //'convertFormat' => true,
-                                'pluginOptions' => [
-                                    'locale' => ['format' => 'Y-m-d H:i:s'],
-                                ],
-                            ]),*/
                         ],
                         [
                             //动作列yii\grid\ActionColumn

@@ -79,4 +79,9 @@ class Count extends \yii\db\ActiveRecord
         return  $data;
     }
     
+    
+    public static function merchant(){
+       return  Merchant::find()->count();
+     }
+    
 }

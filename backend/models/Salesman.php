@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\Merchant;
 use Yii;
 
 /**
@@ -51,5 +52,14 @@ class Salesman extends \yii\db\ActiveRecord
             'created_at' => '创建时间',
             'bound_merchant' => '绑定商户数',
         ];
+    }
+    
+    /**
+     * 业务员绑定商户数量
+     * @param $name
+     * @return int|string
+     */
+    public static function select($name){
+       return  Merchant::find()->where(['seleaman'=>$name])->count();
     }
 }
