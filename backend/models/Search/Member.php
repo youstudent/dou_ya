@@ -41,7 +41,7 @@ class Member extends MemberModel
      */
     public function search($params)
     {
-        $query = MemberModel::find();
+        $query = MemberModel::find()->orderBy('created_at DESC');
 
         // add conditions that should always apply here
 

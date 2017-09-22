@@ -38,17 +38,22 @@ class CountSearch extends Model
             $end = strtotime($this->end);
             $query->andWhere(['>=','created_at',$start]);
             $query->andWhere(['<=','created_at',$end]);
+            $activity_num = \common\models\Activity::find()->where(['<','created_at',$start])->andWhere(['>','created_at',$end])->count();
+            $water =  Count::find()->andWhere(['>=','created_at',$start])->andWhere(['<=','created_at',$end])->select(['sum(num)'])->andWhere(['type'=>3])->asArray()->one()['sum(num)'];
+            $money =  Count::find()->andWhere(['>=','created_at',$start])->andWhere(['<=','created_at',$end])->select(['sum(num)'])->andWhere(['type'=>4])->asArray()->one()['sum(num)'];
+            $return =  Count::find()->andWhere(['>=','created_at',$start])->andWhere(['<=','created_at',$end])->select(['sum(num)'])->andWhere(['type'=>5])->asArray()->one()['sum(num)'];
+            $order_num = $query->andWhere(['type'=>1])->count();
+            //利润
+        }else{
+            $water = Count::find()->select(['sum(num)'])->andWhere(['type'=>3])->asArray()->one()['sum(num)'];
+            $money = Count::find()->select(['sum(num)'])->andWhere(['type'=>4])->asArray()->one()['sum(num)'];
+            $return = Count::find()->select(['sum(num)'])->andWhere(['type'=>5])->asArray()->one()['sum(num)'];
+            $activity_num = \common\models\Activity::find()->count();
+            $order_num =Count::find()->where(['type'=>1])->count();
         }
         //查询订单数
-        $order_num = $query->andWhere(['type'=>1])->count();
-        //活动数
-        $activity_num = $query->andWhere(['type'=>2])->count();
-        //流水
-        $water = $query->select(['sum(num)'])->andWhere(['type'=>3])->asArray()->one()['sum(num)'];
-        //结算
-        $money = $query->select(['sum(num)'])->andWhere(['type'=>4])->asArray()->one()['sum(num)'];
-        //利润
-        $return = $query->select(['sum(num)'])->andWhere(['type'=>5])->asArray()->one()['sum(num)'];
+        
+        
         $data['order_num']=$order_num?$order_num:0;
         $data['activity_num']=$activity_num?$activity_num:0;
         $data['water']=$water?$water:0;

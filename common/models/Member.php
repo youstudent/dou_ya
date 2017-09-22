@@ -38,7 +38,7 @@ class Member extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['phone'], 'required','on'=>'update'],
-            [['phone', 'last_time', 'status', 'order_num', 'order_money','sex'], 'integer'],
+            [['phone', 'last_time', 'status', 'order_num', 'order_money','sex','created_at'], 'integer'],
             [['name', 'headimgurl'], 'string', 'max' => 255],
             [['identification'], 'string', 'max' => 20],
         ];
@@ -58,6 +58,7 @@ class Member extends \yii\db\ActiveRecord
             'identification' => '认证',
             'order_num' => '下单量',
             'order_money' => '下单总金额',
+            'created_at' => '注册时间',
         ];
     }
 
@@ -118,6 +119,7 @@ class Member extends \yii\db\ActiveRecord
         $model->phone = '';
         $model->status = 1;
         $model->last_time = time(); //最后登录时间
+        $model->created_at = time(); //最后登录时间
         $model->headimgurl = $wechat_user->avatar;
         $model->openid = $wechat_user->id;
         if(!$model->save()){

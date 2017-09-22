@@ -76,6 +76,7 @@ class OrderRefund extends \yii\db\ActiveRecord
                 if ($this->save()==false) throw new Exception('拒绝原因保存失败');
                 $order = Order::findOne(['id'=>$this->order_id]);
                 $order->status = 4;
+                OrderTicket::updateAll(['status' => 0], ['order_id' => $order->id]);
                 if ($order->save(false)== false) throw new Exception('订单状态变更失败');
                 $transaction->commit();
                 return true;

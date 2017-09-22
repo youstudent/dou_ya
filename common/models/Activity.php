@@ -8,6 +8,7 @@ use PHPUnit\Framework\Constraint\IsFalse;
 use Symfony\Component\Debug\Tests\Fixtures\ClassAlias;
 use Yii;
 use yii\db\Exception;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%activity}}".
@@ -417,6 +418,26 @@ class Activity extends \yii\db\ActiveRecord
         //更新统计表流水的数据(已支付|利润)
         $row  = $order['sell_all']-$order['clearing_all'];
         \common\components\Count::create($row,5);
+    }
+    
+    /**
+     * 查询票数量是否 在上线
+     * @param $data
+     * @return bool]
+     */
+    public function check($data){
+        $activity = Activity::findOne(['id'=>$data['activity_id']]);
+        //找出所有的订单号
+        $order = Order::find()->select('id')->andWhere(['activity_id'=>$activity->id])->asArray()->all();
+        $ids = ArrayHelper::map($order,'id','id');
+        $num = OrderTicket::find()->where(['order_id'=>$ids,'status'=>[0,1,10]])->count();
+        if ($activity){
+            if ($num>=$activity->on_line){
+               return false;
+            }
+        }
+        return true;
+      
     }
     
 }

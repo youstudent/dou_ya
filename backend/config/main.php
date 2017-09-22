@@ -11,8 +11,8 @@ return [
     'name' => '豆芽集市',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    //'defaultRoute' => 'site/login',
-    'homeUrl' => '/index/index',
+    'defaultRoute' => '/count/index',
+    'homeUrl' => 'panel/index',
     'language' => 'zh-CN',
     'bootstrap' => ['log'],
     'modules' => [
