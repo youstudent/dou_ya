@@ -102,15 +102,6 @@ return array (
       '@kak/widgets/datetimepicker' => $vendorDir . '/kak/datetimepicker',
     ),
   ),
-  'nkovacs/yii2-datetimepicker' => 
-  array (
-    'name' => 'nkovacs/yii2-datetimepicker',
-    'version' => '3.1.0.0',
-    'alias' => 
-    array (
-      '@nkovacs/datetimepicker' => $vendorDir . '/nkovacs/yii2-datetimepicker',
-    ),
-  ),
   'moonlandsoft/yii2-phpexcel' => 
   array (
     'name' => 'moonlandsoft/yii2-phpexcel',

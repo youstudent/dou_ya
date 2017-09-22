@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => '豆芽集市',
+    'name' => '豆芽集市',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'defaultRoute' => '/count/index',

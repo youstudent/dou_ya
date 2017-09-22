@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
 {
     public static $files = array (
-        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
@@ -35,10 +35,6 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
-        ),
-        'n' => 
-        array (
-            'nkovacs\\datetimepicker\\' => 23,
         ),
         'm' => 
         array (
@@ -157,13 +153,9 @@ class ComposerStaticInit9e56a1e77d380234f5d562b6b4b8bf5c
         ),
         'phpDocumentor\\Reflection\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
-        ),
-        'nkovacs\\datetimepicker\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/nkovacs/yii2-datetimepicker',
+            0 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
         ),
         'moonland\\phpexcel\\' => 
         array (
