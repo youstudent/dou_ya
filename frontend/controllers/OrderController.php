@@ -91,7 +91,7 @@ class OrderController extends ObjectController
             $order->status = 2;
             if ($order->save(false) == false) throw new Exception('订单状态变更失败');
             //根据订单找到. 票的验证码 改变状态
-            if (OrderTicket::updateAll(['status' => 9], ['order_id' => $model->order_id]) == false) throw new Exception('票种验证码状态更新失败');
+            if (OrderTicket::updateAll(['status' => 10], ['order_id' => $model->order_id]) == false) throw new Exception('票种验证码状态更新失败');
             $transaction->commit();
             return $this->returnAjax(1, '退款申请成功!等待平台审核');
         } catch (\Exception $e) {
@@ -116,7 +116,6 @@ class OrderController extends ObjectController
         if(!$member->checkPhone()){
             return $this->returnAjax(1,'请绑定手机号');
         }
-        
         // 查询活动是否在报名截止时间之内和 停封启用状态
         $row = Activity::find()->andWhere(['id' => $data['activity_id'], 'status' => 1])->andWhere(['>=', 'apply_end_time', time()])->asArray()->one();
         if (!$row) {
@@ -271,10 +270,11 @@ class OrderController extends ObjectController
              OrderTicket::updateOrder($data);
             //验票成功 发送短信给用户
             $MessageCode = new MessageCode();
+            $order= Order::findOne(['id'=>$id]);
             if ($MessageCode->send($id)){
-                return $this->returnAjax(1,'验证成功请注意短信');
+                return $this->returnAjax(1,'验证成功,活动名:'.$order->activity_name);
             }
-              return $this->returnAjax(0,'验票成功,发送短信失败');
+              return $this->returnAjax(1,'验票成功,活动名:'.$order->activity_name);
         } catch (\Exception $e){
             $transaction->rollBack();
             return $this->returnAjax(0,'验票码无效');

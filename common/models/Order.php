@@ -4,6 +4,7 @@ namespace common\models;
 
 use PHPUnit\Framework\Constraint\IsFalse;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%order}}".
@@ -105,9 +106,10 @@ class Order extends \yii\db\ActiveRecord
             return false;
         }
         //查询票种是否还够  查询该活动的票种
-        $sum = OrderTicket::find()->where(['activity_id'=>$data->id,'status'=>[0,1,10]])->count();
-        
-        if ($sum>=$data->on_line) {
+        $order = Order::find()->select('id')->andWhere(['activity_id'=>$data->id])->asArray()->all();
+        $ids = ArrayHelper::map($order,'id','id');
+        $num = OrderTicket::find()->where(['order_id'=>$ids,'status'=>[0,1,10]])->count();
+        if ($num>=$data->on_line) {
             $this->message = '该票已售卖完';
             return false;
         }
