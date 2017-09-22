@@ -10,7 +10,7 @@ return [
     'id' => '豆芽集市',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    //'defaultRoute' => 'site/login',
+    'defaultRoute' => '/count/index',
     'homeUrl' => 'panel/index',
     'language' => 'zh-CN',
     'bootstrap' => ['log'],

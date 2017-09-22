@@ -45,6 +45,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },
                         ],
                         'phone',
+                        [
+                            'attribute' => 'created_time',
+                            'label'=>'注册时间',
+                            'value'=>
+                                function($model){
+                                    return  date('Y-m-d H:i:s',$model->created_at);   //主要通过此种方式实现
+                                },
+                        ],
                        [
                             'attribute' => 'last_time',
                             'label'=>'最后登录时间',

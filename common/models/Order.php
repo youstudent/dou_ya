@@ -104,6 +104,13 @@ class Order extends \yii\db\ActiveRecord
             $this->message = '该活动时间报名截止,不能进行支付';
             return false;
         }
+        //查询票种是否还够  查询该活动的票种
+        $sum = OrderTicket::find()->where(['activity_id'=>$data->id,'status'=>[0,1,10]])->count();
+        
+        if ($sum>=$data->on_line) {
+            $this->message = '该票已售卖完';
+            return false;
+        }
         $Wechat = new Wechat();
         $res = $Wechat->createWechatOrder($order, $openid);
         return $res;

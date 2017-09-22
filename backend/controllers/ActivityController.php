@@ -219,4 +219,18 @@ class ActivityController extends Controller
         return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
     }
     
+    
+    /**
+     * 活动票种
+     * @param $id
+     * @return string
+     */
+    public function actionTicket($id)
+    {
+        $data = ActivityTicket::find()->where(['activity_id' => $id])->asArray()->all();
+        return $this->render('ticket', [
+            'models' => $data
+        ]);
+    }
+    
 }

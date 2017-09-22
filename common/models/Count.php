@@ -52,7 +52,7 @@ class Count extends \yii\db\ActiveRecord
         //查询总订单数
         $order_num = self::find()->where(['type'=>1])->count();
         //活动总活动数
-        $activity_num = self::find()->where(['type'=>2])->count();
+        $activity_num =Activity::find()->count();
         //流水
         $water = self::find()->select(['sum(num)'])->where(['type'=>3])->asArray()->one()['sum(num)'];
         //总金额

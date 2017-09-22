@@ -145,13 +145,14 @@ $fileuploadedJs = <<<JS
     
   });
   $('#del').click(function() {
-    $('#addTheTicket' + tempInitNum).remove();
-    tempInitNum -= 1;
-    if(i <= 1){
+    if(tempInitNum <= 2){
         return
     }else {
         tempInitNum -= 1;
     }
+    $('#addTheTicket' + tempInitNum).remove();
+    
+    console.log(tempInitNum)
   })
 JS;
 $this->registerJs($fileuploadedJs);

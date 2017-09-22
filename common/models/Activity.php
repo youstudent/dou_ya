@@ -419,4 +419,21 @@ class Activity extends \yii\db\ActiveRecord
         \common\components\Count::create($row,5);
     }
     
+    /**
+     * 查询票数量是否 在上线
+     * @param $data
+     * @return bool]
+     */
+    public function check($data){
+        $num = ActivityTicket::find()->where(['activity_id'=>$data['activity_id'],'status'=>[0,1,10]])->count();
+        $activity = Activity::findOne(['id'=>$data['activity_id']]);
+        if ($activity){
+            if ($num>=$activity->on_line){
+               return false;
+            }
+        }
+        return true;
+      
+    }
+    
 }

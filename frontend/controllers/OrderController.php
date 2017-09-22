@@ -116,19 +116,24 @@ class OrderController extends ObjectController
         if(!$member->checkPhone()){
             return $this->returnAjax(1,'请绑定手机号');
         }
-        //判断用户 加上当前购买的票种数量是否超过限制数量
+        
+        // 查询活动是否在报名截止时间之内和 停封启用状态
+        $row = Activity::find()->andWhere(['id' => $data['activity_id'], 'status' => 1])->andWhere(['>=', 'apply_end_time', time()])->asArray()->one();
+        if (!$row) {
+            return $this->returnAjax(0, '报名时间截止或活动已下线');
+        }
+        //判断该活动是否还有票种
         $activity = new Activity();
+        if (!$activity->check($data)){
+            return $this->returnAjax(0,'票已经售完');
+        }
+        //判断用户 加上当前购买的票种数量是否超过限制数量
         if (!$activity->checkOrderNum($data)){
             return $this->returnAjax(0,'不能超过每人限购数');
         }
         $order = new Order();
         $transaction = \Yii::$app->db->beginTransaction();
         try {
-            // 查询活动是否在报名截止时间之内和 停封启用状态
-            $row = Activity::find()->andWhere(['id' => $data['activity_id'], 'status' => 1])->andWhere(['>=', 'apply_end_time', time()])->asArray()->one();
-            if (!$row) {
-                return $this->returnAjax(0, '报名时间截止或活动已下线');
-            }
             $order->order_number = $this->getRandChar(12);
             $order->order_num = 1;
             $order->activity_name = $row['activity_name'];
@@ -263,7 +268,7 @@ class OrderController extends ObjectController
             }
             $transaction->commit();
             //验票成功后修改该订单已验票的金额[售卖价,结算价]
-           OrderTicket::updateOrder($data);
+             OrderTicket::updateOrder($data);
             //验票成功 发送短信给用户
             $MessageCode = new MessageCode();
             if ($MessageCode->send($id)){
