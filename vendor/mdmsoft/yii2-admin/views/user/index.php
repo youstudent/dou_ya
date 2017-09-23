@@ -14,8 +14,11 @@ use mdm\admin\components\Helper;
 <div class="user-index">
 
     <h3>管理员</h3>
+
     <p>
-        <?= Html::a('添加管理员', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if (Helper::checkRoute('create')) {
+            echo Html::a('添加管理员', ['create'], ['class' => 'btn btn-success']);
+        } ?>
     </p>
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
     <?= GridView::widget([
@@ -78,14 +81,17 @@ use mdm\admin\components\Helper;
                         return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['update', 'id'=>$model->id]).'&nbsp';
                     },
                     'delete' => function($url, $model, $key){
-                        return Html::a('删除',
-                            ['delete', 'id' => $model->id],
-                            [
-                                'class' => 'btn btn-danger btn-xs',
-                                'data' => ['confirm' => '确认删除该管理员吗？', 'method' => 'post'],
-                    
-                            ]
-                        );
+                        if (Helper::checkRoute('delete')){
+                            return Html::a('删除',
+                                ['delete', 'id' => $model->id],
+                                [
+                                    'class' => 'btn btn-danger btn-xs',
+                                    'data' => ['confirm' => '确认删除该管理员吗？', 'method' => 'post'],
+        
+                                ]
+                            );
+                        }
+                        
                     },
         
                 ],
