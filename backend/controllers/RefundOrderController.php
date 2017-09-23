@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\OrderRefund;
+use common\models\OrderTicket;
 use Yii;
 use common\models\Order;
 use backend\models\Search\Order as OrderSearch;
@@ -106,6 +107,8 @@ class RefundOrderController extends Controller
          $data->status=3;
          $row = OrderRefund::findOne(['order_id'=>$id]);
          $row->updated_at=time();
+         //删除该订单的票种
+          OrderTicket::deleteAll(['order_id'=>$data->id]);
          if ($data->save(false) && $row->save(false)){
              Yii::$app->getSession()->setFlash('info','通过成功');
              return $this->redirect(['paid-index','Order'=>['status'=>[2]]]);

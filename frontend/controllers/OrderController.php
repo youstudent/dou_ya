@@ -129,7 +129,7 @@ class OrderController extends ObjectController
         }
         //判断用户 加上当前购买的票种数量是否超过限制数量
         if (!$activity->checkOrderNum($data)){
-            return $this->returnAjax(0,'不能超过每人限购数');
+            return $this->returnAjax(0,$activity->message);
         }
         $order = new Order();
         $transaction = \Yii::$app->db->beginTransaction();

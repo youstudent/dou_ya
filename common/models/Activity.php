@@ -30,6 +30,7 @@ use yii\helpers\ArrayHelper;
  */
 class Activity extends \yii\db\ActiveRecord
 {
+    public $message;
     public static $num=[0=>'无限制',1=>'有限制'];
     public $file;
     public $limitation_num;
@@ -381,13 +382,16 @@ class Activity extends \yii\db\ActiveRecord
         $activity = Activity::findOne(['id' => $data['activity_id']]);
         //如果用户下单加上已经下单的大于总参与上线
         if ($nums+$counts>$activity->on_line){
+            $this->message = '余票不足';
             return false;
         }
         // 如果该活动 是无限制就不用验证下单量了
         if (empty($activity->purchase_limitation)){
             return true;
         }
+        // 下单数量不能超过 每人限购数量
         if ($nums > $activity->purchase_limitation) {
+            $this->message = '不能超每人限购数量';
             return false;
         }
         // 查询该用户操作活动的订单,订单不存在说明该用户没有下过单
@@ -395,14 +399,22 @@ class Activity extends \yii\db\ActiveRecord
         if (!$order) {
             return true;
         }
+        
         // 循环查找每个订单的票种数量,加起来就是该用户该活动的总票种数
-    
+        $number = 0;
         $num = 0;
         foreach ($order as $key => $value) {
+            $number += $value['order_num'];
             $num += OrderTicket::find()->where(['order_id' => $value['id']])->count();
+        }
+        // 用户下单 总下单量不能超限制量
+        if ($number>$activity->purchase_limitation){
+            $this->message = '不能超每人限购数量';
+            return false;
         }
         // 用户可以进行下单,加上即将要下单的数量,是否大于限制数据
         if ($num + $nums > $activity->purchase_limitation) {
+            $this->message = '不能超每人限购数量';
             return false;
         }
         return true;
@@ -416,8 +428,8 @@ class Activity extends \yii\db\ActiveRecord
         $activity_id = $order['activity_id'];
         $data = self::findOne(['id'=>$activity_id]);
         if ($data){
-            $data->total_clearing=$data->total_clearing+$order['sell_all'];
-            $data->total_price=$data->total_price+$order['clearing_all'];
+            $data->total_clearing=$data->total_clearing+$order['clearing_all'];
+            $data->total_price=$data->total_price+$order['sell_all'];
             $data->save(false);
         }
         //更新用户的数据
