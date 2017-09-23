@@ -344,6 +344,7 @@ class Activity extends \yii\db\ActiveRecord
         if (!$data) {
             return true;
         }
+        
         $num = 0;
         foreach ($data as $key => $value) {
             $num += OrderTicket::find()->where(['order_id' => $value['id']])->count();
@@ -371,8 +372,17 @@ class Activity extends \yii\db\ActiveRecord
         foreach ($data['ticket'] as $key => $value) {
             $nums += $value['num'];
         }
+        $counts = 0;
+        $count = Order::find()->where(['activity_id' => $data['activity_id']])->asArray()->all();
+        foreach ($count as $k =>$v){
+            $counts += OrderTicket::find()->where(['order_id' => $v['id']])->count();
+        }
         //用户下单检查是否可以进行下单
         $activity = Activity::findOne(['id' => $data['activity_id']]);
+        //如果用户下单加上已经下单的大于总参与上线
+        if ($nums+$counts>$activity->on_line){
+            return false;
+        }
         // 如果该活动 是无限制就不用验证下单量了
         if (empty($activity->purchase_limitation)){
             return true;
@@ -386,6 +396,7 @@ class Activity extends \yii\db\ActiveRecord
             return true;
         }
         // 循环查找每个订单的票种数量,加起来就是该用户该活动的总票种数
+    
         $num = 0;
         foreach ($order as $key => $value) {
             $num += OrderTicket::find()->where(['order_id' => $value['id']])->count();
@@ -407,6 +418,7 @@ class Activity extends \yii\db\ActiveRecord
         if ($data){
             $data->total_clearing=$data->total_clearing+$order['sell_all'];
             $data->total_price=$data->total_price+$order['clearing_all'];
+            $data->save(false);
         }
         //更新用户的数据
         $member =  Member::findOne(['id'=>$order['user_id']]);
