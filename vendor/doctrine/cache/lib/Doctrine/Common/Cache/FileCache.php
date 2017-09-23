@@ -236,7 +236,7 @@ abstract class FileCache extends CacheProvider
      *
      * @return bool TRUE on success, FALSE if path cannot be created, if path is not writable or an any other error.
      */
-    protected function writeFile(string $filename, string $content) : bool
+    protected function writeFile( $filename,  $content)
     {
         $filepath = pathinfo($filename, PATHINFO_DIRNAME);
 
@@ -266,7 +266,7 @@ abstract class FileCache extends CacheProvider
     /**
      * @return \Iterator
      */
-    private function getIterator() : \Iterator
+    private function getIterator()
     {
         return new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($this->directory, \FilesystemIterator::SKIP_DOTS),
@@ -279,7 +279,7 @@ abstract class FileCache extends CacheProvider
      *
      * @return bool
      */
-    private function isFilenameEndingWithExtension(string $name) : bool
+    private function isFilenameEndingWithExtension($name)
     {
         return '' === $this->extension
             || strrpos($name, $this->extension) === (strlen($name) - $this->extensionStringLength);
