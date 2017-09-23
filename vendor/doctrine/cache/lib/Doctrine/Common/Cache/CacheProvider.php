@@ -189,7 +189,7 @@ abstract class CacheProvider implements Cache, FlushableCache, ClearableCache, M
      *
      * @return string The namespaced id.
      */
-    private function getNamespacedId(string $id) : string
+    private function getNamespacedId($id)
     {
         $namespaceVersion  = $this->getNamespaceVersion();
 
@@ -201,7 +201,7 @@ abstract class CacheProvider implements Cache, FlushableCache, ClearableCache, M
      *
      * @return string
      */
-    private function getNamespaceCacheKey() : string
+    private function getNamespaceCacheKey()
     {
         return sprintf(self::DOCTRINE_NAMESPACE_CACHEKEY, $this->namespace);
     }
@@ -211,7 +211,7 @@ abstract class CacheProvider implements Cache, FlushableCache, ClearableCache, M
      *
      * @return integer
      */
-    private function getNamespaceVersion() : int
+    private function getNamespaceVersion()
     {
         if (null !== $this->namespaceVersion) {
             return $this->namespaceVersion;
