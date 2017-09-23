@@ -77,9 +77,10 @@ class RefundOrderController extends ObjectController
     public function actionRefundDetail()
     {
         if (!\Yii::$app->request->isPost) {
-            return $this->returnAjax(0, '请使用POST方式');
+            //return $this->returnAjax(0, '请使用POST方式');
         }
         $order_id = \Yii::$app->request->post('order_id');
+        //$order_id =21;
         if (!$order_id) {
             return $this->returnAjax(0, '请传order_id参数或者user_id');
         }
@@ -89,12 +90,29 @@ class RefundOrderController extends ObjectController
         if (!$data) {
             return $this->returnAjax(0, '查询到退款详情');
         }
+        $data['shenqing_wenan'] = '您的退款已提交,请耐心等待工作人员审核';
         $row = OrderRefund::find()->where(['order_id' => $order_id])->asArray()->orderBy('created_at DESC')->all();
         $rows = OrderRefund::find()->where(['order_id' => $order_id])->asArray()->orderBy('created_at DESC')->one();
         $data['created_at'] =date('Y-m-d H:i:s',$rows['created_at']);
+        
+        $count = count($row);
+        $i = 1;
        foreach ($row as $k => &$v) {
            $v['created_at'] = date('Y-m-d H:i:s',$v['created_at']);
            $v['updated_at'] = date('Y-m-d H:i:s',$v['updated_at']);
+           if($i < $count){
+               $v['flag'] = 4;
+           }else{
+               $v['flag'] = $data['status'];
+           }
+           unset($v['bank_card']);
+           unset($v['money']);
+           unset($v['opening_bank']);
+           unset($v['opening_man']);
+           unset($v['order_id']);
+           unset($v['id']);
+           unset($v['pass_reason']);
+           $i++;
        }
         $data['flow'] = $row;
         return $this->returnAjax(1, '成功', $data);

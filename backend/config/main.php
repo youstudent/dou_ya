@@ -11,8 +11,8 @@ return [
     'name' => '豆芽集市',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'defaultRoute' => '/count/index',
-    'homeUrl' => 'panel/index',
+    'defaultRoute' => '/admin/user',
+    //'homeUrl' => 'panel/index',
     'language' => 'zh-CN',
     'bootstrap' => ['log'],
     'modules' => [
@@ -72,8 +72,9 @@ return [
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
-//            'site/*',
-//            'admin/*',
+            'admin/user/login',
+            'admin/user/logout',
+            //'admin/user/index'
             //'*',
         ]
     ],

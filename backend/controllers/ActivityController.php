@@ -191,15 +191,24 @@ class ActivityController extends Controller
      */
     public function actionStop($id){
         $Activity = Yii::$app->request->get('Activity');
-        $merchant_id =$Activity['Activity']['merchant_id'];
+        $merchant_id = '';
+        if (array_key_exists('merchant_id',$Activity['Activity'])){
+            $merchant_id =$Activity['Activity']['merchant_id'];
+        }
         $data =  Activity::findOne(['id'=>$id]);
         $data->status=0;
         if ($data->save(false)){
             Yii::$app->getSession()->setFlash('danger','停封活动成功');
-            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id,'id'=>1]]);
+            if ($merchant_id){
+                return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id,'id'=>1]]);
+            }
+                return $this->redirect(['/activity/index','Activity'=>['id'=>1,'merchant_id'=>'']]);
         }
         Yii::$app->getSession()->setFlash('danger','停封活动失败');
-        return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+        if ($merchant_id){
+            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+        }
+        return $this->redirect(['/activity/index','Activity'=>['id'=>1,'merchant_id'=>'']]);
     }
     
     /**
@@ -208,15 +217,24 @@ class ActivityController extends Controller
      */
     public function actionOpen($id){
         $Activity = Yii::$app->request->get('Activity');
-        $merchant_id =$Activity['Activity']['merchant_id'];
+        $merchant_id = '';
+        if (array_key_exists('merchant_id',$Activity['Activity'])){
+            $merchant_id =$Activity['Activity']['merchant_id'];
+        }
         $data =  Activity::findOne(['id'=>$id]);
         $data->status=1;
         if ($data->save(false)){
             Yii::$app->getSession()->setFlash('info','启用活动成功');
-            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id,'id'=>1]]);
+            if ($merchant_id){
+                return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id,'id'=>1]]);
+            }
+            return $this->redirect(['/activity/index','Activity'=>['id'=>1,'merchant_id'=>'']]);
         }
         Yii::$app->getSession()->setFlash('danger','启用活动失败');
-        return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+        if ($merchant_id){
+            return $this->redirect(['index','Activity'=>['merchant_id'=>$merchant_id]]);
+        }
+        return $this->redirect(['/activity/index','Activity'=>['id'=>1,'merchant_id'=>'']]);
     }
     
     

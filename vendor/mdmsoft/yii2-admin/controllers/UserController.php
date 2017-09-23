@@ -93,7 +93,6 @@ class UserController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
@@ -137,6 +136,7 @@ class UserController extends Controller
 
         $model = new Login();
         if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
+            return $this->redirect(['/admin/user']);
             return $this->goBack();
         } else {
             return $this->render('login', [
@@ -152,7 +152,6 @@ class UserController extends Controller
     public function actionLogout()
     {
         Yii::$app->getUser()->logout();
-
         return $this->goHome();
     }
 

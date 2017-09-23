@@ -61,7 +61,7 @@
                     ],
                    // ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                    // ['label' => '日志', 'icon' => 'dashboard', 'url' => ['/debug']],
-                    
+                   
                    // ['label' => 'assignment', 'icon' => 'dashboard', 'url' => ['/admin/assignment']],
                    // ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
                     /*[
@@ -98,3 +98,24 @@
     </section>
 
 </aside>
+
+<aside class="main-sidebar">
+
+    <section class="sidebar">
+        <?php
+      $menu = \mdm\admin\components\MenuHelper::getAssignedMenu(Yii::$app->user->id);
+        ?>
+        <?= dmstr\widgets\Menu::widget(
+            [
+                "encodeLabels" => false,
+                "options" => ["class" => "sidebar-menu"],
+                'items' => $menu
+            ]
+        ) ?>
+
+    </section>
+
+</aside>
+
+
+
