@@ -106,7 +106,7 @@ class Order extends \yii\db\ActiveRecord
             return false;
         }
         //查询票种是否还够  查询该活动的票种
-        $order = Order::find()->select('id')->andWhere(['activity_id'=>$data->id])->asArray()->all();
+        $order = Order::find()->andWhere(['activity_id'=>$data->id])->asArray()->all();
         $ids = ArrayHelper::map($order,'id','id');
         $num = OrderTicket::find()->where(['order_id'=>$ids,'status'=>[0,1,10]])->count();
         if ($num>=$data->on_line) {
