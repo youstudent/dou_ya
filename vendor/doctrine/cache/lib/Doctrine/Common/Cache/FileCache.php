@@ -217,7 +217,7 @@ abstract class FileCache extends CacheProvider
      * @param string $path
      * @return bool TRUE on success or if path already exists, FALSE if path cannot be created.
      */
-    private function createPathIfNeeded(string $path) : bool
+    private function createPathIfNeeded($path)
     {
         if ( ! is_dir($path)) {
             if (false === @mkdir($path, 0777 & (~$this->umask), true) && !is_dir($path)) {
