@@ -145,7 +145,7 @@ class ActivityController extends ObjectController
         $size = \Yii::$app->params['size'];
         $limit = ($page - 1) * $size;
         if($type ==1){
-            $count = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => [$type,2]])->count();
+            $count = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => [$type,4]])->count();
         }else{
             $count = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => $type])->count();
         }
@@ -153,7 +153,7 @@ class ActivityController extends ObjectController
         $nowPage = $page;
         $pageInfo = ['totalPage' => $totalPage, 'nowPage' => $nowPage];
         if ($type ==1){
-            $data = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => [$type,2]])
+            $data = Order::find()->where(['user_id' => GetUserInfo::GetUserId(), 'status' => [$type,4]])
                 ->orderBy('order_time DESC')
                 ->asArray()
                 ->limit($size)
