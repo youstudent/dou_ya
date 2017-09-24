@@ -2,6 +2,7 @@
 
 namespace backend\models\Search;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -40,6 +41,88 @@ class Order extends OrderModel
      *
      * @return ActiveDataProvider
      */
+    public function searchs($params)
+    {
+        $query = OrderModel::find()->orderBy('order_time DESC');
+        
+        // add conditions that should always apply here
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => Yii::$app->params['pageSize'],],
+        ]);
+        
+        $this->load($params);
+        $this->status=[1,4];
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'status'=>$this->status,
+            'order_num' => $this->order_num,
+            'order_checking' => $this->order_checking,
+            'phone' => $this->phone,
+            'sell_all' => $this->sell_all,
+            'clearing_all' => $this->clearing_all,
+            'sell_all_checking' => $this->sell_all_checking,
+            'clearing_all_checking' => $this->clearing_all_checking,
+            'order_time' => $this->order_time,
+        ]);
+        
+        $query->andFilterWhere(['like', 'order_number', $this->order_number])
+            ->andFilterWhere(['like', 'activity_name', $this->activity_name])
+            ->andFilterWhere(['like', 'merchant_name', $this->merchant_name])
+            ->andFilterWhere(['like', 'order_name', $this->order_name]);
+        
+        return $dataProvider;
+    }
+    
+    public function searchss($params)
+    {
+        $query = OrderModel::find()->orderBy('order_time DESC');
+        
+        // add conditions that should always apply here
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => Yii::$app->params['pageSize'],],
+        ]);
+        
+        $this->load($params);
+        
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'status'=>$this->status,
+            'order_num' => $this->order_num,
+            'order_checking' => $this->order_checking,
+            'phone' => $this->phone,
+            'sell_all' => $this->sell_all,
+            'clearing_all' => $this->clearing_all,
+            'sell_all_checking' => $this->sell_all_checking,
+            'clearing_all_checking' => $this->clearing_all_checking,
+            'order_time' => $this->order_time,
+        ]);
+        
+        $query->andFilterWhere(['like', 'order_number', $this->order_number])
+            ->andFilterWhere(['like', 'activity_name', $this->activity_name])
+            ->andFilterWhere(['like', 'merchant_name', $this->merchant_name])
+            ->andFilterWhere(['like', 'order_name', $this->order_name]);
+        
+        return $dataProvider;
+    }
+    
+    
+    
     public function search($params)
     {
         $query = OrderModel::find()->orderBy('order_time DESC');
@@ -52,6 +135,7 @@ class Order extends OrderModel
         ]);
 
         $this->load($params);
+        $this->status=[3,4];
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

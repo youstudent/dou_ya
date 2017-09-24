@@ -39,7 +39,7 @@ class RefundOrderController extends Controller
     public function actionPaidIndex()
     {
         $searchModel = new OrderSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchss(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

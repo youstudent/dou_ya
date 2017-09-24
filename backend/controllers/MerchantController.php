@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\Salesman;
+use common\models\CollectMerchant;
 use common\models\MerchantImg;
 use Yii;
 use common\models\Merchant;
@@ -134,6 +135,8 @@ class MerchantController extends Controller
     protected function findModel($id)
     {
         if (($model = Merchant::findOne($id)) !== null) {
+            //同时删除玩家收藏的商家ID
+            CollectMerchant::deleteAll(['merchant_id'=>$id]);
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

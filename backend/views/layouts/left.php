@@ -31,7 +31,7 @@
                         'icon' => 'share',
                         'url' => '#',
                         'items' => [
-                            ['label' => '已支付', 'icon' => 'file-code-o', 'url' => ['/order/paid-index','Order'=>['status'=>[1,4]]],],
+                            ['label' => '已支付', 'icon' => 'file-code-o', 'url' => ['/order/paid-index'],],
                             ['label' => '待支付', 'icon' => 'dashboard', 'url' => ['/order/unpaid-index','Order'=>['status'=>0]],],
                         ],
                     ],
@@ -41,7 +41,7 @@
                         'url' => '#',
                         'items' => [
                             ['label' => '待处理', 'icon' => 'file-code-o', 'url' => ['/refund-order/paid-index','Order'=>['status'=>2]],],
-                            ['label' => '已处理', 'icon' => 'dashboard', 'url' => ['/refund-order/unpaid-index','Order'=>['status'=>[3,4]]],],
+                            ['label' => '已处理', 'icon' => 'dashboard', 'url' => ['/refund-order/unpaid-index'],],
                         ],
                     ],
                     ['label' => '运营统计', 'icon' => 'dashboard', 'url' => ['/count/index']],

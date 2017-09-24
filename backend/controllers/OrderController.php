@@ -39,7 +39,7 @@ class OrderController extends Controller
     public function actionPaidIndex()
     {
         $searchModel = new OrderSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchs(Yii::$app->request->queryParams);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -53,7 +53,7 @@ class OrderController extends Controller
     public function actionUnpaidIndex()
     {
         $searchModel = new OrderSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchss(Yii::$app->request->queryParams);
         
         return $this->render('list', [
             'searchModel' => $searchModel,
