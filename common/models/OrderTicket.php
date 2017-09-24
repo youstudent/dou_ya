@@ -72,7 +72,7 @@ class OrderTicket extends \yii\db\ActiveRecord
             $this->message = '没有接收到订单ID';
             return false;
         }
-        $data = Order::find()->select(['activity_name','merchant_name','activity_id'])->where(['id' => $order_id, 'status' => 1])->asArray()->one();
+        $data = Order::find()->select(['activity_name','merchant_name','activity_id'])->where(['id' => $order_id, 'status' => [1,4]])->asArray()->one();
         if (!$data) {
             $this->message = '没有该订单,或者订单是支付状态';
             return false;
