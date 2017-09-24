@@ -78,9 +78,9 @@ class ActivityController extends ObjectController
             return $this->returnAjax(0, '请用POST请求方式');
         }
         $keyword = \Yii::$app->request->post('search');
-        if (!$keyword) {
-            return $this->returnAjax(0, '请传参数!!search:商家名或者活动名');
-        }
+        //if (!$keyword) {
+          //  return $this->returnAjax(0, '请传参数!!search:商家名或者活动名');
+        //}
         $select = ['id', 'merchant_name', 'activity_name',
             'activity_img', 'start_time', 'end_time',
             'collect_number', 'allpage_view', 'apply_end_time'];
