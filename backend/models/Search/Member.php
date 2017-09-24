@@ -62,7 +62,6 @@ class Member extends MemberModel
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'phone' => $this->phone,
             'last_time' => $this->last_time,
             'status' => $this->status,
             'order_num' => $this->order_num,
@@ -71,6 +70,7 @@ class Member extends MemberModel
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'sex', $this->sex])
+            ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'identification', $this->identification]);
 
         return $dataProvider;

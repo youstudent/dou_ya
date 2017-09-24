@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\assets\DaterangePickerAsset;
-
 /* @var $this yii\web\View */
 /* @var $model backend\models\Search\Order */
 /* @var $form yii\widgets\ActiveForm */
@@ -74,11 +73,10 @@ JS
 <div class="order-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['/refund-order/unpaid-index'],
+        'action' => ['order/unpaid-index'],
         'method' => 'get',
         'options' => ['class'=>'form-inline'],
     ]); ?>
-
     <?= $form->field($model, 'order_number')->textInput(['placeholder' => '订单号','class'=>'form-control'])->label(false) ?>
 
     <?= $form->field($model, 'order_name')->textInput(['placeholder' => '下单人昵称','class'=>'form-control'])->label(false) ?>

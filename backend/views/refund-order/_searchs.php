@@ -74,7 +74,7 @@ JS
 <div class="order-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['/refund-order/unpaid-index'],
+        'action' => ['/refund-order/paid-index'],
         'method' => 'get',
         'options' => ['class'=>'form-inline'],
     ]); ?>

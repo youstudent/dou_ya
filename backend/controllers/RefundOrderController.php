@@ -32,7 +32,7 @@ class RefundOrderController extends Controller
     }
 
     /**
-     *  退款已处理
+     *  待处理
      * Lists all Order models.
      * @return mixed
      */
@@ -47,7 +47,7 @@ class RefundOrderController extends Controller
         ]);
     }
     /**
-     *  退款待处理
+     *  已处理
      * Lists all Order models.
      * @return mixed
      */

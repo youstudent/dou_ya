@@ -5,12 +5,13 @@ use yii\widgets\ActiveForm;
 use backend\assets\DaterangePickerAsset;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Search\Order */
+/* @var $model backend\models\Search\Activity */
 /* @var $form yii\widgets\ActiveForm */
+
 DaterangePickerAsset::register($this);
 
 $this->registerJs(<<<JS
-$('input[id="order-order_time"]').daterangepicker({
+$('input[id="activity-start_time"]').daterangepicker({
     "showDropdowns": true,
     "timePicker": true,
     "ranges": {
@@ -71,26 +72,22 @@ JS
 )
 ?>
 
-<div class="order-search">
+<div class="activity-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['/refund-order/unpaid-index'],
+        'action' => ['history'],
         'method' => 'get',
         'options' => ['class'=>'form-inline'],
     ]); ?>
 
-    <?= $form->field($model, 'order_number')->textInput(['placeholder' => '订单号','class'=>'form-control'])->label(false) ?>
+    <?= $form->field($model, 'activity_name')->textInput(['class'=>'form-control','placeholder'=>'活动名'])->label(false) ?>
 
-    <?= $form->field($model, 'order_name')->textInput(['placeholder' => '下单人昵称','class'=>'form-control'])->label(false) ?>
-
-    <?= $form->field($model, 'phone')->textInput(['placeholder' => '电话','class'=>'form-control'])->label(false) ?>
+    <?= $form->field($model, 'merchant_name')->textInput(['class'=>'form-control','placeholder'=>'商家名'])->label(false) ?>
     
-    <?= $form->field($model, 'order_time')->label(false)->textInput(['placeholder' => '起止时间', 'class' => 'form-control', 'style' => 'width:234px;']) ?>
-
-    <?= $form->field($model, 'activity_name')->textInput(['placeholder' => '活动名','class'=>'form-control'])->label(false) ?>
-
-    <?= $form->field($model, 'merchant_name')->textInput(['placeholder' => '商家名','class'=>'form-control'])->label(false) ?>
+    <?= $form->field($model, 'start_time')->label(false)->textInput(['placeholder' => '起止时间', 'class' => 'form-control', 'style' => 'width:234px;']) ?>
     
+    <?= $form->field($model, 'status')->dropDownList([''=>'全部',1=>'正常',2=>'停封',])->label(false) ?>
+
     <div class="form-group">
         <?= Html::submitButton('搜索', ['class' => 'btn btn-sm btn-primary','style'=>'margin-bottom:9px']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-sm btn-default','style'=>'margin-bottom:9px']) ?>

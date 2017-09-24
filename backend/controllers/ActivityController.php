@@ -43,8 +43,23 @@ class ActivityController extends Controller
     {
         $searchModel = new ActivitySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+      
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    /**
+     * 历史数据
+     * @return string
+     */
+    public function actionHistory()
+    {
+        $searchModel = new ActivitySearch();
+        $dataProvider = $searchModel->searchs(Yii::$app->request->queryParams);
+    
+        return $this->render('list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

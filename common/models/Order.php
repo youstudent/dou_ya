@@ -70,6 +70,7 @@ class Order extends \yii\db\ActiveRecord
             'ticket' => '票验证码',
             'user_id' => '票验证码',
             'pay_time' => '支付时间',
+            'activity_id' => '活动编号',
         ];
     }
     
