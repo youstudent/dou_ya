@@ -18,7 +18,8 @@ class Merchant extends MerchantModel
     public function rules()
     {
         return [
-            [['id', 'phone'], 'integer'],
+            [['id'], 'integer'],
+            [['phone'],'integer','message'=>''],
             [['name', 'address', 'created_at','seleaman','linkman'], 'safe'],
         ];
     }

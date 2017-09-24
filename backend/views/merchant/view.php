@@ -61,11 +61,9 @@ use yii\widgets\DetailView;
                                 'confirm' => '确认删除这一张图片吗?',
                                 'method' => 'post',
                             ],]);
-                        return '';
                     }
                 }
             ],
-            
         ],
     ]) ?>
 

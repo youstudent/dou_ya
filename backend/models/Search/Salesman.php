@@ -19,8 +19,9 @@ class Salesman extends SalesmanModel
     public function rules()
     {
         return [
-            [['phone','bound_merchant'], 'integer'],
+            [['bound_merchant'], 'integer'],
             [['name', 'job_number','created_at'], 'safe'],
+            [['phone'],'integer','message'=>''],
         ];
     }
 

@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ['delete', 'id' => $key],
                                             [
                                                 'class' => 'btn btn-danger btn-xs',
-                                                'data' => ['confirm' => '你确定要删除文章吗？', 'method' => 'post']
+                                                'data' => ['confirm' => '你确定要删除该商家吗？', 'method' => 'post']
                                             ]
                                         ).'&nbsp';
                                 },

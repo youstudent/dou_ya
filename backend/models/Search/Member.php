@@ -18,8 +18,9 @@ class Member extends MemberModel
     public function rules()
     {
         return [
-            [['id', 'phone', 'last_time', 'status', 'order_num', 'order_money'], 'integer'],
+            [['id', 'last_time', 'status', 'order_num', 'order_money'], 'integer'],
             [['name', 'sex', 'identification'], 'safe'],
+            [['phone'],'integer','message'=>''],
         ];
     }
 

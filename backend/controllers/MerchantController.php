@@ -101,7 +101,7 @@ class MerchantController extends Controller
             $model->imgs = UploadedFile::getInstances($model, 'imgs');
             if ($model->upload()) {
                 // 文件上传成功
-                Yii::$app->getSession()->setFlash('success', '创建成功');
+                Yii::$app->getSession()->setFlash('success', '修改成功');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             return false;

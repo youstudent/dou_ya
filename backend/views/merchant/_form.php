@@ -15,7 +15,11 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'file')->fileInput()?>
-
+    
+    <?php if ($model->logo):?>
+    <?= Html::img(Yii::$app->params['imgs'].$model->logo,['width'=> '100px', 'height'=> '100px'])?>
+    <?php endif;?>
+    
     <?= $form->field($model, 'phone')->textInput() ?>
     
     <?= $form->field($model, 'merchant_label')->textInput() ?>
@@ -31,7 +35,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'seleaman')->dropDownList(\common\models\Merchant::getSalesman()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '添加商家' : '修改商家', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? '添加商家' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
