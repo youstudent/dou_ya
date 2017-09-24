@@ -144,7 +144,7 @@ class UserController extends ObjectController
             return $this->returnAjax(0,'请输你要发送短信的手机号码');
         }
         $sms = new MessageCode();
-        return $sms->sms($phone)? $this->returnAjax(1,'发送短信成功'):$this->returnAjax(0,'发送短信失败');
+        return $sms->sms($phone)? $this->returnAjax(1,'发送短信成功'):$this->returnAjax(0,'短信验证码30分钟内有效');
     }
     
     /**

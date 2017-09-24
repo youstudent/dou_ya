@@ -10,7 +10,7 @@ class SiteController extends UserController
 {
     public function actionError()
     {
-        echo '在这里捕获错误';
+        return $this->redirect(['/admin/user/index']);
 
     }
 }

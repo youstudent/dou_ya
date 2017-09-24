@@ -1,12 +1,11 @@
-<aside class="main-sidebar">
+<!--<aside class="main-sidebar">
 
     <section class="sidebar">
-
-        <!-- Sidebar user panel -->
+        
         <div class="user-panel">
 
         </div>
-        <?= dmstr\widgets\Menu::widget(
+        <?/*= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
@@ -14,7 +13,7 @@
                     ['label' => '业务员管理', 'icon' => 'dashboard', 'url' => ['/salesman/index']],
                     ['label' => '商家管理', 'icon' => 'dashboard', 'url' => ['/merchant/index']],
                     ['label' => 'banner管理', 'icon' => 'dashboard', 'url' => ['/banner/index']],
-                   // ['label' => '活动管理', 'icon' => 'dashboard', 'url' => ['/activity/index','Activity'=>['merchant_id'=>'']]],
+                   ['label' => '活动管理', 'icon' => 'dashboard', 'url' => ['/activity/index','Activity'=>['merchant_id'=>'']]],
                     [
                         'label' => '活动管理',
                         'icon' => 'share',
@@ -45,7 +44,7 @@
                         ],
                     ],
                     ['label' => '运营统计', 'icon' => 'dashboard', 'url' => ['/count/index']],
-                  //  ['label' => '系统设置', 'icon' => 'dashboard', 'url' => ['/banner/index']],
+                   ['label' => '系统设置', 'icon' => 'dashboard', 'url' => ['/banner/index']],
                     ['label' => '管理员列表', 'icon' => 'dashboard', 'url' => ['/admin/user']],
                     [
                         'label' => '权限管理',
@@ -59,12 +58,12 @@
                             ['label' => '角色', 'icon' => 'dashboard', 'url' => ['/admin/role']],
                         ],
                     ],
-                   // ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
-                   // ['label' => '日志', 'icon' => 'dashboard', 'url' => ['/debug']],
+                    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
+                    ['label' => '日志', 'icon' => 'dashboard', 'url' => ['/debug']],
                    
-                   // ['label' => 'assignment', 'icon' => 'dashboard', 'url' => ['/admin/assignment']],
-                   // ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                    /*[
+                    ['label' => 'assignment', 'icon' => 'dashboard', 'url' => ['/admin/assignment']],
+                   ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
+                    [
                         'label' => 'Same tools',
                         'icon' => 'share',
                         'url' => '#',
@@ -89,15 +88,15 @@
                                 ],
                             ],
                         ],
-                    ],*/
+                    ],
                     
                 ],
             ]
-        ) ?>
+        ) */?>
 
     </section>
 
-</aside>
+</aside>-->
 
 <aside class="main-sidebar">
 

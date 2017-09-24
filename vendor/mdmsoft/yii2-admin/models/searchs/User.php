@@ -18,7 +18,8 @@ class User extends UserModel
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at','phone'], 'integer'],
+            [['id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['phone'],'integer','message'=>''],
             [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email','job_number','account'], 'safe'],
         ];
     }
