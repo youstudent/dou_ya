@@ -78,6 +78,9 @@ class ActivityController extends ObjectController
      */
     public function actionSearch()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
@@ -102,6 +105,9 @@ class ActivityController extends ObjectController
      */
     public function actionDetails()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
@@ -133,6 +139,9 @@ class ActivityController extends ObjectController
      */
     public function actionMyActivity()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
@@ -195,6 +204,9 @@ class ActivityController extends ObjectController
      */
     public function actionJoinActivity()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
@@ -226,6 +238,9 @@ class ActivityController extends ObjectController
      */
     public function actionCollectActivity()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
@@ -270,6 +285,9 @@ class ActivityController extends ObjectController
      */
     public function actionCollectMerchant()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }

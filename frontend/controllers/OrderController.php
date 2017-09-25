@@ -37,6 +37,10 @@ class OrderController extends ObjectController
      */
     public function actionOrderRefund()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, 'POST请求方式');
         }
@@ -59,6 +63,9 @@ class OrderController extends ObjectController
      */
     public function actionRefund()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
@@ -107,6 +114,10 @@ class OrderController extends ObjectController
      */
     public function actionOrder()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请求方式POST');
         }
@@ -194,6 +205,10 @@ class OrderController extends ObjectController
      */
     public function actionDel()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
@@ -290,6 +305,10 @@ class OrderController extends ObjectController
      */
     public function actionEticket()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         $order = new OrderTicket();
         if ($re = $order->select(\Yii::$app->request->post('order_id'))) {
             return $this->returnAjax(1, $order->message, $re);
@@ -303,6 +322,9 @@ class OrderController extends ObjectController
      * @return mixed
      */
     public function actionPay(){
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         
         /*return $this->returnAjax(1,'成功',[
             'jsApiConfig' => [

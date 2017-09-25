@@ -24,6 +24,10 @@ class RefundOrderController extends ObjectController
      */
     public function actionRefund()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请使用POST方式');
         }
@@ -76,6 +80,10 @@ class RefundOrderController extends ObjectController
      */
     public function actionRefundDetail()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         if (!\Yii::$app->request->isPost) {
             //return $this->returnAjax(0, '请使用POST方式');
         }

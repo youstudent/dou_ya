@@ -24,6 +24,9 @@ class MerchantController extends ObjectController
      */
     public function actionMerchantActivity()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
@@ -81,6 +84,10 @@ class MerchantController extends ObjectController
      */
     public function actionMerchantDateil()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         $user_id = GetUserInfo::GetUserId();
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');

@@ -28,6 +28,10 @@ class UserController extends ObjectController
      */
     public function actionGetUser()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         $data = Member::find()->select('name,sex,phone,headimgurl')->where(['id'=> GetUserInfo::GetUserId()])->one();
         if ($data) {
             return $this->returnAjax(1, '成功', $data);
@@ -42,6 +46,10 @@ class UserController extends ObjectController
      */
     public function actionMyActivity()
     {
+    
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
@@ -88,6 +96,10 @@ class UserController extends ObjectController
      */
     public function actionMyMerchant()
     {
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
@@ -152,6 +164,10 @@ class UserController extends ObjectController
      * @return mixed
      */
     public function actionCheckCode(){
+    
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
         if (!\Yii::$app->request->isPost){
             return $this->returnAjax(0,'请使用post');
         }
