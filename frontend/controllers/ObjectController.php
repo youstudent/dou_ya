@@ -53,9 +53,6 @@ class ObjectController extends Controller
                 die();
             }
         }
-        if (Member::findOne(['id'=>$this->id])->status !==1){
-            return $this->returnAjax(0,'你被停封了,请联系管理员');
-        }
         return true;
     }
 
