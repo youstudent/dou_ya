@@ -7,6 +7,7 @@ use common\models\Activity;
 use common\models\ActivityTicket;
 use common\models\CollectActivity;
 use common\models\CollectMerchant;
+use common\models\Member;
 use common\models\Merchant;
 use common\models\Order;
 use frontend\models\GetUserInfo;
@@ -25,6 +26,10 @@ class ActivityController extends ObjectController
      */
     public function actionNewesIndex()
     {
+        $member = \Yii::$app->session->get('member');
+        if (Member::findOne(['id'=>$member['id']])->status !==1){
+            return $this->returnAjax(0, '你停封啦!!');
+        }
         if (!\Yii::$app->request->isPost) {
             return $this->returnAjax(0, '请用POST请求方式');
         }
