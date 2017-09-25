@@ -11,9 +11,7 @@ use yii\grid\GridView;
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="activity-index">
-    <p>
-        <?= Html::a('请在商家管理中添加活动', ['/merchant/index'], ['class' => 'btn btn-success']) ?>
-    </p>
+   
     <div class="box box-success">
         <div class="box-header with-border">
             <h3 class="box-title"></h3>
