@@ -6,6 +6,8 @@
  */
 namespace frontend\controllers;
 
+use common\models\Member;
+use common\models\Merchant;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
@@ -51,7 +53,9 @@ class ObjectController extends Controller
                 die();
             }
         }
-
+        if (Member::findOne(['id'=>$this->id])->status !==1){
+            return $this->returnAjax(0,'你被停封了,请联系管理员');
+        }
         return true;
     }
 

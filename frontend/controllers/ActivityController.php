@@ -102,10 +102,10 @@ class ActivityController extends ObjectController
             return $this->returnAjax(0, '请用POST请求方式');
         }
         $activity_id = \Yii::$app->request->post('activity_id');
-        if (!$activity_id) {
-            return $this->returnAjax(0, '请传活动activity_id参数');
-        }
         $data = Activity::find()->where(['id' => $activity_id])->asArray()->one();
+        if (!$data){
+            return $this->returnAjax(0, '该活动已失效');
+        }
         if ($data) {
             $row = Merchant::findOne(['id' => $data['merchant_id']]);
             // 返回查询的活动详情的结果
@@ -120,7 +120,7 @@ class ActivityController extends ObjectController
             $results->save(false);
             return $this->returnAjax(1, '成功', $result);
         }
-        return $this->returnAjax(0, '未找到活动详情activity_id为' . $activity_id);
+        return $this->returnAjax(0, '该活动已失效');
     }
     
     /**
