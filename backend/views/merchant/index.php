@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'update' => function ($url, $model, $key) {
                                     return Html::a(Html::tag('span', '修改', ['class' => "btn btn-xs btn-success"]), ['update', 'id'=>$model->id]).'&nbsp';
                                 },
-                                'delete' => function($url, $model, $key){
+                                /*'delete' => function($url, $model, $key){
                                     return Html::a('删除',
                                             ['delete', 'id' => $key],
                                             [
@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'data' => ['confirm' => '你确定要删除该商家吗？', 'method' => 'post']
                                             ]
                                         ).'&nbsp';
-                                },
+                                },*/
                                 'activity' => function ($url, $model, $key) {
                                     return Html::a('活动管理',['/activity/index','Activity'=>['merchant_id'=>$model->id,'id'=>1]],['class' => "btn btn-xs btn-success"]).'&nbsp';
                                 },

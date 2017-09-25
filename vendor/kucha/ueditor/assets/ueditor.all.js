@@ -24526,8 +24526,8 @@ UE.plugin.register('simpleupload', function (){
                             loader = me.document.getElementById(loadingId);
                             loader.setAttribute('src', link);
                             loader.setAttribute('_src', link);
-                            loader.setAttribute('style','max-width:100px');
                             loader.setAttribute('title', json.title || '');
+                            loader.setAttribute('style','width:50px;height:200px');
                             loader.setAttribute('alt', json.original || '');
                             loader.removeAttribute('id');
                             domUtils.removeClasses(loader, 'loadingclass');
