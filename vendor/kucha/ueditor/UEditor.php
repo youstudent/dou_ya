@@ -35,8 +35,8 @@ class UEditor extends InputWidget
         }
         $this->_options = [
             'serverUrl' => Url::to(['upload']),
-            'initialFrameWidth' => '20',
-            'initialFrameHeight' => '20',
+            'initialFrameWidth' => '100%',
+            'initialFrameHeight' => '400',
             'lang' => (strtolower(Yii::$app->language) == 'en-us') ? 'en' : 'zh-cn',
         ];
         $this->clientOptions = ArrayHelper::merge($this->_options, $this->clientOptions);
