@@ -142,7 +142,7 @@ class RefundOrderController extends Controller
      * @throws NotFoundHttpException
      */
     public function actionGetDetails($id,$status){
-        $model  = OrderRefund::findOne(['order_id'=>$id]);
+        $model  = OrderRefund::find()->where(['order_id'=>$id])->orderBy('created_at DESC')->one();
         if ($model){
             return $this->render('dateils',['model'=>$model,'status'=>$status]);
         }else{

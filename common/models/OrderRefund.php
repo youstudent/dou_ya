@@ -95,7 +95,7 @@ class OrderRefund extends \yii\db\ActiveRecord
      * @return false|string
      */
     public static function getCreated_at($id){
-        $data = OrderRefund::findOne(['order_id'=>$id]);
+        $data = OrderRefund::find()->where(['order_id'=>$id])->orderBy('created_at DESC')->one();
         if ($data){
             return date('Y-m-d H:i:s',$data->created_at);
         }

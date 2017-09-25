@@ -80,7 +80,7 @@ class RefundOrderController extends ObjectController
             //return $this->returnAjax(0, '请使用POST方式');
         }
         $order_id = \Yii::$app->request->post('order_id');
-        //$order_id =21;
+       $order_id =9;
         if (!$order_id) {
             return $this->returnAjax(0, '请传order_id参数或者user_id');
         }
@@ -101,9 +101,9 @@ class RefundOrderController extends ObjectController
            $v['created_at'] = date('Y-m-d H:i:s',$v['created_at']);
            $v['updated_at'] = date('Y-m-d H:i:s',$v['updated_at']);
            if($i < $count){
-               $v['flag'] = 4;
-           }else{
                $v['flag'] = $data['status'];
+           }else{
+               $v['flag'] = 4;
            }
            unset($v['bank_card']);
            unset($v['money']);
@@ -115,6 +115,7 @@ class RefundOrderController extends ObjectController
            $i++;
        }
         $data['flow'] = $row;
+        
         return $this->returnAjax(1, '成功', $data);
         
     }
