@@ -9,6 +9,8 @@
 namespace  frontend\models;
 
 
+use common\models\Member;
+
 class GetUserInfo
 {
     
@@ -22,5 +24,13 @@ class GetUserInfo
        $member =  \Yii::$app->session->get('member');
        return $member['id'];
       // return 1;
+   }
+   
+   public static function check(){
+       $member = \Yii::$app->session->get('member');
+       if (Member::findOne(['id'=>$member['id']])->status !==1){
+           return false;
+       }
+       return true;
    }
 }
