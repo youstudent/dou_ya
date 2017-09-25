@@ -80,7 +80,6 @@ class RefundOrderController extends ObjectController
             //return $this->returnAjax(0, '请使用POST方式');
         }
         $order_id = \Yii::$app->request->post('order_id');
-       $order_id =9;
         if (!$order_id) {
             return $this->returnAjax(0, '请传order_id参数或者user_id');
         }
