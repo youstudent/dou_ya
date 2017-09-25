@@ -40,7 +40,7 @@ class Merchant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','phone','address','merchant_label','linkman','contract_number'],'required'],
+            [['name','phone','address','merchant_label','linkman','contract_number','seleaman'],'required'],
             [['phone'],'match','pattern'=>'/^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$/'],
             [['created_at'], 'integer'],
             [['name'], 'string', 'max' => 30],
