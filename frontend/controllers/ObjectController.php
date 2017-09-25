@@ -53,6 +53,10 @@ class ObjectController extends Controller
                 die();
             }
         }
+        $member = \Yii::$app->session->get('member');
+        if (Member::findOne(['id'=>$member['id']])->status !==1){
+            return $this->returnAjax(0, '你停封啦!!');
+        }
         return true;
     }
 
