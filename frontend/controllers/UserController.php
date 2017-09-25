@@ -148,6 +148,11 @@ class UserController extends ObjectController
      * @return mixed
      */
     public function actionSendSms(){
+        
+        if (!GetUserInfo::check()){
+            return $this->returnAjax(0, '你被停封了!请联系管理员');
+        }
+        
         if (!\Yii::$app->request->isPost){
             return $this->returnAjax(0,'请使用post');
         }
