@@ -320,8 +320,13 @@ class Activity extends \yii\db\ActiveRecord
             //查询票种
             $data['price'] = '0';
             if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $data['id']])->orderBy('price ASC')->one()) {
-                $data['price'] = $row->price;
+                if (ActivityTicket::find()->where(['activity_id' => $data['id']])->count() >1){
+                    $data['price'] = '起'.$row->price;
+                }else{
+                    $data['price'] = $row->price;
+                }
             }
+            
         return $data;
         
     }
