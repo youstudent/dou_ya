@@ -219,8 +219,8 @@ class OrderController extends ObjectController
         }
         $order = Order::findOne(['id' => $order_id]);
         if ($order) {
-            $order->status = 5;  //逻辑删除订单
-            return $order->save(false) ? $this->returnAjax(1, '删除成功') : $this->returnAjax(0, '删除失败');
+            OrderTicket::deleteAll(['order_id'=>$order->id]);
+            return $order->delete() ? $this->returnAjax(1, '删除成功') : $this->returnAjax(0, '删除失败');
         }
         return $this->returnAjax(0, '订单未找到');
     }

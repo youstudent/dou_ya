@@ -23,6 +23,8 @@ if($model->limitation_num == 0 ){
     <?= $form->field($model, 'merchant_name')->textInput(['readonly'=>'true']) ?>
 
     <?= $form->field($model, 'activity_name')->textInput() ?>
+    
+    <?= $form->field($model, 'sms_title')->textInput(['placeholder'=>'字数小于11']) ?>
 
     <?= $form->field($model, 'file')->fileInput()?>
     <?= Html::img(Yii::$app->params['imgs'].$model->activity_img,['width'=> '100px', 'height'=> '100px'])?>

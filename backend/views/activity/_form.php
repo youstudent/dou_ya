@@ -64,7 +64,7 @@ $this->registerJs($fileuploadedJs);
 
     <?= $form->field($model, 'activity_name')->textInput() ?>
     
-    <?= $form->field($model, 'sms_title')->textInput() ?>
+    <?= $form->field($model, 'sms_title')->textInput(['placeholder'=>'字数小于11']) ?>
 
     <?= $form->field($model, 'file')->fileInput()?>
     
