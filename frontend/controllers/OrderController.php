@@ -145,7 +145,7 @@ class OrderController extends ObjectController
         $order = new Order();
         $transaction = \Yii::$app->db->beginTransaction();
         try {
-            $order->order_number = $this->getRandChar(12);
+            $order->order_number = $this->getRandChar(6);
             $order->order_num = 1;
             $order->activity_name = $row['activity_name'];
             $order->merchant_name = $row['merchant_name'];
@@ -237,7 +237,7 @@ class OrderController extends ObjectController
             $str.=$strPol[rand(0,$max)];//rand($min,$max)生成介于min和max两个数之间的一个随机整数
         }
         
-        return date('Ymd').$str;
+        return date('His').$str;
     }
     
     /**
