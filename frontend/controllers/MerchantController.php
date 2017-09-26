@@ -56,12 +56,12 @@ class MerchantController extends ObjectController
                 ->all();
             $count = Activity::find()->andWhere(['>', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id, 'status' => 1])->count();
         } else {
-            $row = Activity::find()->andWhere(['<', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id])->orWhere(['or', ['status' => 0]])
+            $row = Activity::find()->andWhere(['<', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id])
                 ->asArray()
                 ->limit($size)
                 ->offset($limit)
                 ->all();
-            $count = Activity::find()->andWhere(['<', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id])->orWhere(['or', ['status' => 0]])->count();
+            $count = Activity::find()->andWhere(['<', 'end_time', time()])->andWhere(['merchant_id' => $merchant_id])->count();
         }
 
         // 分页信息two
