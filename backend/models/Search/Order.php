@@ -21,7 +21,7 @@ class Order extends OrderModel
         return [
             [['id', 'order_num', 'order_checking', 'phone', 'sell_all', 'clearing_all', 'sell_all_checking', 'clearing_all_checking'], 'integer'],
             [['order_time'], 'string'],
-            [['order_number', 'activity_name', 'merchant_name', 'order_name','status'], 'safe'],
+            [['order_number', 'activity_name', 'merchant_name', 'order_name','status','sms_title'], 'safe'],
         ];
     }
 

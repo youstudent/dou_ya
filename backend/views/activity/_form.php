@@ -63,8 +63,11 @@ $this->registerJs($fileuploadedJs);
     <?= $form->field($model, 'merchant_name')->textInput(['readonly'=>'true']) ?>
 
     <?= $form->field($model, 'activity_name')->textInput() ?>
+    
+    <?= $form->field($model, 'sms_title')->textInput() ?>
 
     <?= $form->field($model, 'file')->fileInput()?>
+    
     <?= $form->field($model, 'activity_address')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'apply_end_time')->widget(\kartik\datetime\DateTimePicker::classname(), [

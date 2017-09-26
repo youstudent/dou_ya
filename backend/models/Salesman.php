@@ -31,7 +31,7 @@ class Salesman extends \yii\db\ActiveRecord
     {
         return [
             [['name','job_number','phone'], 'required'],
-            [['phone'],'match','pattern'=>'/^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$/'],
+            [['phone'], 'number', 'max'=> '99999999999', 'tooBig'=> '{attribute}必须小于11位'],
             [['name','job_number','phone'], 'unique'],
             [['phone'], 'integer'],
             [['name'], 'string', 'max' => 20],

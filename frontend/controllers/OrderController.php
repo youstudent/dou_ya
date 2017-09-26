@@ -147,6 +147,7 @@ class OrderController extends ObjectController
         try {
             $order->order_number = $this->getRandChar(6);
             $order->order_num = 1;
+            $order->sms_title =$row['sms_title'];
             $order->activity_name = $row['activity_name'];
             $order->merchant_name = $row['merchant_name'];
             $order->status = 0;

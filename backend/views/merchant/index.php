@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             //用于显示一些动作按钮，如每一行的更新、删除操作。
                             'class' => 'yii\grid\ActionColumn',
                             'header' => '操作',
-                            'template' => '{view}{update}{delete}{activity}{addactivity}',//只需要展示删除和更新
+                            'template' => '{view}{update}{activity}{addactivity}',//只需要展示删除和更新
                             'headerOptions' => ['width' => '240'],
                             'buttons' => [
                                 'view' => function ($url, $model, $key) {

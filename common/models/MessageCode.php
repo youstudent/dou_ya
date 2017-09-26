@@ -145,7 +145,7 @@ class MessageCode extends \yii\db\ActiveRecord
     {
         //根据订单查询活动
       $data  =   Order::findOne(['id' => $order_id]);
-      $name =$data->activity_name;
+      $name =$data->sms_title;
      return  $this->SendSms('13219890986',$name,'','SMS_95475065');
     }
     
@@ -155,7 +155,7 @@ class MessageCode extends \yii\db\ActiveRecord
      * @param $order
      */
     public function paySuccessSms($order){
-       $this->SendMessage($order->phone,$order->activity_name,$order->order_number,'SMS_98235004');
+       $this->SendMessage($order->phone,$order->sms_title,$order->order_number,'SMS_98235004');
        
     }
     

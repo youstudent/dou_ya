@@ -50,7 +50,7 @@ class Activity extends \yii\db\ActiveRecord
     {
         return [
             [['merchant_name'],'validateName','skipOnEmpty' => false,'skipOnError' => false],
-            [['activity_address','activity_name','merchant_name','apply_end_time','start_time','end_time','phone','on_line','linkman','content','limitation_num'], 'required'],
+            [['activity_address','activity_name','merchant_name','apply_end_time','start_time','end_time','phone','on_line','linkman','content','limitation_num','sms_title'], 'required'],
             [['phone', 'purchase_limitation','on_line','merchant_id'], 'integer'],
             [['content'], 'string'],
             [['merchant_name'], 'string', 'max' => 30],
@@ -89,6 +89,7 @@ class Activity extends \yii\db\ActiveRecord
             'total_price' => '总售价',
             'status' => '状态',
             'merchant_id' => '商家ID',
+            'sms_title' => '发送短信标题',
         ];
     }
     
@@ -321,7 +322,7 @@ class Activity extends \yii\db\ActiveRecord
             $data['price'] = '0';
             if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $data['id']])->orderBy('price ASC')->one()) {
                 if (ActivityTicket::find()->where(['activity_id' => $data['id']])->count() >1){
-                    $data['price'] = '起'.$row->price;
+                    $data['price'] = '￥'.$row->price.'起';
                 }else{
                     $data['price'] = $row->price;
                 }
