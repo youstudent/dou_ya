@@ -29,8 +29,8 @@ class Wechat extends Model
             'body'         => $orderData['merchant_name'],
             'detail'       => $orderData['activity_name'],
             'out_trade_no' => $orderData['order_number'],
-            'total_fee'    => $orderData['sell_all'], // 单位：分
-             'total_fee'    => 1, // 单位：分
+            'total_fee'    => $orderData['sell_all']*100, // 单位：分
+             //'total_fee'    => 1, // 单位：分
             'notify_url'   => 'http://api.douyajishi.com/wechat/order-notify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
         ];
         $order = new \EasyWeChat\Payment\Order($orderData);
