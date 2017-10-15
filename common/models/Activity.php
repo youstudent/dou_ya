@@ -301,7 +301,7 @@ class Activity extends \yii\db\ActiveRecord
             //$value['activity_img'] = \Yii::$app->params['img_domain'] . $value['activity_img'];
             //查询票种
             $value['price'] = '0';
-            if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $value['id']])->orderBy('price DESC')->one()) {
+            if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $value['id']])->orderBy('price ASC')->one()) {
                 $value['price'] = $row->price;
             }
         }
@@ -320,7 +320,7 @@ class Activity extends \yii\db\ActiveRecord
             $data['activity_img'] = \Yii::$app->params['imgs'] . $data['activity_img'];
             //查询票种
             $data['price'] = '0';
-            if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $data['id']])->orderBy('price DESC')->one()) {
+            if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $data['id']])->orderBy('price ASC')->one()) {
                 if (ActivityTicket::find()->where(['activity_id' => $data['id']])->count() >1){
                     $data['price'] = '￥'.$row->price.'起';
                 }else{
