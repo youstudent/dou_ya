@@ -301,11 +301,33 @@ class Activity extends \yii\db\ActiveRecord
             //$value['activity_img'] = \Yii::$app->params['img_domain'] . $value['activity_img'];
             //查询票种
             $value['price'] = '0';
-            if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $value['id']])->orderBy('price ASC')->one()) {
-                $value['price'] = $row->price;
+            if ($row = ActivityTicket::find()->where(['activity_id' => $value['id']])->asArray()->all()) {
+              $re = self::arraySequence($row,'price');
+              $value['price'] = $re[0]['price'];
+            }
+            
+        }
+        
+        return $data;
+    }
+    
+    /**
+     * 数组排序
+     * @param $array
+     * @param $field
+     * @param string $sort
+     * @return mixed
+     */
+    public static function arraySequence($array, $field, $sort = 'SORT_ASC')
+    {
+        $arrSort = array();
+        foreach ($array as $uniqid => $row) {
+            foreach ($row as $key => $value) {
+                $arrSort[$key][$uniqid] = $value;
             }
         }
-        return $data;
+        array_multisort($arrSort[$field], constant($sort), $array);
+        return $array;
     }
     
     /**
@@ -313,21 +335,23 @@ class Activity extends \yii\db\ActiveRecord
      * @param $data
      * @return mixed
      */
-    public static function details($data){
-            $data['start_time'] = date('Y年m月d日 H:i:s', $data['start_time']);
-            $data['apply_end_time'] = date('Y年m月d日 H:i:s', $data['apply_end_time']);
-            $data['end_time'] = date('Y年m月d日 H:i:s', $data['end_time']);
-            $data['activity_img'] = \Yii::$app->params['imgs'] . $data['activity_img'];
-            //查询票种
-            $data['price'] = '0';
-            if ($row = ActivityTicket::find()->select('price')->where(['activity_id' => $data['id']])->orderBy('price ASC')->one()) {
-                if (ActivityTicket::find()->where(['activity_id' => $data['id']])->count() >1){
-                    $data['price'] = '￥'.$row->price.'起';
-                }else{
-                    $data['price'] = $row->price;
-                }
+    public static function details($data)
+    {
+        $data['start_time'] = date('Y年m月d日 H:i:s', $data['start_time']);
+        $data['apply_end_time'] = date('Y年m月d日 H:i:s', $data['apply_end_time']);
+        $data['end_time'] = date('Y年m月d日 H:i:s', $data['end_time']);
+        $data['activity_img'] = \Yii::$app->params['imgs'] . $data['activity_img'];
+        //查询票种
+        $data['price'] = '0';
+        if ($row = ActivityTicket::find()->where(['activity_id' => $data['id']])->asArray()->all()) {
+            $re = self::arraySequence($row, 'price');
+            if (ActivityTicket::find()->where(['activity_id' => $data['id']])->count() > 1) {
+                $data['price'] = '￥' . $re[0]['price'] . '起';
+            } else {
+                $data['price'] = $re[0]['price'];
             }
-            
+        }
+        
         return $data;
         
     }
